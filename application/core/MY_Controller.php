@@ -13,6 +13,8 @@ class MY_Controller extends CI_Controller {
 	{
 		parent::__construct();
 
+		date_default_timezone_set('Europe/Zurich');
+		
 		//Transactions für die Entwicklung ausschalten.
 		$this->db->trans_off();
 

@@ -14,7 +14,17 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://' . $_SERVER['HTTP_HOST'] . '/boerse';
+switch ($_SERVER['SERVER_NAME']) {
+	case 'localhost':
+	case 'dev.provelobern.ch':
+		$config['base_url']	= 'http://' . $_SERVER['HTTP_HOST'] . '/veloboerse';
+		break;
+	case 'www.provelobern.ch':
+	case 'provelobern.ch':
+	default:
+		$config['base_url']	= 'http://' . $_SERVER['HTTP_HOST'] . '/boerse';
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +36,17 @@ $config['base_url']	= 'http://' . $_SERVER['HTTP_HOST'] . '/boerse';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = '';
+switch ($_SERVER['SERVER_NAME']) {
+	case 'localhost':
+		$config['index_page'] = 'index.php';
+		break;
+	case 'dev.provelobern.ch':
+	case 'www.provelobern.ch':
+	case 'provelobern.ch':
+	default:
+		$config['index_page'] = '';
+}
+
 
 /*
 |--------------------------------------------------------------------------

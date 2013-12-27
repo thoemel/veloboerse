@@ -12,16 +12,11 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<?php 
+$min = ('dev' == substr($_SERVER['SERVER_NAME'], 0, 3)) ? '' : '.min';
+echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap' . $min . '.css">';
+?>
 
-<link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap.min.css">
-<style>
-body {
-	padding-top: 60px;
-	padding-bottom: 40px;
-}
-</style>
-<link rel="stylesheet"
-	href="<?php echo base_url();?>css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>css/main.css">
 
 <script src="<?php echo base_url();?>js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>

@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller {
 
 		// Profiling infos für die Entwicklung einschalten
 		if ($_SERVER['SERVER_NAME'] == 'dev.provelobern.ch') {
-// 	           $this->output->enable_profiler(TRUE);
+	           $this->output->enable_profiler(TRUE);
 		}
 
 

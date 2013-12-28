@@ -38,9 +38,9 @@ switch ($_SERVER['SERVER_NAME']) {
 */
 switch ($_SERVER['SERVER_NAME']) {
 	case 'localhost':
+	case 'dev.provelobern.ch':
 		$config['index_page'] = 'index.php';
 		break;
-	case 'dev.provelobern.ch':
 	case 'www.provelobern.ch':
 	case 'provelobern.ch':
 	default:

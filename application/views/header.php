@@ -27,40 +27,40 @@ echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap' . $min . '.c
         <![endif]-->
 
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-				</a>
 <?php 
-echo			anchor('', img('img/logo_nur_ringe.png').'&nbsp;Velobörse', array('class'=>'brand'));
-echo '			<div class="nav-collapse collapse">';
-echo '				<ul class="nav">';
-//echo '					<li class="active">' . anchor('', 'Start') . '</li>';
+echo	'
+	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#vb-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			' . anchor('', img('img/logo_nur_ringe.png').'&nbsp;Velobörse', array('class'=>'navbar-brand')) . '
+		</div><!-- End of navbar-header -->
+	
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="vb-navbar-collapse-1">
+			<ul class="nav navbar-nav">';
 if ($this->session->userdata('logged_in')) {
 	echo '				<li>' . anchor('login/showChoices', 'Ressort') . '</li>';
 	echo '				<li>' . anchor('login/logout', 'Logout') . '</li>';
 } else {
 	echo '				<li>' . anchor('login/form', 'Login') . '</li>';
 }
-echo '				</ul>';
 echo '
-					' . form_open($formAction, array('class'=>'navbar-form pull-right')) . '
-					' . form_input(array('name'=>'id','class'=>'focusPlease')) . '
-					' . '<button 
-							type="submit" 
-							class="btn"
-							data-html="Formular abgeschickt - warte auf Antwort"
-							data-placement="bottom">' . $formSubmitText . '</button>' . '
-					' . form_close() . '
+			</ul>
+			' . form_open($formAction, array('class'=>'navbar-form navbar-right','role'=>"search")) . '
+				<div class="form-group">
+					' . form_input(array('name'=>'id','class'=>'form-control focusPlease','placeholder'=>"Quittungs-Nr.")) . '
 				</div>
-				<!--/.nav-collapse -->';
+				<button type="submit" class="btn">' . $formSubmitText . '</button>
+			' . form_close() . '
+		</div><!-- /.navbar-collapse -->
+	</nav>';
 ?>
-			</div>
-		</div>
-	</div>
 
 	<div class="container">
 	

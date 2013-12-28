@@ -1,8 +1,8 @@
 <?php
 class Haendler extends CI_Model {
-// ALTER TABLE `haendler` ADD `standgebuehr` FLOAT( 5, 2 ) NULL 
 	public $adresse = '	';
 	public $bankverbindung = '';
+	public $code = '';
 	public $email = '';
 	public $firma = '';
 	public $iban = '';
@@ -72,6 +72,7 @@ class Haendler extends CI_Model {
 		// Public Felder
 		$this->adresse = $query->row()->adresse;
 		$this->bankverbindung = $query->row()->bankverbindung;
+		$this->code = $query->row()->code;
 		$this->email = $query->row()->email;
 		$this->firma = $query->row()->firma;
 		$this->iban = $query->row()->iban;
@@ -114,6 +115,24 @@ class Haendler extends CI_Model {
 	
 	
 	/**
+	 * Sucht in der db nach einem Händler mit dem entsprechenden Code
+	 * und gibt dessen ID zurück, falls gefunden.
+	 * 
+	 * @param	String	$code	UUID für DB-Feld 'code'
+	 * @return	int				ID des Händlers. 0 falls nicht gefunden
+	 */
+	public function idFuerCode($code)
+	{
+		$this->db->where('code', $code);
+		$query = $this->db->get('haendler', 1);
+		if (0 == $query->num_rows()) {
+			return 0;
+		}
+		return $query->row()->id;
+	}
+	
+	
+	/**
 	 * Prüft, ob ein Händler im System registriert ist.
 	 * @param int	$id
 	 * @return	boolean
@@ -137,6 +156,7 @@ class Haendler extends CI_Model {
 		// Public Felder
 		$this->db->set('firma', $this->firma);
 		$this->db->set('adresse', $this->adresse);
+		$this->db->set('code', $this->code);
 		$this->db->set('person', $this->person);
 		$this->db->set('email', $this->email);
 		$this->db->set('bankverbindung', $this->bankverbindung);

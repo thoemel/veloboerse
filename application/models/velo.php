@@ -3,14 +3,19 @@ class Velo extends CI_Model {
 
 	public $abgeholt = 'no';
 	public $ausbezahlt = 'no';
+	public $farbe = '';
 	public $haendler_id	= NULL;
 	public $helfer_kauft = 'no';
 	public $id = 0;
 	public $img = '';
 	public $kein_ausweis = 'no';
 	public $keine_provision = 'no';
+	public $marke = '';
 	public $preis = 0;
+	public $rahmennummer = '';
+	public $typ = '';
 	public $verkauft = 'no';
+	public $vignettennummer = '';
 	public $zahlungsart = NULL;
 	
 	/**
@@ -50,7 +55,12 @@ class Velo extends CI_Model {
 		$this->keine_provision = $query->row()->keine_provision;
 		$this->helfer_kauft = $query->row()->helfer_kauft;
 		$this->haendler_id = $query->row()->haendler_id;
-		
+		$this->farbe = $query->row()->farbe;
+		$this->marke = $query->row()->marke;
+		$this->rahmennummer = $query->row()->rahmennummer;
+		$this->typ = $query->row()->typ;
+		$this->vignettennummer = $query->row()->vignettennummer;
+				
 		return $query->row();
 	}
 	
@@ -120,14 +130,19 @@ class Velo extends CI_Model {
 	{
 		$this->db->set('abgeholt', $this->abgeholt);
 		$this->db->set('ausbezahlt', $this->ausbezahlt);
+		$this->db->set('farbe', $this->farbe);
+		$this->db->set('haendler_id', $this->haendler_id);
+		$this->db->set('helfer_kauft', $this->helfer_kauft);
 		$this->db->set('img', $this->img);
-		$this->db->set('preis', $this->preis);
-		$this->db->set('verkauft', $this->verkauft);
-		$this->db->set('zahlungsart', $this->zahlungsart);
 		$this->db->set('kein_ausweis', $this->kein_ausweis);
 		$this->db->set('keine_provision', $this->keine_provision);
-		$this->db->set('helfer_kauft', $this->helfer_kauft);
-		$this->db->set('haendler_id', $this->haendler_id);
+		$this->db->set('marke', $this->marke);
+		$this->db->set('preis', $this->preis);
+		$this->db->set('rahmennummer', $this->rahmennummer);
+		$this->db->set('typ', $this->typ);
+		$this->db->set('verkauft', $this->verkauft);
+		$this->db->set('vignettennummer', $this->vignettennummer);
+		$this->db->set('zahlungsart', $this->zahlungsart);
 		
 		if (!self::istRegistriert($this->id)) {
 			$this->db->set('id', $this->id);

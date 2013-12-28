@@ -140,9 +140,74 @@ class Haendleradmin extends MY_Controller {
 			redirect('haendleradmin/index');
 		}
 		
+		$haendler = new Haendler();
+		$haendler->find($haendler_id);
+		$this->data['haendler'] = $haendler;
+		$anzeigename = $haendler->firma;
+		if (empty($anzeigename)) {
+			$anzeigename = $haendler->person;
+		}
+		$this->data['anzeigename'] = $anzeigename;
+		
+		$myIds = array();
+		$this->load->model('velo');
+		$myVelos = Velo::getAll($haendler_id);
+		if (0 < $myVelos->num_rows()) {
+			foreach ($myVelos->result() as $row) {
+				$myIds[] = $row->id;
+			}
+			sort($myIds);
+		}
+		$this->data['ids'] = $myIds;
+		
 		$this->load->view('haendleradmin/quittungen', $this->data);
 		return;
-	}
+	} // End of function quittungen()
+	
+	
+	/**
+	 * Weist eine Händler Quittungen zu.
+	 * Übernimmt die Formulareingaben aus haendleradmin/quittungen.
+	 */
+	public function quittungenSpeichern()
+	{
+		// Formulareingaben prüfen
+		$haendler_id = $this->input->post('haendler_id');
+		if (!Haendler::istRegistriert($haendler_id)
+			|| $haendler_id != $this->session->userdata('haendler_id')) {
+			$this->session->set_flashdata('error', 'Falsche Händler-Nummer. Versuchs vielleicht mit neu einloggen.');
+			redirect('haendleradmin/index');
+		}
+		
+		$from = intval($this->input->post('range_from'));
+		$to = intval($this->input->post('range_to'));
+		if (!$from || !$to) {
+			$this->session->set_flashdata('error', 'Unmögliche Eingabe.');
+			redirect('haendleradmin/quittungen/' . $haendler_id);
+		}
+		
+		// Velos registrieren
+		$this->load->model('velo');
+		$errorsForFlash = array();
+		for ($id = $from; $id <= $to; $id++) {
+			if (velo::istRegistriert($id)) {
+				$errorsForFlash[] = 'Quittung ' . $id . ' war schon vergeben.';
+				continue;
+			}
+			$myVelo = new Velo();
+			$myVelo->id = $id;
+			$myVelo->haendler_id = $haendler_id;
+			$myVelo->save();
+		}
+		
+		if (!empty($errorsForFlash)) {
+			$this->session->set_flashdata('error', implode('<br>', $errorsForFlash));
+		} else {
+			$this->session->set_flashdata('success', 'Quittungen wurden gespeichert.');
+		}
+		
+		redirect('haendleradmin/quittungen/' . $haendler_id);
+	} // End of function quittungenSpeichern
 	
 	
 	/**

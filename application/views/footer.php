@@ -3,8 +3,10 @@
 <!-- /container -->
 
 <footer>
+	<div class="container">
 <?php echo anchor('', img('img/logo_nur_ringe.png'), array('title'=>'Start')); ?>
-		</footer>
+	</div>
+</footer>
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>

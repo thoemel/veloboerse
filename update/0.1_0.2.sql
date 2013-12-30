@@ -1,9 +1,7 @@
 -- Fuer Haendlerformular
 ALTER TABLE `haendler` ADD `code` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Fuer Direktlink' AFTER `id` ;
-
 UPDATE `haendler` SET code = uuid( ) ;
-
-ALTER TABLE `probern_boerse`.`haendler` ADD UNIQUE `idx_code` ( `code` ) COMMENT '';
+ALTER TABLE `probern_boerse`.`haendler` ADD UNIQUE `idx_code` ( `code` );
 
 
 ALTER TABLE `velos` ADD `typ` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,

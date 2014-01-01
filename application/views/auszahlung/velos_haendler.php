@@ -1,9 +1,14 @@
 <?php
 include APPPATH . 'views/header.php';
 
-// TODO striped klasse im bootstrap?
 echo '
 <div>
+	<ol class="breadcrumb hidden-print">
+		<li>' . anchor('login/showChoices', 'Ressorts') . '</li>
+		<li>' . anchor('auszahlung/einstieg_haendler', 'Händlerauszahlung') . '</li>
+		<li class="active">Abrechnung ' . $haendler->firma . '</li>
+	</ol>
+	
 	<h1>Abrechnung</h1>
 		<h2>Händler</h2>
 		<p>' . $haendler->firma . '<br>
@@ -11,7 +16,6 @@ echo '
 			' . nl2br($haendler->adresse) . '<br>
 		</p>
 	
-	<p class="hidden-print">'.anchor('auszahlung/einstieg_haendler', 'zur Händlerauswahl').'</p>
 	
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>

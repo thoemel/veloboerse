@@ -182,14 +182,12 @@ class Auszahlung extends MY_Controller {
 	
 		$veloQuery = Velo::getAll($haendler_id);
 		$arrVelos = array();
-		$sumPreis = 0;
 		$countVerkauft = 0;
 		$countNichtVerkauft = 0;
 		foreach ($veloQuery->result() as $velo) {
 			$thisVelo = array();
 			$thisVelo['id']		= $velo->id;
 			$thisVelo['preis']		= $velo->preis;
-			$sumPreis += $velo->preis;
 			if ('yes' == $velo->verkauft) {
 				$thisVelo['verkauft']	= 'x';
 				$thisVelo['unverkauft']	= '&nbsp;';
@@ -222,7 +220,6 @@ class Auszahlung extends MY_Controller {
 		$this->addData('auszahlungBetrag', (number_format($auszahlungBetrag, 2)));$this->addData('arrVelos', $arrVelos);
 		$this->addData('countNichtVerkauft', $countNichtVerkauft);
 		$this->addData('countVerkauft', $countVerkauft);
-		$this->addData('sumPreis', $sumPreis);
 		$this->addData('iban', $iban);
 		
 	

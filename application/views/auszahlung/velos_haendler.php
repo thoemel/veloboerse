@@ -26,10 +26,11 @@ echo '
 			<th>Nein</th>
 		</tr>
 		</thead>
+			
 		<tfoot>
 		<tr>
 			<th scope="row">Total</th>
-			<td>' . number_format($sumPreis, 2) . '</td>
+			<td></td>
 			<td>' . $countVerkauft . '</td>
 			<td>' . $countNichtVerkauft . '</td>
 			<td>&nbsp;</td>

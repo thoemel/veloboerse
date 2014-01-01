@@ -17,7 +17,7 @@ echo '<div class="bottom20 kasse">
 		'.anchor('login/dispatch/kasse', 'Kasse').'
 	</div>';
 echo '<div class="bottom20 abholung">
-		'.anchor('login/dispatch/abholung', 'Abholung').'
+		'.anchor('login/dispatch/abholung', 'Abholung Private').'
 	</div>';
 echo '<div class="bottom20 haendlerannahme">
 		'.anchor('login/dispatch/haendlerannahme', 'Annahme Händler').'

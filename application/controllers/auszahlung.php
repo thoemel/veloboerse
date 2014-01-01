@@ -18,6 +18,21 @@ class Auszahlung extends MY_Controller {
 	 */
 	public function formular_private()
 	{
+		$ichwill = 'debuggen';
+		if ($this->session->flashdata('gespeichertesVelo')) {
+			$myVelo = new Velo();
+			try {
+				$myVelo->find($this->session->flashdata('gespeichertesVelo'));
+			} catch (Exception $e) {
+				log_message('error', 'Auszahlung::formular_private() - Velo nicht gefunden');
+				$this->session->set_flashdata('error', 'Fehler. Das angeblich ausbezahlte Velo konnte nicht gefunden werden.');
+				redirect('auszahlung/formular_private');
+				return ;
+			}
+			$this->addData('velo', $myVelo);
+			$keineProvision = ('yes' == $myVelo->keine_provision) ? 'Ja' : 'Nein';
+			$this->addData('keineProvision', $keineProvision);
+		}
 		$this->load->view('auszahlung/einstieg_private', $this->data);
 	}
 	
@@ -151,6 +166,7 @@ class Auszahlung extends MY_Controller {
 			$this->session->set_flashdata('error', 'Auszahlung speichern ging schief.');
 		} else {
 			$this->session->set_flashdata('success', 'Auszahlung wurde gespeichert.');
+			$this->session->set_flashdata('gespeichertesVelo', $myVelo->id);
 		}
 	
 		redirect('auszahlung/formular_private');

@@ -89,7 +89,7 @@ class Velos extends MY_Controller {
 		$haendlerQuery = Haendler::getAll();
 		$arrHaendler = array(0 => 'privat');
 		foreach ($haendlerQuery->result() as $row) {
-			$arrHaendler[$row->id] = $row->id . ' - ' . $row->firma;
+			$arrHaendler[$row->id] = $row->id . ' - ' . $row->firma . ' | ' . $row->person;
 		}
 		$this->addData('haendlerDropdown', form_dropdown('haendler_id', $arrHaendler, $myVelo->haendler_id, 'id="haendler_id" class="form-control"'));
 		

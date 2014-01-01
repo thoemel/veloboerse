@@ -209,4 +209,31 @@ class Haendler extends CI_Model {
 	}
 	
 	
+	/**
+	 * Gibt ein Array mit Informationen zu den Velos dieses Händlers
+	 * 
+	 * @return array	Keys: total, verkauft, abgeholt
+	 */
+	public function velosInfo()
+	{
+		$arrOut = array(
+			'total' 	=> 0,
+			'verkauft'	=> 0,
+			'abgeholt'	=> 0
+		);
+		$this->db->where('haendler_id', $this->id);
+		$query = $this->db->get('velos');
+		foreach ($query->result() as $row) {
+			$arrOut['total'] += 1;
+			if ('yes' == $row->verkauft) {
+				$arrOut['verkauft'] += 1;
+			}
+			if ('yes' == $row->abgeholt) {
+				$arrOut['abgeholt'] += 1;
+			}
+		}
+		return $arrOut;
+	}
+	
+	
 }

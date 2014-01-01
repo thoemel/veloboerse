@@ -85,6 +85,9 @@ class Kasse extends MY_Controller {
 		
 		if ($myVelo->save()) {
 			$this->data['success'] = 'Verkauf wurde registriert :-)';
+			$this->data['velo'] = $myVelo;
+			$vonHelferGekauft = ('yes' == $myVelo->helfer_kauft) ? 'Ja' : 'Nein';
+			$this->addData('vonHelferGekauft', $vonHelferGekauft);
 		} else {
 			$this->data['error'] = 'Verkauf nicht geklappt.';
 		}

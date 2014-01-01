@@ -9,7 +9,8 @@ echo '
 <dl>';
 
 foreach ($myVelo as $key => $value) {
-	if ('img' == $key && empty($value)) {
+	$value = str_replace(array('yes','no'), array('ja','nein'), $value);
+	if (empty($value)) {
 		$value = '-';
 	}
 	echo '

@@ -224,6 +224,9 @@ class Annahme extends MY_Controller {
 			$this->load->view('velos/single', $this->data);
 		} else {
 			$this->addData('success', 'Annahme ok.');
+			$this->addData('preis', $myVelo->preis);
+			$ausweisGezeigt = ('yes' == $myVelo->kein_ausweis) ? 'Nein' : 'Ja';
+			$this->addData('ausweisGezeigt', $ausweisGezeigt);
 			$this->load->view('annahme/einstieg_private', $this->data);
 		}
 	

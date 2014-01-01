@@ -31,7 +31,7 @@ class Kasse extends MY_Controller {
 		$myVelo->find($quittungNr);
 		
 		// Velo darf nicht mehr verkauft werden, wenn schon abgeholt
-		if ($myVelo->abgeholt) {
+		if ('yes' == $myVelo->abgeholt) {
 			$this->session->set_flashdata('error', 'Hilfe! <br>Hol den Thoemel! <br>Das Velo ist als "abgeholt" registriert - das muss dringend geklärt werden!');
 			redirect('kasse/index');
 			return;

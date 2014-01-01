@@ -37,8 +37,11 @@ class Kasse extends MY_Controller {
 			return;
 		}
 		
+		// Velo nicht ein zweites Mal verkaufen
 		if ('yes' == $myVelo->verkauft) {
-			$this->addData('error', 'Das Velo wurde bereits verkauft. Wir können es nicht noch ein zweites Mal verkaufen.');
+			$this->session->set_flashdata('error', 'Hilfe! <br>Hol den Thoemel! <br>Das Velo ist als "verkauft" registriert - das muss dringend geklärt werden!');
+			redirect('kasse/index');
+			return;
 		}
 		$this->addData('velo', $myVelo);
 		

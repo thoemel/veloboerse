@@ -37,16 +37,10 @@ echo '
 			' . form_radio('zahlungsart', 'karte', true) . '
 			Karte
 		</label>
-	</div>';
-
-if ('yes' == $velo->verkauft) {
-	echo '<p class="verybig alert-error">Das Velo wurde schon verkauft!</p>';
-} else {
-	echo '
+	</div>
 	<div class="form-group">
 			<button type="submit" class="btn btn-default">Bestätigen</button>
 	</div>';
-}
 
 echo form_close();
 

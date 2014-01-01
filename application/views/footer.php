@@ -3,7 +3,7 @@
 <!-- /container -->
 
 <footer>
-	<div class="container">
+	<div class="container hidden-print">
 <?php echo anchor('', img('img/logo_nur_ringe.png'), array('title'=>'Start')); ?>
 	</div>
 </footer>

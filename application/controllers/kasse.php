@@ -19,6 +19,8 @@ class Kasse extends MY_Controller {
 	public function kontrollblick()
 	{
 		$quittungNr = $this->input->post('id');
+		
+		// Prüfung, ob Velo überhaupt registriert ist.
 		if (!Velo::istRegistriert($quittungNr)) {
 			$this->session->set_flashdata('error', 'Keine gültige Quittungsnummer');
 			redirect('kasse/index');
@@ -27,6 +29,13 @@ class Kasse extends MY_Controller {
 		
 		$myVelo = new Velo();
 		$myVelo->find($quittungNr);
+		
+		// Velo darf nicht mehr verkauft werden, wenn schon abgeholt
+		if ($myVelo->abgeholt) {
+			$this->session->set_flashdata('error', 'Hilfe! <br>Hol den Thoemel! <br>Das Velo ist als "abgeholt" registriert - das muss dringend geklärt werden!');
+			redirect('kasse/index');
+			return;
+		}
 		
 		if ('yes' == $myVelo->verkauft) {
 			$this->addData('error', 'Das Velo wurde bereits verkauft. Wir können es nicht noch ein zweites Mal verkaufen.');

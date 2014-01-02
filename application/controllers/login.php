@@ -44,10 +44,6 @@ class Login extends MY_Controller {
 				$this->session->set_userdata('user_ressort', 'haendlerabholung');
 				redirect('abholung/index');
 				break;
-			case 'haendlerauszahlung':
-				$this->session->set_userdata('user_ressort', 'haendlerauszahlung');
-				redirect('auszahlung/einstieg_haendler');
-				break;
 			case 'haendleradmin':
 				$this->session->set_userdata('user_ressort', 'haendleradmin');
 				redirect('haendleradmin/index');

@@ -14,7 +14,118 @@ class Haendleradmin extends MY_Controller {
 	}
 	
 	
+	/**
+	 * Abrechnungs-Tabelle für einen Händler 
+	 * @param int	$haendler_id
+	 */
+	public function abrechnung($haendler_id)
+	{
+		// Input validierung
+		$haendler_id = intval($haendler_id);
+		if (empty($haendler_id)) {
+			$this->session->set_flashdata('error', 'Zuerst Händler auswählen.');
+			redirect('haendleradmin');
+		}
+		if (!Haendler::istRegistriert($haendler_id)) {
+			$this->session->set_flashdata('error', 'Kein Händler mit dieser ID im System.');
+			redirect('haendleradmin');
+		}
+		
 	
+		$haendler = new Haendler();
+		$haendler->find($haendler_id);
+		
+	
+		$veloQuery = Velo::getAll($haendler_id);
+		$arrVelos = array();
+		$countVerkauft = 0;
+		$countNichtVerkauft = 0;
+		foreach ($veloQuery->result() as $velo) {
+			$thisVelo = array();
+			$thisVelo['id']		= $velo->id;
+			$thisVelo['preis']		= $velo->preis;
+			if ('yes' == $velo->verkauft) {
+				$thisVelo['verkauft']	= 'x';
+				$thisVelo['unverkauft']	= '&nbsp;';
+				$countVerkauft++;
+			} else {
+				$thisVelo['verkauft'] = '&nbsp;';
+				$thisVelo['unverkauft']	= 'x';
+				$countNichtVerkauft++;
+			}
+			$thisVelo['abgeholt'] = ('yes' == $velo->abgeholt) ? 'x' : '&nbsp;';
+			
+			$arrVelos[] = $thisVelo;
+		}
+
+		$preisVerkaufte = $haendler->sumAlleVerkauften();
+		$provisionAbsolut = $preisVerkaufte
+							* $haendler->provisionFactor;
+		$einstellbebuehr =	$countNichtVerkauft * 10;
+		$auszahlungBetrag = $haendler->sumAlleVerkauften()
+							* (1 - $haendler->provisionFactor)
+							- $einstellbebuehr;
+		$iban = str_replace(' ', '', $haendler->iban);
+		$iban = substr($iban, 0, 4) . ' ' . substr($iban, 4, 1) . 'XXX XXXX XXXX ' . substr($iban, 17, 4) . ' ' . substr($iban, -1);
+		
+		
+		$this->addData('haendler', $haendler);
+		$this->addData('preisVerkaufte', (number_format($preisVerkaufte, 2)));
+		$this->addData('provisionAbsolut', (number_format($provisionAbsolut, 2)));
+		$this->addData('einstellgebuehr', (number_format($einstellbebuehr, 2)));
+		$this->addData('auszahlungBetrag', (number_format($auszahlungBetrag, 2)));$this->addData('arrVelos', $arrVelos);
+		$this->addData('countNichtVerkauft', $countNichtVerkauft);
+		$this->addData('countVerkauft', $countVerkauft);
+		$this->addData('iban', $iban);
+		
+	
+		$this->load->view('haendleradmin/abrechnung', $this->data);
+		
+		return;
+	} // End of function abrechnung()
+	
+	
+	/**
+	 * Nach Auszahlung Status des Händlers auf "ausbezahlt" setzen
+	 */
+	public function abschluss($haendler_id)
+	{
+		$this->load->model('haendler');
+		$this->load->model('velo');
+		
+		$success = true;
+		
+		$haendler_id = (int)$haendler_id;
+		if (!Haendler::istRegistriert($haendler_id)) {
+			$this->session->set_flashdata('error', 'Kein Händler mit dieser ID bekannt.');
+			redirect('haendleradmin');
+			return;
+		}
+		
+		// Alle Velos des Händlers als ausbezahlt registrieren
+		foreach (Velo::getAll($haendler_id)->result() as $elem) {
+			$thisVelo = new Velo();
+			$thisVelo->find($elem->id);
+			$thisVelo->ausbezahlt = 'yes';
+			$success = $success && $thisVelo->save();
+		}
+		
+		// Händler Status auf "ausbezahlt" setzen
+		$myHaendler = new Haendler();
+		$myHaendler->find($haendler_id);
+		$myHaendler->setStatus('ausbezahlt');
+		if ($myHaendler->save()) {
+			$this->session->set_flashdata('success', 'Händler abgeschlossen');
+		} else {
+			$success = false;
+			log_message('error', 'Haendler Save fehlgeschlagen beim Abschluss');
+			$this->session->set_flashdata('error', 'Händler Abschluss fehlgeschlagen');
+		}
+		
+		redirect('haendleradmin');
+		
+		return $success;
+	} // End of function abschluss()
 	
 	
 	/**

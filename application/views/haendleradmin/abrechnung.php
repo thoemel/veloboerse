@@ -5,7 +5,7 @@ echo '
 <div>
 	<ol class="breadcrumb hidden-print">
 		<li>' . anchor('login/showChoices', 'Ressorts') . '</li>
-		<li>' . anchor('auszahlung/einstieg_haendler', 'Händlerauszahlung') . '</li>
+		<li>' . anchor('haendleradmin', 'Händleradmin') . '</li>
 		<li class="active">Abrechnung ' . $haendler->firma . '</li>
 	</ol>
 	
@@ -72,7 +72,7 @@ if (in_array($haendler->getStatus(), array('abgeholt', 'ausbezahlt'))) {
 	echo	'
 	<h2>Überweisung Betrag: Fr. ' . $auszahlungBetrag . '</h2>
 		<p class="hidden-print">
-		' . form_open('auszahlung/speichern_haendler/'.$haendler->id) . '
+		' . form_open('haendleradmin/abschluss/'.$haendler->id) . '
 		<button type="button" onClick="window.print()">drucken</button>
 		<button type="submit">abschliessen</button>
 		' . form_close() . '

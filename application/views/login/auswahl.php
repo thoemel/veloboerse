@@ -25,9 +25,6 @@ echo '<div class="bottom20 haendlerannahme">
 echo '<div class="bottom20 haendlerabholung">
 		'.anchor('login/dispatch/haendlerabholung', 'Abholung Händler').'
 	</div>';
-echo '<div class="bottom20 haendlerauszahlung">
-		'.anchor('login/dispatch/haendlerauszahlung', 'Auszahlung Händler').'
-	</div>';
 echo '<div class="bottom20 haendleradmin">
 		'.anchor('login/dispatch/haendleradmin', 'Händleradmin').'
 	</div>';

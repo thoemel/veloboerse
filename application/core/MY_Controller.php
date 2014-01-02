@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller {
 
 		// Profiling infos für die Entwicklung einschalten
 		if ($_SERVER['SERVER_NAME'] == 'dev.provelobern.ch') {
-	           $this->output->enable_profiler(TRUE);
+// 	           $this->output->enable_profiler(TRUE);
 		}
 
 
@@ -44,9 +44,6 @@ class MY_Controller extends CI_Controller {
 				$this->addData('formSubmitText', 'erfassen');
 				break;
 			case 'privatauszahlung':
-				$this->addData('formAction', 'auszahlung/kontrollblick');
-				break;
-			case 'haendlerauszahlung':
 				$this->addData('formAction', 'auszahlung/kontrollblick');
 				break;
 			case 'kasse':

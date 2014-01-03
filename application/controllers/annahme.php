@@ -58,23 +58,21 @@ class Annahme extends MY_Controller {
 	
 	
 	/**
-	 * Index Page for this controller.
-	 * //TODO Brauchts die listen-Ansicht hier überhaupt?
+	 * Falls nicht anders in der URL gewünscht, wird die index-Methode aufgerufen.
 	 */
 	public function index()
 	{
-		$this->load->view('velos/liste', $this->data);
-	}
-	
-	
-	/**
-	 * Liste aller Velos
-	 * //TODO Brauchts die listen-Ansicht hier überhaupt?
-	 */
-	public function listing()
-	{
-		$this->data['liste'] = Velo::getAll();
-		$this->load->view('velos/liste', $this->data);
+		/*
+		 * Um sicher zu gehen, dass wir im richtigen Ressort gemeldet sind,
+		 * wird hier das Ressort gewechselt. Der eigentliche Einstieg in das 
+		 * Ressort ist "einstieg_private".
+		 */
+		if ('privatannahme' != $this->session->userdata('user_ressort')) {
+			redirect('login/dispatch/privatannahme');
+		} else {
+			$this->einstieg_private();
+		}
+		return ;
 	}
 	
 	
@@ -84,8 +82,26 @@ class Annahme extends MY_Controller {
 	 */
 	public function speichern_private()
 	{
-		// TODO: form validation
+		// Formular validieren
+		$config = array(
+				array(
+						'field'   => 'preis',
+						'label'   => 'Preis',
+						'rules'   => 'required|is_natural'
+				),
+				array(
+						'field'   => 'kein_ausweis',
+						'label'   => 'Kein Ausweis',
+						'rules'   => ''
+				),
+		);
+		$this->form_validation->set_rules($config);
+		if (false === $this->form_validation->run()) {
+			$this->session->set_flashdata('error', validation_errors());
+			redirect('annahme/formular_private/' . $this->input->post('id'));
+		}
 	
+		
 		$myVelo = new Velo();
 		if (Velo::istRegistriert($this->input->post('id'))) {
 			$this->session->set_flashdata('error', 'Diese Quittungs-Nummer ist schon registriert.');
@@ -119,7 +135,7 @@ class Annahme extends MY_Controller {
 			$this->load->view('velos/single', $this->data);
 		} else {
 			$this->addData('success', 'Annahme ok.');
-			$this->addData('preis', $myVelo->preis);
+			$this->addData('velo', $myVelo);
 			$ausweisGezeigt = ('yes' == $myVelo->kein_ausweis) ? 'Nein' : 'Ja';
 			$this->addData('ausweisGezeigt', $ausweisGezeigt);
 			$this->load->view('annahme/einstieg_private', $this->data);

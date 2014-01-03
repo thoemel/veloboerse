@@ -6,12 +6,31 @@ echo '
 <div>
 	<h1>Verkauf bestätigen</h1>
 
-	<dl>
-		<dt>Quittung Nr.</dt>
-		<dd>' . $velo->id . '</dd>
-		<dt>Preis</dt>
-		<dd id="preis">' . $velo->preis . '</dd>
-	</dl>';
+	<div class="row">
+		<div class="col-sm-2">
+			Quittung Nr. 
+		</div>
+		<div class="badge col-sm-2">
+			' . $velo->id . '
+		</div>
+	</div>
+	<div class="verybig row">
+		<div class="col-sm-2">
+			Preis: 
+		</div>
+		<div id="preis" class="col-sm-2">
+			' . $velo->preis . ' 
+			Fr.
+		</div>
+	</div>';
+
+if (!empty($velo->bemerkungen)) {
+	echo '
+	<div class="row">
+		<div class="col-sm-2">Bemerkungen: </div>
+		<div class="col-sm-10 alert alert-warning">' . $velo->bemerkungen . '</div>
+	</div>';
+}
 
 echo '<form action="'.site_url('kasse/verkaufe').'"
 			method="post"

@@ -6,15 +6,36 @@ echo '
 ' . $divAround . '
 	<h1>Auszahlung bestätigen</h1>
 
-	<dl>
-		<dt>Quittung Nr.</dt>
-		<dd>' . $velo->id . '</dd>
-		<dt>Preis</dt>
-		<dd id="preis">' . $velo->preis . '</dd>
-	</dl>';
+	<div class="row">
+		<div class="col-sm-2">
+			Quittung Nr. 
+		</div>
+		<div class="badge col-sm-1">
+			' . $velo->id . '
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2">
+			Preis: 
+		</div>
+		<div id="preis" class="col-sm-2">
+			' . $velo->preis . ' 
+			Fr.
+		</div>
+	</div>';
 
 if ('yes' == $velo->kein_ausweis) {
-	echo '<p class="clearfix alert-error">Verkäufer muss noch Ausweis zeigen!</p>';
+	echo '
+	<div class="row">
+		<p class="alert alert-warning">Verkäufer muss noch Ausweis zeigen!</p>
+	</div>';
+}
+if (!empty($velo->bemerkungen)) {
+	echo '
+	<div class="row">
+		<div class="col-sm-2">Bemerkungen: </div>
+		<div class="col-sm-10 alert alert-warning">' . $velo->bemerkungen . '</div>
+	</div>';
 }
 echo form_open('auszahlung/speichern_private', 
 		array('class' => 'form-horizontal', 'role' => 'form'));

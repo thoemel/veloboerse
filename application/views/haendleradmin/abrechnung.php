@@ -43,10 +43,9 @@ echo '
 
 
 foreach ($arrVelos as $velo) {
-	
 	echo '
 		<tr>
-			<td>' . $velo['id'] . '</td>
+			<td>' . $velo['id'] . ' ' . $velo['bem'] . '</td>
 			<td>' . number_format($velo['preis'], 2) . '</td>
 			<td>' . $velo['verkauft'] . '</td>
 			<td>' . $velo['unverkauft'] . '</td>

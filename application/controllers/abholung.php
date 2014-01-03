@@ -101,17 +101,16 @@ class Abholung extends MY_Controller {
 			$myHandler  = new Haendler();
 			$myHandler->find($myVelo->haendler_id);
 			$this->addData('haendler', $myHandler);
-			if ($myHandler->sindAlleDraussen()) {
+			$verbleibend = $myHandler->anzahlNochDrinnen();
+			$this->addData('verbleibend', $verbleibend);
+			if (0 == $verbleibend) {
 				$myHandler->setStatus('abgeholt');
 				$myHandler->save();
-				$this->addData('verbleibend', 0);
 				$this->addData('success', '<br><br>Alle Velos dieses Händlers sind entweder verkauft oder abgeholt.');
 				$this->addData('bodyClass', ' class="alert alert-success"');
-			} else {
-				$velosInfo = $myHandler->velosInfo();
-				$this->addData('verbleibend', ($velosInfo['total'] - $velosInfo['verkauft'] - $velosInfo['abgeholt']));
 			}
 		}
+		
 		$this->addData('velo', $myVelo);
 		$abgeholt = ('yes' == $myVelo->abgeholt) ? 'Ja' : 'Nein';
 		$this->addData('abgeholt', $abgeholt);

@@ -36,20 +36,32 @@ class Haendler extends CI_Model {
 	
 	
 	/**
-	 * Prüft den Status des Händlers und setzt ihn falls nötig neu.
+	 * Prüft, wie viele Velos des Händlers noch in der Halle sind.
 	 * Diese Funktion wird z.B. bei der Händlerabholung verwendet.
-	 * @return	boolean	True falls alle Velos draussen sind.
+	 * @return	int	Anzahl Velos in Halle
 	 */
-	public function sindAlleDraussen()
+	public function anzahlNochDrinnen()
 	{
-		// Falls ein Velo weder verkauft noch abgeholt ist abbrechen und nein.
+		$ret = 0;
+		
+		/*
+		 * Als draussen gelten folgende Velos:
+		 * - verkauft
+		 * - abgeholt
+		 * - gestohlen
+		 * - storniert
+		 */
 		foreach (Velo::getAll($this->id)->result() as $thisVelo) {
-			if ('no' == $thisVelo->verkauft && 'no' == $thisVelo->abgeholt) {
-				return false;
+			if ('no' == $thisVelo->verkauft 
+				&& 'no' == $thisVelo->abgeholt
+				&& 0 == $thisVelo->gestohlen
+				&& 0 == $thisVelo->storniert) 
+			{
+				$ret++;
 			}
 		}
 		
-		return true;
+		return $ret;
 	}
 	
 	
@@ -212,24 +224,36 @@ class Haendler extends CI_Model {
 	/**
 	 * Gibt ein Array mit Informationen zu den Velos dieses Händlers
 	 * 
-	 * @return array	Keys: total, verkauft, abgeholt
+	 * @return array	Keys: total, verkauft, abgeholt, gestohlen, storniert, problemfall
 	 */
 	public function velosInfo()
 	{
 		$arrOut = array(
-			'total' 	=> 0,
-			'verkauft'	=> 0,
-			'abgeholt'	=> 0
+			'abgeholt'		=> 0,
+			'gestohlen'		=> 0,
+			'problemfall'	=> 0,
+			'storniert'		=> 0,
+			'total' 		 =>0,
+			'verkauft'		=> 0,
 		);
 		$this->db->where('haendler_id', $this->id);
 		$query = $this->db->get('velos');
 		foreach ($query->result() as $row) {
 			$arrOut['total'] += 1;
-			if ('yes' == $row->verkauft) {
-				$arrOut['verkauft'] += 1;
-			}
 			if ('yes' == $row->abgeholt) {
 				$arrOut['abgeholt'] += 1;
+			}
+			if ('yes' == $row->gestohlen) {
+				$arrOut['gestohlen'] += 1;
+			}
+			if ('yes' == $row->problemfall) {
+				$arrOut['problemfall'] += 1;
+			}
+			if ('yes' == $row->storniert) {
+				$arrOut['storniert'] += 1;
+			}
+			if ('yes' == $row->verkauft) {
+				$arrOut['verkauft'] += 1;
 			}
 		}
 		return $arrOut;

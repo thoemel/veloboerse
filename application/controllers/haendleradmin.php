@@ -43,7 +43,8 @@ class Haendleradmin extends MY_Controller {
 		foreach ($veloQuery->result() as $velo) {
 			$thisVelo = array();
 			$thisVelo['id']		= $velo->id;
-			$thisVelo['preis']		= $velo->preis;
+			$thisVelo['preis']	= $velo->preis;
+			$thisVelo['bemerkungen']	= $velo->bemerkungen;
 			if ('yes' == $velo->verkauft) {
 				$thisVelo['verkauft']	= 'x';
 				$thisVelo['unverkauft']	= '&nbsp;';
@@ -51,9 +52,27 @@ class Haendleradmin extends MY_Controller {
 			} else {
 				$thisVelo['verkauft'] = '&nbsp;';
 				$thisVelo['unverkauft']	= 'x';
-				$countNichtVerkauft++;
+				if (0 == $velo->gestohlen && 0 == $velo->storniert) {
+					$countNichtVerkauft++;
+				}
 			}
 			$thisVelo['abgeholt'] = ('yes' == $velo->abgeholt) ? 'x' : '&nbsp;';
+			
+			// Bemerkungen aus Zusatzfeldern
+			$bem = '';
+			if (1 == $velo->gestohlen) {
+				$bem .= '<span class="badge">gestohlen</span>';
+			}
+			if (1 == $velo->storniert) {
+				$bem .= '<span class="badge">storniert</span>';
+			}
+			if (1 == $velo->problemfall) {
+				$bem .= '<button type="button" class="btn btn-warning hidden-print" title="Problemfall!">!</button>';
+			}
+			if (!empty($velo->bemerkungen)) {
+				$bem .= '<button type="button" class="btn btn-info hidden-print" title="' . $velo->bemerkungen . '">i</button>';
+			}
+			$thisVelo['bem'] = $bem;
 			
 			$arrVelos[] = $thisVelo;
 		}

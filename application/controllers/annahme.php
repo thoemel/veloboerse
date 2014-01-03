@@ -13,17 +13,6 @@ class Annahme extends MY_Controller {
 	
 	
 	/**
-	 * Der Einstieg zur Händlerannahme. Hier wird nur ein Default-Text angezeigt und 
-	 * die Action fürs Formular im Header bestimmt.
-	 */
-	public function einstieg_haendler()
-	{
-		$this->load->view('annahme/einstieg_haendler', $this->data);
-		return;
-	}
-	
-	
-	/**
 	 * Der Einstieg zur Privatannahme. Hier wird nur ein Default-Text angezeigt und 
 	 * die Action fürs Formular im Header bestimmt.
 	 */
@@ -32,51 +21,6 @@ class Annahme extends MY_Controller {
 		$this->load->view('annahme/einstieg_private', $this->data);
 		return;
 	}
-	
-	
-	/**
-	 * Zeigt das Erfassungsformular an.
-	 * 
-	 * @param int	$id		Quittungsnummer. Falls eine angegeben, wird das Formular vorausgefüllt.
-	 */
-	public function formular_haendler($id = '') 
-	{
-		$id = intval($id);
-		if ($this->input->post('id')) {
-			$id = intval($this->input->post('id'));
-		}
-		if (0 == $id) {
-			$this->session->set_flashdata('error', 'Quittungs-Nummer fehlt.');
-			redirect('annahme/einstieg_haendler');
-			return;
-		}
-		if (10000 < $id) {
-			$this->session->set_flashdata('error', 'Quittungsnummern > 10000 sind Privaten vorbehalten. Annahme verweitert.');
-			redirect('annahme/einstieg_haendler');
-			return;
-		}
-		if (Velo::istRegistriert($id)) {
-			$this->session->set_flashdata('error', 'Quittungs-Nummer schon registriert.');
-			redirect('annahme/einstieg_haendler');
-			return;
-		}
-		
-		$myVelo = new Velo();
-		$myVelo->id = $id;
-		$this->data['myVelo'] = $myVelo;
-		
-		// Händler Dropdown
-		$haendlerQuery = Haendler::getAll();
-		$arrHaendler = array();
-		foreach ($haendlerQuery->result() as $row) {
-			$arrHaendler[$row->id] = $row->id . ' - ' . $row->firma;
-		}
-		$this->addData('haendlerDropdown', form_dropdown('haendler_id', $arrHaendler, $myVelo->haendler_id, 'id="haendler_id" class="form-control"'));
-		
-		$this->load->view('annahme/formular_haendler', $this->data);
-		
-		return;
-	} // End of function formular_private
 	
 	
 	/**
@@ -132,55 +76,6 @@ class Annahme extends MY_Controller {
 		$this->data['liste'] = Velo::getAll();
 		$this->load->view('velos/liste', $this->data);
 	}
-	
-	
-	/**
-	 * Formulardaten entgegennehmen und verarbeiten
-	 * Nur Händler.
-	 */
-	public function speichern()
-	{
-		// TODO: form validation
-		
-
-		/*
-		 * Hierhin weiterleiten, falls etwas nicht in Ordnung, 
-		 * bzw. diesen View verwenden, falls ok.
-		 */
-		switch ($this->session->userdata('user_ressort')) {
-			case 'haendlerannahme':
-				$redirectOnFailure = 'annahme/einstieg_haendler';
-				$viewOnSuccess = 'annahme/einstieg_haendler';
-				break;
-			case 'privatannahme':
-			default:
-				$redirectOnFailure = 'annahme/einstieg_private';
-				$viewOnSuccess = 'annahme/einstieg_private';
-		}
-
-		$myVelo = new Velo();
-		if (Velo::istRegistriert($this->input->post('id'))) {
-			$this->session->set_flashdata('error', 'Diese Quittungs-Nummer ist schon registriert.');
-			redirect($redirectOnFailure);
-		}
-		$myVelo->id = $this->input->post('id');
-		$myVelo->preis = $this->input->post('preis');
-		$myVelo->kein_ausweis = $this->input->post('kein_ausweis');
-		if ('haendlerannahme' == $this->session->userdata('user_ressort')) {
-			$myVelo->haendler_id = $this->input->post('haendler_id');
-		}
-	
-		$success = $myVelo->save();
-		if (!$success) {
-			$this->session->set_flashdata('error', 'Velo Annahme ging schief.');
-			redirect($redirectOnFailure);
-		} else {
-			$this->addData('success', 'Annahme ok.');
-			$this->load->view($viewOnSuccess, $this->data);
-		}
-	
-		return;
-	} // End of function speichern
 	
 	
 	/**

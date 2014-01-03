@@ -39,10 +39,6 @@ class MY_Controller extends CI_Controller {
 				$this->addData('formAction', 'annahme/formular_private');
 				$this->addData('formSubmitText', 'erfassen');
 				break;
-			case 'haendlerannahme':
-				$this->addData('formAction', 'annahme/formular_haendler');
-				$this->addData('formSubmitText', 'erfassen');
-				break;
 			case 'privatauszahlung':
 				$this->addData('formAction', 'auszahlung/kontrollblick');
 				break;

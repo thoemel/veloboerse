@@ -3,7 +3,9 @@ class Velo extends CI_Model {
 
 	public $abgeholt = 'no';
 	public $ausbezahlt = 'no';
+	public $bemerkungen = '';
 	public $farbe = '';
+	public $gestohlen = FALSE;
 	public $haendler_id	= NULL;
 	public $helfer_kauft = 'no';
 	public $id = 0;
@@ -12,7 +14,9 @@ class Velo extends CI_Model {
 	public $keine_provision = 'no';
 	public $marke = '';
 	public $preis = 0;
+	public $problemfall = FALSE;
 	public $rahmennummer = '';
+	public $storniert = FALSE;
 	public $typ = '';
 	public $verkauft = 'no';
 	public $vignettennummer = '';
@@ -46,20 +50,24 @@ class Velo extends CI_Model {
 
 		$this->abgeholt = $query->row()->abgeholt;
 		$this->ausbezahlt = $query->row()->ausbezahlt;
+		$this->bemerkungen = $query->row()->bemerkungen;
+		$this->farbe = $query->row()->farbe;
+		$this->gestohlen = $query->row()->gestohlen;
+		$this->haendler_id = $query->row()->haendler_id;
+		$this->helfer_kauft = $query->row()->helfer_kauft;
 		$this->id = $id;
 		$this->img = $query->row()->img;
-		$this->preis = $query->row()->preis;
-		$this->verkauft = $query->row()->verkauft;
-		$this->zahlungsart = $query->row()->zahlungsart;
 		$this->kein_ausweis = $query->row()->kein_ausweis;
 		$this->keine_provision = $query->row()->keine_provision;
-		$this->helfer_kauft = $query->row()->helfer_kauft;
-		$this->haendler_id = $query->row()->haendler_id;
-		$this->farbe = $query->row()->farbe;
 		$this->marke = $query->row()->marke;
+		$this->preis = $query->row()->preis;
+		$this->problemfall = $query->row()->problemfall;
 		$this->rahmennummer = $query->row()->rahmennummer;
+		$this->storniert = $query->row()->storniert;
 		$this->typ = $query->row()->typ;
+		$this->verkauft = $query->row()->verkauft;
 		$this->vignettennummer = $query->row()->vignettennummer;
+		$this->zahlungsart = $query->row()->zahlungsart;
 				
 		return $query->row();
 	}
@@ -130,7 +138,9 @@ class Velo extends CI_Model {
 	{
 		$this->db->set('abgeholt', $this->abgeholt);
 		$this->db->set('ausbezahlt', $this->ausbezahlt);
+		$this->db->set('bemerkungen', $this->bemerkungen);
 		$this->db->set('farbe', $this->farbe);
+		$this->db->set('gestohlen', $this->gestohlen);
 		$this->db->set('haendler_id', $this->haendler_id);
 		$this->db->set('helfer_kauft', $this->helfer_kauft);
 		$this->db->set('img', $this->img);
@@ -138,7 +148,9 @@ class Velo extends CI_Model {
 		$this->db->set('keine_provision', $this->keine_provision);
 		$this->db->set('marke', $this->marke);
 		$this->db->set('preis', $this->preis);
+		$this->db->set('problemfall', $this->problemfall);
 		$this->db->set('rahmennummer', $this->rahmennummer);
+		$this->db->set('storniert', $this->storniert);
 		$this->db->set('typ', $this->typ);
 		$this->db->set('verkauft', $this->verkauft);
 		$this->db->set('vignettennummer', $this->vignettennummer);

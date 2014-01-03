@@ -44,15 +44,24 @@ class Velos extends MY_Controller {
 		} catch (Exception $e) {
 			$myVelo->id = $this->input->post('id');
 		}
-		$myVelo->preis				= $this->input->post('preis');
-		$myVelo->verkauft			= $this->input->post('verkauft');
 		$myVelo->abgeholt			= $this->input->post('abgeholt');
-		$myVelo->zahlungsart		= false === $this->input->post('zahlungsart') ? 'no': $this->input->post('zahlungsart');
 		$myVelo->ausbezahlt			= $this->input->post('ausbezahlt');
+		$myVelo->bemerkungen		= $this->input->post('bemerkungen');
+		$myVelo->gestohlen			= $this->input->post('gestohlen');
+		$myVelo->farbe				= $this->input->post('farbe');
+		$myVelo->haendler_id		= $this->input->post('haendler_id');
+		$myVelo->helfer_kauft		= false === $this->input->post('helfer_kauft') ? 'no' : $this->input->post('helfer_kauft');
 		$myVelo->kein_ausweis		= false === $this->input->post('kein_ausweis') ? 'no' : $this->input->post('kein_ausweis');
 		$myVelo->keine_provision	= false == $this->input->post('keine_provision') ? 'no' : $this->input->post('keine_provision');
-		$myVelo->helfer_kauft		= false === $this->input->post('helfer_kauft') ? 'no' : $this->input->post('helfer_kauft');
-		$myVelo->haendler_id		= $this->input->post('haendler_id');
+		$myVelo->marke				= $this->input->post('marke');
+		$myVelo->preis				= $this->input->post('preis');
+		$myVelo->problemfall		= $this->input->post('problemfall');
+		$myVelo->rahmennummer		= $this->input->post('rahmennummer');
+		$myVelo->storniert			= $this->input->post('storniert');
+		$myVelo->typ				= $this->input->post('typ');
+		$myVelo->vignettennummer	= $this->input->post('vignettennummer');
+		$myVelo->verkauft			= $this->input->post('verkauft');
+		$myVelo->zahlungsart		= false === $this->input->post('zahlungsart') ? 'no': $this->input->post('zahlungsart');
 		
 		$myVelo->save();
 		
@@ -62,10 +71,11 @@ class Velos extends MY_Controller {
 		return;
 	} // End of function erfasse
 	
+	
 	/**
 	 * Zeigt das Erfassungsformular an.
 	 * 
-	 * @param int	$id		Quittungsnummer. Falls eine angegeben, wird das Formular vorausgefüllt.
+	 * @param int	$id		Quittungsnummer. Falls eine angegeben, wird das Formular vorausgefüllt. Kann auch über Post-Variable kommen.
 	 */
 	public function formular($id = '') 
 	{
@@ -81,6 +91,7 @@ class Velos extends MY_Controller {
 			$myVelo->find($id);
 		} catch (Exception $e) {
 			log_message('error', $e->getMessage());
+			$this->addData('error', 'Es ist kein Velo mit dieser Quittungsnummer registriert.');
 			$this->einstieg();
 			return ;
 		}
@@ -96,6 +107,7 @@ class Velos extends MY_Controller {
 		$this->data['myVelo'] = $myVelo;
 		$this->load->view('velos/formular', $this->data);
 	}
+	
 	
 	/**
 	 * Index Page for this controller.

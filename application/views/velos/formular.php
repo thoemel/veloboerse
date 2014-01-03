@@ -15,9 +15,45 @@ echo form_hidden('id',$myVelo->id);
 
 echo '
 	<div class="form-group">
+		<label for="haendler_id" class="col-sm-2 control-label">Händler</label>
+		<div class="col-sm-6 col-md-4 col-lg-4">
+			' . $haendlerDropdown . '
+		</div>
+	</div>
+	<div class="form-group">
 		<label for="preis_input" class="col-sm-2 control-label">Preis</label>
 		<div class="col-sm-2 col-md-2 col-lg-1">
 			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="typ_input" class="col-sm-2 control-label">Typ</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'typ_input', 'name' => 'typ', 'value' => $myVelo->typ, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="farbe_input" class="col-sm-2 control-label">Farbe</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'farbe_input', 'name' => 'farbe', 'value' => $myVelo->farbe, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="marke_input" class="col-sm-2 control-label">Marke</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'marke_input', 'name' => 'marke', 'value' => $myVelo->marke, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="rahmennummer_input" class="col-sm-2 control-label">Rahmennummer</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'rahmennummer_input', 'name' => 'rahmennummer', 'value' => $myVelo->rahmennummer, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="vignettennummer_input" class="col-sm-2 control-label">Vignettennummer</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'vignettennummer_input', 'name' => 'vignettennummer', 'value' => $myVelo->vignettennummer, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
@@ -70,9 +106,33 @@ echo '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="haendler_id" class="col-sm-2 control-label">Händler</label>
-		<div class="col-sm-6 col-md-4 col-lg-4">
-			' . $haendlerDropdown . '
+		<label class="col-sm-2 control-label">Gestohlen</label>
+		<div class="col-sm-10">
+			<label class="radio-inline">' . form_radio('gestohlen', 1, (true == $myVelo->gestohlen)) . ' ja</label>
+			<label class="radio-inline">' . form_radio('gestohlen', 0, (false == $myVelo->gestohlen)) . ' nein</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Problemfall</label>
+		<div class="col-sm-10">
+			<label class="radio-inline">' . form_radio('problemfall', 1, (true == $myVelo->problemfall)) . ' ja</label>
+			<label class="radio-inline">' . form_radio('problemfall', 0, (false == $myVelo->problemfall)) . ' nein</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Storniert</label>
+		<div class="col-sm-10">
+			<label class="radio-inline">' . form_radio('storniert', 1, (true == $myVelo->storniert)) . ' ja</label>
+			<label class="radio-inline">' . form_radio('storniert', 0, (false == $myVelo->storniert)) . ' nein</label>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Bemerkungen</label>
+		<div class="col-sm-10">
+			<textarea name="bemerkungen" class="form-control" rows="3">
+				' . $myVelo->bemerkungen . '
+			</textarea>
 		</div>
 	</div>
 						

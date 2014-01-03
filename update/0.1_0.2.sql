@@ -9,3 +9,10 @@ ADD `farbe` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
 ADD `marke` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
 ADD `rahmennummer` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
 ADD `vignettennummer` VARCHAR( 64 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+
+
+-- Diverse neue Felder
+ALTER TABLE `velos` ADD `gestohlen` BOOLEAN NOT NULL DEFAULT FALSE ,
+ADD `storniert` BOOLEAN NOT NULL DEFAULT FALSE ,
+ADD `problemfall` BOOLEAN NOT NULL DEFAULT FALSE ,
+ADD `bemerkungen` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;

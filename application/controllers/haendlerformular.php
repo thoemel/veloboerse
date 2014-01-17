@@ -67,6 +67,95 @@ class Haendlerformular extends MY_Controller {
 	
 	
 	/**
+	 * Stellt das Händlerformular in einem PDF zum Ausdrucken zusammen.
+	 * @param UUID $haendler_code	UUID des Händlers
+	 */
+	public function pdf($haendler_code)
+	{
+		if ($this->haendler->id > 0) {
+			// Händler wurde in _remap instanziiert
+		} elseif ($this->session->userdata('haendler_id')) {
+			$this->haendler->find($this->session->userdata('haendler_id'));
+		} else {
+			show_error('Sorry, Sie sind nicht berechtigt.');
+		}
+		
+		$veloquery = Velo::getAll($this->haendler->id);
+		
+		
+		$this->load->library('pv_tcpdf');
+		$pdf = new Pv_tcpdf('L');
+		$pdf->SetMargins(PDF_MARGIN_LEFT, 20, 20);
+		$pdf->AddPage();
+		
+		// Logo
+		$pdf->Image(
+				FCPATH . '/img/logo.png',
+				$pdf->GetX(),
+				$pdf->GetY(),
+				0,
+				10.0,
+				'png',
+				'',
+				'M',
+				true,
+				300,
+				'R');
+		
+		// Horizontale Linie
+		$pdf->Ln();
+		$pdf->SetLineWidth(0.2);
+		$pdf->SetDrawColor(0,0,0);
+		$pdf->Cell(0,1,'','B',1);
+		$pdf->Ln(6);
+
+		// Titel
+		$title = 'Händler Nr. ' . $this->haendler->id . ': ' 
+				. $this->haendler->firma . ' | ' 
+				. $this->haendler->person;
+		$pdf->SetFont('', 'B', 16);
+		$pdf->SetTextColor(0,0,0);
+		$pdf->Write(0, $title, '', false, 'C', true);
+		$pdf->Ln(3);
+		
+		
+		/*
+		 * Tabelle
+		 */
+		$pdf->SetFont('', 'B', 12);
+		// Header
+		$thead = array('Quittung-Nr.', 'Preis', 'Typ', 'Farbe', 'Marke', 'Rahmen-Nr.');
+		$colgroup = array (
+				30,
+				30,
+				50,
+				50,
+				50,
+				50
+		);
+		
+		// Inhalte
+		$tbody = array();
+		foreach ($veloquery->result() as $velo) {
+			$tbody[] = array(
+				$velo->id,
+				$velo->preis,
+				$velo->typ,
+				$velo->farbe,
+				$velo->marke,
+				$velo->rahmennummer
+			);
+		}
+		$pdf->ColoredTable($thead, $tbody, $colgroup);
+
+		$filename = 'Quittungsformular';
+		$pdf->Output($filename, 'I');
+		
+		return ;
+	} // End of function pdf()
+	
+	
+	/**
 	 * Speichert die Velos, die ein Händler eingegeben hat
 	 */
 	public function speichern()

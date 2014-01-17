@@ -3,7 +3,7 @@ include APPPATH . 'views/header.php';
 
 echo '
 <div class="haendleradmin">
-	<ol class="breadcrumb">
+	<ol class="breadcrumb hidden-print">
 		<li>' . anchor('login/showChoices', 'Ressorts') . '</li>
 		<li>' . anchor('haendleradmin', 'Händleradmin') . '</li>
 		<li class="active">Quittungen zuweisen</li>

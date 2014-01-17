@@ -5,29 +5,35 @@ echo '
 
 <div>
 	<h1>Arbeitsbereich wählen</h1>
-';
-
-echo '<div class="bottom20 privatannahme">
+	
+	<div class="bottom20 privatannahme">
 		'.anchor('login/dispatch/privatannahme', 'Annahme Private').'
-	</div>';
-echo '<div class="bottom20 privatauszahlung">
+	</div>
+	<div class="bottom20 privatauszahlung">
 		'.anchor('login/dispatch/privatauszahlung', 'Auszahlung Private').'
-	</div>';
-echo '<div class="bottom20 kasse">
+	</div>
+	<div class="bottom20 kasse">
 		'.anchor('login/dispatch/kasse', 'Kasse').'
-	</div>';
-echo '<div class="bottom20 abholung">
+	</div>
+	<div class="bottom20 abholung">
 		'.anchor('login/dispatch/abholung', 'Abholung Private').'
-	</div>';
-echo '<div class="bottom20 haendlerabholung">
+	</div>
+	<div class="bottom20 haendlerabholung">
 		'.anchor('login/dispatch/haendlerabholung', 'Abholung Händler').'
-	</div>';
-echo '<div class="bottom20 haendleradmin">
+	</div>
+	<div class="bottom20 haendleradmin">
 		'.anchor('login/dispatch/haendleradmin', 'Händleradmin').'
-	</div>';
-echo '<div class="bottom20 veloformular">
+	</div>
+	<div class="bottom20 veloformular">
 		'.anchor('login/dispatch/veloformular', 'Formular Velo').'
 	</div>';
+
+if ('superadmin' == $this->session->userdata('user_role')) {
+	echo '
+	<div class="bottom20">
+		'.anchor('login/dispatch/auswertung', 'Auswertung').'
+	</div>';
+}
 
 echo '
 </div>';

@@ -3,7 +3,7 @@ include APPPATH . 'views/header.php';
 
 if ($this->session->userdata('logged_in')) {
 	echo '
-	<ol class="breadcrumb">
+	<ol class="breadcrumb hidden-print">
 		<li>' . anchor('login/showChoices', 'Ressorts') . '</li>
 		<li>' . anchor('haendleradmin', 'Händleradmin') . '</li>
 		<li>' . anchor('haendleradmin/quittungen/' . $haendler->id, 'Quittungen zuweisen') . '</li>
@@ -13,7 +13,7 @@ if ($this->session->userdata('logged_in')) {
 echo heading('Velo Liste für HändlerInnen', 1) . '
 	' . heading('Name: ' . $haendler->person, 2) . '
 	
-	<div class="alert alert-danger">
+	<div class="alert alert-danger hidden-print">
 		Nicht vergessen, das Formular am Schluss (oder zwischendurch) zu speichern!
 	</div>
 	
@@ -24,7 +24,6 @@ echo heading('Velo Liste für HändlerInnen', 1) . '
 		<div class="col-md-2">Farbe</div>
 		<div class="col-md-2">Marke</div>
 		<div class="col-md-2">Rahmen-Nr.</div>
-		<div class="col-md-2">Vignetten-Nr. 2011</div>
 	</div>
 			
 	<form class="form-inline" role="form" action="' . site_url('haendlerformular/speichern') . '" method="post">';
@@ -49,9 +48,6 @@ foreach ($veloquery->result() as $velo) {
 		</div>
 		<div class="form-group col-md-2">
 			<input value="' . $velo->rahmennummer . '" name="rahmennummer[]" type="text" class="form-control input-sm">
-		</div>
-		<div class="form-group col-md-2">
-			<input value="' . $velo->vignettennummer . '" name="vignettennummer[]" type="text" class="form-control input-sm">
 		</div>
 	</div>';
 }

@@ -60,6 +60,7 @@ class Haendlerformular extends MY_Controller {
 		
 		$this->data['haendler'] = $this->haendler;
 		$this->data['veloquery'] = Velo::getAll($this->haendler->id);
+		$this->data['querformat'] = true;
 		$this->load->view('haendlerformular/formular', $this->data);
 		return ;
 	}

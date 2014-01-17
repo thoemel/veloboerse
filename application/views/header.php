@@ -19,6 +19,14 @@ echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap' . $min . '.c
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/main.css">
 
+<?php 
+if (!empty($querformat)) {
+	// The cheap way. Will have to add a pdf link too.
+	echo '
+<style type="text/css" media="print">@page {size: landscape;}</style>';
+}
+?>
+
 <script src="<?php echo base_url();?>js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
 </head>
 <body<?php echo $bodyClass; ?>>

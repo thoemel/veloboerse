@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'db_host';
-$db['default']['username'] = 'db_user';
-$db['default']['password'] = 'db_pass';
-$db['default']['database'] = 'db_db';
+$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = 'probern_boerse';
+$db['default']['password'] = 'upVGSUY3LbMCzKeC';
+$db['default']['database'] = 'probern_boerse';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;

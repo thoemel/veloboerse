@@ -12,7 +12,8 @@ if ($this->session->userdata('logged_in')) {
 }
 echo heading('Velo Liste für HändlerInnen', 1) . '
 	' . heading('Name: ' . $haendler->person, 2) . '
-	
+	<div>' . anchor('haendlerformular/pdf/' . $haendler->code, 'Druckversion', 'class="btn btn-info"') . '</div>
+	<div>&nbsp;</div>
 	<div class="alert alert-danger hidden-print">
 		Nicht vergessen, das Formular am Schluss (oder zwischendurch) zu speichern!
 	</div>

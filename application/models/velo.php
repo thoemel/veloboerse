@@ -95,21 +95,23 @@ class Velo extends CI_Model {
 	
 	
 	/**
-	 * Gibt die Provision für ein Velo.
+	 * Gibt die Provision für ein Velo. Benutzt die Provisions Tabelle aus der DB.
 	 * 
-	 * @uses	$this->preis	Der Verkaufspreis des Velos
-	 * @throws Exception		Wenn keine Provision gefunden wurde.
-	 * @return	int				Die Provision
+	 * @throws Exception	Wenn keine Provision gefunden wurde.
+	 * @param	$preis		Der Verkaufspreis des Velos
+	 * @return	int			Die Provision
 	 */
-	public function getProvision()
+	public static function getProvision($preis)
 	{
-		$this->db->where('preis >=', $this->preis);
-		$this->db->order_by('preis', 'asc');
-		$query = $this->db->get('provision', 1);
+		$CI =& get_instance();
+		
+		$CI->db->where('preis >=', $preis);
+		$CI->db->order_by('preis', 'asc');
+		$query = $CI->db->get('provision', 1);
 		if (1 == $query->num_rows()) {
 			$provision = $query->row()->provision;
 		} else {
-			$provision = $this->preis / 10;
+			$provision = $preis / 10;
 		}
 		return $provision;
 	}

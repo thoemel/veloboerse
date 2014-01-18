@@ -37,7 +37,7 @@ echo '<form action="'.site_url('kasse/verkaufe').'"
 			role="form">';
 // echo form_open('kasse/verkaufe', array('class'=>"form-horizontal"));
 echo form_hidden('id', $velo->id);
-echo form_hidden('provision', $velo->getProvision());
+echo form_hidden('provision', Velo::getProvision($velo->preis));
 echo form_hidden('angeschriebener_preis', $velo->preis);
 
 echo '

@@ -13,12 +13,37 @@ class Auswertung extends MY_Controller {
 	
 	
 	/**
+	 * Velos-Tabelle Export als CSV
+	 * @param String	$tabelle	Name der DB-Tabelle
+	 */
+	public function csv($tabelle = 'velos')
+	{
+		// Input validation
+		switch ($tabelle) {
+			case 'haendler':
+				break;
+			case 'velos':
+			default:
+				$tabelle = 'velos';
+		}
+		$this->data['tabelle'] = $tabelle;
+		
+		$this->load->dbutil();
+		$query = $this->db->query("SELECT * FROM " . $tabelle);
+		$this->data['content'] = $this->dbutil->csv_from_result($query, ';');
+		
+		$this->load->view('auswertung/csv', $this->data);
+		return ;
+	}
+	
+	
+	/**
 	 * Index Page for this controller.
 	 *
 	 */
 	public function index()
 	{
-		show_error('kein index in der auswertung');
+		$this->load->view('auswertung/uebersicht', $this->data);
 	}
 	
 	
@@ -38,6 +63,32 @@ class Auswertung extends MY_Controller {
 		
 		$this->load->view('auswertung/cashMgmt', $this->data);
 		return;
+	}
+	
+	
+	/**
+	 * Zeigt eine statistische Auswertung.
+	 * @param string $format	'csv', falls ein Export im CSV-Format gewünscht.
+	 */
+	public function statistik($format = 'html')
+	{
+		$this->load->model('statistik');
+		
+		$this->addData('verkaufteVelos', Statistik::verkaufteVelos());
+
+		$this->addData('veloStatistik', Statistik::velos());
+		
+		$this->addData('haendlerStatistik', Statistik::haendler());
+		
+		switch ($format) {
+			case 'csv':
+				$this->load->view('auswertung/statistik_csv', $this->data);
+				break;
+			default:
+				$this->load->view('auswertung/statistik', $this->data);
+		}
+		
+		return ;
 	}
 	
 	

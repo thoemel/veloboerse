@@ -54,12 +54,19 @@ class Auswertung extends MY_Controller {
 	{
 		$velos = Velo::getAll();
 		$cash = 0;
+		$benoetigtesCash = 0;
 		foreach ($velos->result_array() as $thisVelo) {
 			if ($thisVelo['zahlungsart'] == 'bar') {
 				$cash += $thisVelo['preis'];
 			}
+			if (!$thisVelo['haendler_id'] 
+				&& 'yes' == $thisVelo['verkauft'])
+			{
+				$benoetigtesCash += ($thisVelo['preis'] - Velo::getProvision($thisVelo['preis']));
+			}
 		}
 		$this->addData('cash', $cash);
+		$this->addData('benoetigtesCash', $benoetigtesCash);
 		
 		$this->load->view('auswertung/cashMgmt', $this->data);
 		return;

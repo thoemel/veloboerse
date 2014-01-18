@@ -10,7 +10,7 @@ echo '
 	</ol>
 	
 	<h1>Abrechnung</h1>
-		<h2>Händler</h2>
+		<h2>Händler Nr. ' . $haendler->id . '</h2>
 		<p>' . $haendler->firma . '<br>
 			' . $haendler->person . '<br>
 			' . nl2br($haendler->adresse) . '<br>

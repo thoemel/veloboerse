@@ -16,3 +16,10 @@ ALTER TABLE `velos` ADD `gestohlen` BOOLEAN NOT NULL DEFAULT FALSE ,
 ADD `storniert` BOOLEAN NOT NULL DEFAULT FALSE ,
 ADD `problemfall` BOOLEAN NOT NULL DEFAULT FALSE ,
 ADD `bemerkungen` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+
+
+-- Plus Kreditkarte
+ALTER TABLE `velos` CHANGE `zahlungsart` `zahlungsart` ENUM( 'bar', 'karte', 'kredit', 'debit' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ;
+UPDATE `velos` SET `zahlungsart` = 'debit' WHERE `zahlungsart` = 'karte';
+ALTER TABLE `velos` CHANGE `zahlungsart` `zahlungsart` ENUM( 'bar', 'kredit', 'debit' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ;
+

@@ -11,7 +11,7 @@ echo $verkaufteVelos['haendler']['anzahl'] . " (" . round($verkaufteVelos['haend
 
 echo "\n";
 echo "Velostatistik\n";
-echo ";Velos auf Platz;Anzahl verkauft;Durchschnittlicher Preis;Eingenommene Provision;Summe keine Provision;Summe Helfer kauft;Anzahl bar;Anzahl Karte;Anteil am Umsatz;Verkauft / angeboten\n";
+echo ";Velos auf Platz;Anzahl verkauft;Durchschnittlicher Preis;Eingenommene Provision;Summe keine Provision;Summe Helfer kauft;Anzahl bar;Anzahl Debit;Anzahl Kredit;Anteil am Umsatz;Verkauft / angeboten\n";
 
 foreach ($veloStatistik as $type => $values) {
 	echo ucfirst($type) . ";" 
@@ -22,7 +22,8 @@ foreach ($veloStatistik as $type => $values) {
 	. $values['sumKeineProvision'] . ";" 
 	. $values['sumHelferKauft'] . ";" 
 	. $values['zahlungsart']['bar'] . ";" 
-	. $values['zahlungsart']['karte'] . ";" 
+	. $values['zahlungsart']['debit'] . ";" 
+	. $values['zahlungsart']['kredit'] . ";" 
 	. round($values['anteilVerkauftGruppeVonVerkauftTotal'], 2) . ";" 
 	. round($values['anteilVerkauftGruppeVonAnzahlGruppe'], 2) . "\n";
 }

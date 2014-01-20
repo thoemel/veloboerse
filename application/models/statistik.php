@@ -94,7 +94,7 @@ class Statistik extends CI_Model {
 			'sumGestohlen' => NULL,
 			'sumProblemfall' => NULL,
 			'sumStorniert' => NULL,
-			'zahlungsart' => array('bar' => NULL, 'karte' => NULL),
+			'zahlungsart' => array('bar' => NULL, 'kredit' => NULL, 'debit' => NULL),
 			'sumVerkauft' => NULL,
 			'sumKeineProvision' => NULL,
 			'sumHelferKauft' => NULL,

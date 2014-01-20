@@ -53,8 +53,12 @@ echo '
 			Bar
 		</label>
 		<label class="radio-inline">
-			' . form_radio('zahlungsart', 'karte', true) . '
-			Karte
+			' . form_radio('zahlungsart', 'debit', true) . '
+			Post- oder EC-Karte
+		</label>
+		<label class="radio-inline">
+			' . form_radio('zahlungsart', 'kredit', true) . '
+			Kreditkarte
 		</label>
 	</div>
 	<div class="form-group">

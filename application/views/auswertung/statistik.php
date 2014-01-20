@@ -43,7 +43,8 @@ echo '
 		<th scope="col">Summe keine Provision</th>
 		<th scope="col">Summe Helfer kauft</th>
 		<th scope="col">Anzahl bar</th>
-		<th scope="col">Anzahl Karte</th>
+		<th scope="col">Anzahl Debit</th>
+		<th scope="col">Anzahl Kredit</th>
 		<th scope="col">Anteil am Umsatz</th>
 		<th scope="col">Verkauft / angeboten</th>
 	</tr>
@@ -60,7 +61,8 @@ foreach ($veloStatistik as $type => $values) {
 		<td>' . $values['sumKeineProvision'] . '</td>
 		<td>' . $values['sumHelferKauft'] . '</td>
 		<td>' . $values['zahlungsart']['bar'] . '</td>
-		<td>' . $values['zahlungsart']['karte'] . '</td>
+		<td>' . $values['zahlungsart']['debit'] . '</td>
+		<td>' . $values['zahlungsart']['kredit'] . '</td>
 		<td>' . round($values['anteilVerkauftGruppeVonVerkauftTotal'], 2) . '</td>
 		<td>' . round($values['anteilVerkauftGruppeVonAnzahlGruppe'], 2) . '</td>
 	</tr>';

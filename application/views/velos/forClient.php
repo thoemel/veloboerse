@@ -13,7 +13,8 @@ if ($myVelo->verkauft == 'yes') {
 		<p>Herzlichen Dank, Ihre Pro Velo Bern</p>';
 } else {
 	echo '
-		<p>Leider wurde das Velo noch nicht verkauft.</p>';
+		<p>Leider wurde das Velo noch nicht verkauft.</p>
+		<p>' . anchor('velos/suche/' . $myVelo->id, 'Nochmals versuchen', array('class'=>'btn btn-success ')) . '</p>';
 }
 
 echo '

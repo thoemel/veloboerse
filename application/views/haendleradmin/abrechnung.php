@@ -62,7 +62,13 @@ echo '
 		<dt>Provision</dt>
 		<dd>Fr. ' . $provisionAbsolut . '</dd>
 		<dt>Einstellgebühr</dt>
-		<dd>Fr. ' . $einstellgebuehr . '</dd>
+		<dd>Fr. ' . $einstellgebuehr . '</dd>';
+if ($haendler->busse) {
+	echo '
+		<dt>Busse</dt>
+		<dd>Fr. ' . number_format($haendler->busse, 2) . '</dd>';
+}
+echo '
 		<dt>Standgebühr</dt>
 		<dd>Fr. ' . number_format($haendler->standgebuehr, 2) . '</dd>
 	</dl>';

@@ -18,8 +18,13 @@ ADD `problemfall` BOOLEAN NOT NULL DEFAULT FALSE ,
 ADD `bemerkungen` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 
 
--- Plus Kreditkarte
+-- Plus Kreditkarte (issue #7)
 ALTER TABLE `velos` CHANGE `zahlungsart` `zahlungsart` ENUM( 'bar', 'karte', 'kredit', 'debit' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ;
 UPDATE `velos` SET `zahlungsart` = 'debit' WHERE `zahlungsart` = 'karte';
 ALTER TABLE `velos` CHANGE `zahlungsart` `zahlungsart` ENUM( 'bar', 'kredit', 'debit' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ;
+
+
+-- Busse (issue #12)
+ALTER TABLE `haendler` ADD `busse` FLOAT NOT NULL DEFAULT '0';
+
 

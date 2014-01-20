@@ -2,6 +2,7 @@
 class Haendler extends CI_Model {
 	public $adresse = '	';
 	public $bankverbindung = '';
+	public $busse = 0;
 	public $code = '';
 	public $email = '';
 	public $firma = '';
@@ -84,6 +85,7 @@ class Haendler extends CI_Model {
 		// Public Felder
 		$this->adresse = $query->row()->adresse;
 		$this->bankverbindung = $query->row()->bankverbindung;
+		$this->busse = $query->row()->busse;
 		$this->code = $query->row()->code;
 		$this->email = $query->row()->email;
 		$this->firma = $query->row()->firma;
@@ -176,6 +178,7 @@ class Haendler extends CI_Model {
 		$this->db->set('kommentar', $this->kommentar);
 		$this->db->set('provision', ($this->provisionFactor * 100));
 		$this->db->set('standgebuehr', $this->standgebuehr);
+		$this->db->set('busse', $this->busse);
 		
 		// Private Felder
 		$this->db->set('status', $this->getStatus());

@@ -83,7 +83,8 @@ class Haendleradmin extends MY_Controller {
 		$einstellbebuehr =	$countNichtVerkauft * 10;
 		$auszahlungBetrag = $haendler->sumAlleVerkauften()
 							* (1 - $haendler->provisionFactor)
-							- $einstellbebuehr;
+							- $einstellbebuehr
+							- $haendler->busse;
 		$iban = str_replace(' ', '', $haendler->iban);
 		$iban = substr($iban, 0, 4) . ' ' . substr($iban, 4, 1) . 'XXX XXXX XXXX ' . substr($iban, 17, 4) . ' ' . substr($iban, -1);
 		
@@ -92,7 +93,8 @@ class Haendleradmin extends MY_Controller {
 		$this->addData('preisVerkaufte', (number_format($preisVerkaufte, 2)));
 		$this->addData('provisionAbsolut', (number_format($provisionAbsolut, 2)));
 		$this->addData('einstellgebuehr', (number_format($einstellbebuehr, 2)));
-		$this->addData('auszahlungBetrag', (number_format($auszahlungBetrag, 2)));$this->addData('arrVelos', $arrVelos);
+		$this->addData('auszahlungBetrag', (number_format($auszahlungBetrag, 2)));
+		$this->addData('arrVelos', $arrVelos);
 		$this->addData('countNichtVerkauft', $countNichtVerkauft);
 		$this->addData('countVerkauft', $countVerkauft);
 		$this->addData('iban', $iban);

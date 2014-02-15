@@ -150,6 +150,16 @@ class Haendleradmin extends MY_Controller {
 	
 	
 	/**
+	 * Liste mit allen Direktlinks für die Händler.
+	 */
+	public function direktlinks()
+	{
+		$this->data['liste'] = Haendler::getAll();
+		$this->load->view('haendleradmin/direktlinks', $this->data);
+	}
+	
+	
+	/**
 	 * Google-docs File empfangen und Import starten.
 	 * Ich erwarte, dass ein csv à la Excel kommt. Also Semikolon als Delimiter
 	 * und doppelten Anführungszeichen als Text-Wrapper.

@@ -3,8 +3,12 @@ include APPPATH . 'views/header.php';
 
 echo '
 <div class="haendleradmin">
-	<h1>Händleradmin: Händler wählen</h1>
-		
+	<h1>Händleradmin</h1>
+	' . anchor('haendleradmin/direktlinks', 'Direktlinks') . '
+	
+	
+	<h2>Händler wählen</h2>
+	
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>

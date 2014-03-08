@@ -21,6 +21,8 @@ if ('yes' == $velo->verkauft) {
 	echo '<p class="verybig alert-error">Das Velo wurde schon verkauft!</p>';
 } elseif ('yes' == $velo->abgeholt) {
 	echo '<p class="verybig alert-error">Das Velo wurde schon als abgeholt registriert!</p>';
+} elseif (1 == $velo->gestohlen) {
+	echo '<p class="verybig alert-error">Das Velo wurde als gestohlen gemeldet!</p>';
 } else {
 	echo '<p class="clearfix">' . form_submit('abholung_bestaetigen', 'Bestätigen', 'class="btn"') . '</p>';
 }

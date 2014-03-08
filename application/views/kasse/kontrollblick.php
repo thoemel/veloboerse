@@ -60,10 +60,19 @@ echo '
 			' . form_radio('zahlungsart', 'kredit', false) . '
 			Kreditkarte
 		</label>
-	</div>
-	<div class="form-group">
-			<button type="submit" class="btn btn-default">Bestätigen</button>
 	</div>';
+if (0 == $velo->gestohlen) {
+	echo '
+		<div class="form-group">
+				<button type="submit" class="btn btn-default">Bestätigen</button>
+		</div>';
+}
+if (1 == $velo->gestohlen) {
+	echo '
+		<div class="alert alert-error">
+			Das Velo wurde als gestohlen gemeldet.
+		</div>';
+}
 
 echo form_close();
 

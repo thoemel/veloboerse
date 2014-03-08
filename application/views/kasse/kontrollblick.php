@@ -57,7 +57,7 @@ echo '
 			Post- oder EC-Karte
 		</label>
 		<label class="radio-inline">
-			' . form_radio('zahlungsart', 'kredit', true) . '
+			' . form_radio('zahlungsart', 'kredit', false) . '
 			Kreditkarte
 		</label>
 	</div>

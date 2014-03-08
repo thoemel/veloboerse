@@ -49,7 +49,7 @@ echo '
 		</label>
 	</div>';
 
-if ('no' == $velo->ausbezahlt && 'yes' == $velo->verkauft) {
+if ('no' == $velo->ausbezahlt && 'yes' == $velo->verkauft && 0 == $velo->gestohlen) {
 	echo '
 	<p class="verybig">Auszahlen: Fr. <span id="auszahlung_betrag">' . $auszahlung_betrag . '</span></p>
 	<div class="form-group">
@@ -63,6 +63,9 @@ if ('no' == $velo->verkauft) {
 }
 if ('yes' == $velo->ausbezahlt) {
 	echo '<p class="clearfix alert alert-error">Keine Auszahlung, weil die Auszahlung schon erfolgte.</p>';
+}
+if (1 == $velo->gestohlen) {
+	echo '<p class="clearfix alert alert-error">Keine Auszahlung, weil das Velo als gestohlen gemeldet wurde.</p>';
 }
 
 echo form_close();

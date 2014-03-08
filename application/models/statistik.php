@@ -163,32 +163,32 @@ class Statistik extends CI_Model {
 	/**
 	 * Statistik über die verkauften Velos
 	 * 
-	 * @return array('haendler' => array('anzahl', 'verkaufsPreis', 'anzahlAnteil', 'preisAnteil'), 
-	 * 				'private' => array('anzahl', 'verkaufsPreis', 'anzahlAnteil', 'preisAnteil'), 
-	 * 				'total' => array('anzahl', 'verkaufsPreis'))
+	 * @return array('haendler' => array('anzahl', 'preis', 'anzahlAnteil', 'preisAnteil'), 
+	 * 				'private' => array('anzahl', 'preis', 'anzahlAnteil', 'preisAnteil'), 
+	 * 				'total' => array('anzahl', 'preis'))
 	 */
 	public static  function verkaufteVelos() {
 		$CI = & get_instance ();
 		$arrOut = array (
 				'haendler' => array (
 						'anzahl' => NULL,
-						'verkaufsPreis' => NULL,
+						'preis' => NULL,
 						'anzahlAnteil' => NULL,
 						'preisAnteil'	=> NULL 
 				),
 				'private' => array (
 						'anzahl' => NULL,
-						'verkaufsPreis' => NULL,
+						'preis' => NULL,
 						'anzahlAnteil' => NULL,
 						'preisAnteil'	=> NULL 
 				),
 				'total' => array (
 						'anzahl' => NULL,
-						'verkaufsPreis' => NULL,
+						'preis' => NULL,
 				),
 		);
 		
-		$sql = 'SELECT count(preis) as anzahl, sum(preis) as verkaufsPreis, 
+		$sql = 'SELECT count(preis) as anzahl, sum(preis) as preis, 
     			(haendler_id IS NOT NULL AND haendler_id >=1) as istHaendler 
 				FROM `velos` 
 				WHERE verkauft = ? 
@@ -198,26 +198,26 @@ class Statistik extends CI_Model {
 		foreach ($query->result() as $row) {
 			if (0 == $row->istHaendler) {
 				$arrOut['private']['anzahl'] = $row->anzahl;
-				$arrOut['private']['verkaufsPreis'] = $row->verkaufsPreis;
+				$arrOut['private']['preis'] = $row->preis;
 			} else {
 				$arrOut['haendler']['anzahl'] = $row->anzahl;
-				$arrOut['haendler']['verkaufsPreis'] = $row->verkaufsPreis;
+				$arrOut['haendler']['preis'] = $row->preis;
 			}
 			$arrOut['total']['anzahl'] += $row->anzahl;
-			$arrOut['total']['verkaufsPreis'] += $row->verkaufsPreis;
+			$arrOut['total']['preis'] += $row->preis;
 		}
 
 		if (0 != $arrOut['haendler']['anzahl']) {
 			$arrOut['haendler']['anzahlAnteil'] = $arrOut['haendler']['anzahl'] / $arrOut['total']['anzahl'];
 		}
-		if (0 != $arrOut['haendler']['verkaufsPreis']) {
-			$arrOut['haendler']['preisAnteil'] = $arrOut['haendler']['verkaufsPreis'] / $arrOut['total']['verkaufsPreis'];
+		if (0 != $arrOut['haendler']['preis']) {
+			$arrOut['haendler']['preisAnteil'] = $arrOut['haendler']['preis'] / $arrOut['total']['preis'];
 		}
 		if (0 != $arrOut['private']['anzahl']) {
 			$arrOut['private']['anzahlAnteil'] = $arrOut['private']['anzahl'] / $arrOut['total']['anzahl'];
 		}
-		if (0 != $arrOut['private']['verkaufsPreis']) {
-			$arrOut['private']['preisAnteil'] = $arrOut['private']['verkaufsPreis'] / $arrOut['total']['verkaufsPreis'];
+		if (0 != $arrOut['private']['preis']) {
+			$arrOut['private']['preisAnteil'] = $arrOut['private']['preis'] / $arrOut['total']['preis'];
 		}
 		
 		return $arrOut;

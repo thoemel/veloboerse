@@ -75,7 +75,7 @@ echo '
 		<div class="col-sm-10">
 			<label class="radio-inline">' . form_radio('zahlungsart', 'bar', ('bar' == $myVelo->zahlungsart)) . ' bar</label>
 			<label class="radio-inline">' . form_radio('zahlungsart', 'karte', ('debit' == $myVelo->zahlungsart)) . ' Post- oder EC-Karte</label>
-			<label class="radio-inline">' . form_radio('zahlungsart', 'karte', ('kredit' == $myVelo->zahlungsart)) . ' Kreditkarte</label>
+			<label class="radio-inline">' . form_radio('zahlungsart', 'kredit', ('kredit' == $myVelo->zahlungsart)) . ' Kreditkarte</label>
 		</div>
 	</div>
 	<div class="form-group">

@@ -18,8 +18,8 @@ echo '
 		<div class="col-sm-2">
 			Preis: 
 		</div>
-		<div id="preis" class="col-sm-2">
-			' . $velo->preis . ' 
+		<div class="col-sm-2">
+			<span id="preis">' . $velo->preis . '</span> 
 			Fr.
 		</div>
 	</div>';

@@ -13,6 +13,17 @@ class Auswertung extends MY_Controller {
 	
 	
 	/**
+	 * Zusammenzug der verkauften aber nicht ausbezahlten Velos.
+	 * In der Annahme, dass die alle für Afrika gespendet werden.
+	 */
+	public function afrika()
+	{
+		$this->data['veloQuery'] = Statistik::afrika();
+		$this->load->view('auswertung/afrika', $this->data);
+	}
+	
+	
+	/**
 	 * Velos-Tabelle Export als CSV
 	 * @param String	$tabelle	Name der DB-Tabelle
 	 */

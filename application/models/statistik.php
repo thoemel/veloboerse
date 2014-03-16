@@ -7,7 +7,26 @@ class Statistik extends CI_Model {
 	public function __construct($id = 0) {
 		parent::__construct ();
 	}
-	
+
+
+	/**
+	 * Statistische Angaben für Velos für Afrika
+	 * Liefert alle Velos, die verkauft aber nicht ausbezahlt worden sind.
+	 * 
+	 * @return CI query Objekt
+	 */
+	public static function afrika()
+	{
+		$CI = & get_instance ();
+		$arrOut = array();
+		
+		$CI->db->where('haendler_id <', 1);
+		$CI->db->where('verkauft', 'yes');
+		$CI->db->where('ausbezahlt', 'no');
+		$query = $CI->db->get('velos');
+		
+		return $query->result();
+	}
 	
 	/**
 	 * Statistische Angaben pro Händler

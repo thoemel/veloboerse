@@ -10,6 +10,7 @@ echo '
 	<ul>
 		<li>' . anchor('auswertung/cashMgmt', 'Cash Management') . '</li>
 		<li>' . anchor('auswertung/statistik', 'Statistik') . '</li>
+		<li>' . anchor('auswertung/afrika', 'Velos für Afrika') . '</li>
 	</ul>
 </div>';
 

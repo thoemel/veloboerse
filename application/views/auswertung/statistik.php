@@ -54,7 +54,7 @@ foreach ($veloStatistik as $type => $values) {
 	echo '
 	<tr>
 		<th scope="row">' . ucfirst($type) . '</th>
-		<td>' . $values['anzahl'] . '</td>
+		<td>' . $values['velosAufPlatz'] . '</td>
 		<td>' . $values['sumVerkauft'] . '</td>
 		<td>' . round($values['schnittPreis']) . '</td>
 		<td>' . round($values['sumProvision'], 2) . '</td>
@@ -68,6 +68,7 @@ foreach ($veloStatistik as $type => $values) {
 	</tr>';
 }
 echo '
+	</tr>
 </tbody>
 </table>';
 

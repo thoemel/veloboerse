@@ -87,12 +87,11 @@ class Statistik extends CI_Model {
 	{
 		$arrOut = array('haendler' => NULL, 'private' => NULL);
 		$arrFields = array(
-			'anzahl' => NULL,
+			'velosAufPlatz' => NULL,
 			'schnittPreis' => NULL,
 			'sumPreis' => NULL,
 			'sumProvision' => NULL,
 			'sumGestohlen' => NULL,
-			'sumProblemfall' => NULL,
 			'sumStorniert' => NULL,
 			'zahlungsart' => array('bar' => NULL, 'kredit' => NULL, 'debit' => NULL),
 			'sumVerkauft' => NULL,
@@ -103,6 +102,7 @@ class Statistik extends CI_Model {
 		);
 		$arrOut['haendler'] = $arrFields;
 		$arrOut['private'] = $arrFields;
+		$arrOut['total'] = $arrFields;
 		
 		// Array mit Haendler-Infos array($id => $row)
 		$arrHaendler = array();
@@ -122,39 +122,102 @@ class Statistik extends CI_Model {
 				$provision = Velo::getProvision($velo->preis);
 			}
 			
+			/*
+			 * Stornierte Velos nicht beachten
+			 */
 			if ($velo->storniert) {
 				$arrOut[$key]['sumStorniert'] ++;
 				continue;
 			}
 			
-			$arrOut[$key]['anzahl'] ++;
-			$arrOut[$key]['sumPreis'] += $velo->preis;
-			$arrOut[$key]['sumProvision'] += $provision;
+			/*
+			 * Gestohlene Velos nicht beachten
+			 */
+			if ($velo->gestohlen) {
+				$arrOut[$key]['sumGestohlen'] ++;
+				continue;
+			}
+			
+			/*
+			 * Velos auf Platz
+			 */
+			$arrOut[$key]['velosAufPlatz'] ++;
+			
+			/*
+			 * Anzal verkaufte Velos
+			 */
+			if ('yes' == $velo->verkauft) {
+				$arrOut[$key]['sumVerkauft'] ++;
+			}
+			
+			/*
+			 * Eingenommene Provision: 
+			 * Nur von Velos, die wirklich verkauft wurden
+			 * und bei welchen kein Helfer vom Provisionserlass
+			 * profitiert hat.
+			 */
+			if (	'no' == $velo->helfer_kauft
+				&&	'no' == $velo->keine_provision
+				&&	'yes' == $velo->verkauft) {
+				$arrOut[$key]['sumProvision'] += $provision;
+			}
+			
+			/*
+			 * Provisions-Proviteure zählen
+			 */
 			if ('yes' == $velo->keine_provision) {
 				$arrOut[$key]['sumKeineProvision'] += $provision;
 			}
 			if ('yes' == $velo->helfer_kauft) {
 				$arrOut[$key]['sumHelferKauft'] += $provision;
 			}
-			if ('yes' == $velo->verkauft) {
-				$arrOut[$key]['sumVerkauft'] ++;
-			}
-			$arrOut[$key]['sumGestohlen'] += $velo->gestohlen;
-			$arrOut[$key]['sumProblemfall'] += $velo->problemfall;
+			
+			/*
+			 * Zahlungsart
+			 */
 			if ($velo->zahlungsart) {
 				$arrOut[$key]['zahlungsart'][$velo->zahlungsart] ++;
 			}
-		}
-		
+			
+			/*
+			 * Für Aggregatsberechnungen
+			 */
+			$arrOut[$key]['sumPreis'] += $velo->preis;
+		} // End foreach velo
+
+
+		/*
+		 * Durchschnittlicher Preis und Anteil verkauft
+		*/
 		foreach (array('haendler', 'private') as $key) {
-			if ($arrOut[$key]['anzahl']) {
-				$arrOut[$key]['schnittPreis'] = $arrOut[$key]['sumPreis'] / $arrOut[$key]['anzahl'];
-				$arrOut[$key]['anteilVerkauftGruppeVonAnzahlGruppe'] = $arrOut[$key]['sumVerkauft'] / $arrOut[$key]['anzahl'];
+			if ($arrOut[$key]['velosAufPlatz']) {
+				$arrOut[$key]['schnittPreis'] = $arrOut[$key]['sumPreis'] / $arrOut[$key]['velosAufPlatz'];
+				$arrOut[$key]['anteilVerkauftGruppeVonAnzahlGruppe'] = $arrOut[$key]['sumVerkauft'] / $arrOut[$key]['velosAufPlatz'];
 			}
-			if (0 < ($arrOut['haendler']['anzahl'] + $arrOut['private']['anzahl'])) {
+			if (0 < ($arrOut['haendler']['velosAufPlatz'] + $arrOut['private']['velosAufPlatz'])) {
 				$arrOut[$key]['anteilVerkauftGruppeVonVerkauftTotal'] = $arrOut[$key]['sumVerkauft'] / ($arrOut['haendler']['sumVerkauft'] + $arrOut['private']['sumVerkauft']);
 			}
 		}
+		
+		
+		/*
+		 * Total
+		 */
+		$arrOut['total']['velosAufPlatz'] = $arrOut['haendler']['velosAufPlatz'] + $arrOut['private']['velosAufPlatz'];
+		$arrOut['total']['schnittPreis'] = ($arrOut['haendler']['schnittPreis'] + $arrOut['private']['schnittPreis']) / 2;
+		$arrOut['total']['sumPreis'] = $arrOut['haendler']['sumPreis'] + $arrOut['private']['sumPreis'];
+		$arrOut['total']['sumProvision'] = $arrOut['haendler']['sumProvision'] + $arrOut['private']['sumProvision'];
+		$arrOut['total']['sumGestohlen'] = $arrOut['haendler']['sumGestohlen'] + $arrOut['haendler']['sumGestohlen'];
+		$arrOut['total']['sumStorniert'] = $arrOut['haendler']['sumStorniert'] + $arrOut['haendler']['sumStorniert'];
+		$arrOut['total']['zahlungsart'] = array ( 
+				'bar' => $arrOut['haendler']['zahlungsart']['bar'] + $arrOut['private']['zahlungsart']['bar'],
+				'kredit' => $arrOut['haendler']['zahlungsart']['kredit'] + $arrOut['private']['zahlungsart']['kredit'],
+				'debit' => $arrOut['haendler']['zahlungsart']['debit'] + $arrOut['private']['zahlungsart']['debit'],); 
+		$arrOut['total']['sumVerkauft'] = $arrOut['haendler']['sumVerkauft'] + $arrOut['private']['sumVerkauft'];
+		$arrOut['total']['sumKeineProvision'] = $arrOut['haendler']['sumKeineProvision'] + $arrOut['private']['sumKeineProvision'];
+		$arrOut['total']['sumHelferKauft'] = $arrOut['haendler']['sumHelferKauft'] + $arrOut['private']['sumHelferKauft'];
+		$arrOut['total']['anteilVerkauftGruppeVonVerkauftTotal'] = $arrOut['haendler']['anteilVerkauftGruppeVonVerkauftTotal'] + $arrOut['private']['anteilVerkauftGruppeVonVerkauftTotal'];
+		$arrOut['total']['anteilVerkauftGruppeVonAnzahlGruppe'] = ($arrOut['haendler']['anteilVerkauftGruppeVonAnzahlGruppe'] + $arrOut['private']['anteilVerkauftGruppeVonAnzahlGruppe']) / 2;
 		
 		return $arrOut;
 	} // End of function velos

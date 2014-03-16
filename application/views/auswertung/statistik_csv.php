@@ -15,7 +15,7 @@ echo ";Velos auf Platz;Anzahl verkauft;Durchschnittlicher Preis;Eingenommene Pro
 
 foreach ($veloStatistik as $type => $values) {
 	echo ucfirst($type) . ";" 
-	. $values['anzahl'] . ";" 
+	. $values['velosAufPlatz'] . ";" 
 	. $values['sumVerkauft'] . ";" 
 	. round($values['schnittPreis']) . ";" 
 	. round($values['sumProvision'], 2) . ";" 

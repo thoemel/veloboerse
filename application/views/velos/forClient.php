@@ -5,11 +5,11 @@ echo '
 
 <div>
 	<h1>Ist mein Velo verkauft?</h1>';
-
+// $myVelo = new Velo() ;   // dem Eclipse sagen, dass myVelo ein Velo-Objekt ist
 if ($myVelo->verkauft == 'yes') {
 	echo '
 		<p>Ja, es wurde für ' . $myVelo->preis . ' Franken verkauft.</p>
-		<p>Ab 12 Uhr kann das Geld an der Velobörse abgeholt werden.</p>
+		<p>Ab 12 Uhr kann das Geld (abzüglich Provision von ' . Velo::getProvision($myVelo->preis) . ' Franken, d.h. am Schluss ' . ($myVelo->preis - Velo::getProvision($myVelo->preis)) . ' Franken) an der Velobörse abgeholt werden.</p>
 		<p>Herzlichen Dank, Ihre Pro Velo Bern</p>';
 } else {
 	echo '

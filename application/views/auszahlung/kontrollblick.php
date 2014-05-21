@@ -54,7 +54,7 @@ if ('no' == $velo->ausbezahlt && 'yes' == $velo->verkauft && 0 == $velo->gestohl
 	<p class="verybig">Auszahlen: Fr. <span id="auszahlung_betrag">' . $auszahlung_betrag . '</span></p>
 	<div class="form-group">
 		<div class="col-lg-offset-2 col-lg-10">
-			<button type="submit" class="btn btn-default focusPlease">Bestätigen</button>
+			<button type="submit" class="btn btn-default">Bestätigen</button>
 		</div>
 	</div>';
 }

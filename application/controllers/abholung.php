@@ -20,20 +20,21 @@ class Abholung extends MY_Controller {
 	{
 		$quittungNr = $this->input->post('id');
 		if (!Velo::istRegistriert($quittungNr)) {
-			$this->session->set_flashdata('error', 'Keine gültige Quittungsnummer');
-			redirect('kasse/index');
+			$this->session->set_flashdata('error', 'Keine gültige Quittungsnummer (' . (int) $quittungNr . ')');
+			redirect('abholung/index');
 			return;
 		}
 		
 		$myVelo = new Velo();
 		$myVelo->find($quittungNr);
-		
+				
 		if ('yes' == $myVelo->verkauft) {
 			$this->addData('error', 'Das Velo wurde bereits verkauft. Es kann nicht sein, dass es jetzt abgeholt wird.');
 		}
 		$this->addData('velo', $myVelo);
 		
 		$this->load->view('abholung/kontrollblick', $this->data);
+		return;
 	}
 	
 	

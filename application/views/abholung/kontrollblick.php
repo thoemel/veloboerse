@@ -10,7 +10,12 @@ echo '
 		<dt>Quittung Nr.</dt>
 		<dd>' . $velo->id . '</dd>
 		<dt>Preis</dt>
-		<dd>' . $velo->preis . '</dd>
+		<dd>' . $velo->preis . '</dd>';
+if ('' != $velo->bemerkungen) {
+		echo '<dt>Bemerkung</dt>
+		<dd>' . $velo->bemerkungen . '</dd>';
+}
+echo '
 	</dl>';
 
 

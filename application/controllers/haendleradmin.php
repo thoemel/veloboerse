@@ -382,4 +382,44 @@ class Haendleradmin extends MY_Controller {
 		
 		return $success;
 	}
+	
+	/**
+	 * Daten eines Händlers anzeigen / bearbeiten
+	 * @param string $haendler_id
+	 */
+	public function haendlerconfig($haendler_id = '')
+	{
+		// Input validierung
+		if (!empty($haendler_id)) {
+			$this->session->set_userdata('haendler_id', intval($haendler_id));
+		}
+	
+		if (!$this->session->userdata('haendler_id')) {
+			$this->session->set_flashdata('error', 'Zuerst Händler auswählen.');
+			redirect('haendleradmin/index');
+		}
+	
+		$haendler = new Haendler();
+		$haendler->find($haendler_id);
+		$this->data['haendler'] = $haendler;
+		$anzeigename = $haendler->firma;
+		if (empty($anzeigename)) {
+			$anzeigename = $haendler->person;
+		}
+		$this->data['anzeigename'] = $anzeigename;
+	
+/*		$myIds = array();
+		$this->load->model('velo');
+		$myVelos = Velo::getAll($haendler_id);
+		if (0 < $myVelos->num_rows()) {
+			foreach ($myVelos->result() as $row) {
+				$myIds[] = $row->id;
+			}
+			sort($myIds);
+		}
+		$this->data['ids'] = $myIds;
+	*/
+		$this->load->view('haendleradmin/haendlerconfig', $this->data);
+		return;
+	} // End of function haendlerconfig()
 }

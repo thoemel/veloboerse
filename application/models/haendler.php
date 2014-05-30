@@ -88,6 +88,7 @@ class Haendler extends CI_Model {
 		$this->busse = $query->row()->busse;
 		$this->code = $query->row()->code;
 		$this->email = $query->row()->email;
+		$this->telefon = $query->row()->telefon;
 		$this->firma = $query->row()->firma;
 		$this->iban = $query->row()->iban;
 		$this->id = $query->row()->id;

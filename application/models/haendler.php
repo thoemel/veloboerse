@@ -174,6 +174,7 @@ class Haendler extends CI_Model {
 		$this->db->set('code', $this->code);
 		$this->db->set('person', $this->person);
 		$this->db->set('email', $this->email);
+		$this->db->set('telefon', $this->telefon);
 		$this->db->set('bankverbindung', $this->bankverbindung);
 		$this->db->set('iban', $this->iban);
 		$this->db->set('kommentar', $this->kommentar);

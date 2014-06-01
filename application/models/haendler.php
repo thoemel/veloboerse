@@ -186,6 +186,7 @@ class Haendler extends CI_Model {
 		if (!self::istRegistriert($this->id)) {
 			$this->db->set('id', $this->id);
 			$success = $this->db->insert('haendler');
+			$this->id = $this->db->insert_id();
 		} else {
 			$this->db->where('id', $this->id);
 			$success = $this->db->update('haendler');

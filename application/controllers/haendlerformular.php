@@ -58,6 +58,32 @@ class Haendlerformular extends MY_Controller {
 			show_error('Sorry, Sie sind nicht berechtigt.');
 		}
 		
+		/* Kl#16: ToDo: Hier Unterscheidung, welche Seite geladen wird: 
+		 * uptodate = false -> Haendlerconfig
+		 * uptodate = true && keine Quittungsnummern zugewiesen (über HändlerId suchen in velos-DB) -> Seite 'In Bearbeitung'
+		 * uptodate = true && Quittungsnummern zugewiesen -> 'haendlerformular/formular'
+		 * 
+		 * If (uptodate = false)
+		 * {
+		 * 		--Benötigte Daten bereitstellen
+		 * 		$this->load->view('haendlerformular/haendlerconfig', $this->data);
+		 * }
+		 * Else If (uptodate = true && keine Quittungsnummern zugewiesen)
+		 * {
+		 * 		--Benötigte Daten bereitstellen
+		 * 		$this->load->view('haendlerformular/inBearbeitung', $this->data);
+		 * }
+		 * Else If (uptodate = true && Quittungsnummern zugewiesen)
+		 * {
+		 * 		(bestehend)
+		 * 		$this->data['haendler'] = $this->haendler;
+		 * 		$this->data['veloquery'] = Velo::getAll($this->haendler->id);
+		 * 		$this->data['querformat'] = true;
+		 * 		$this->load->view('haendlerformular/formular', $this->data);
+		 * }
+		 * */
+		
+
 		$this->data['haendler'] = $this->haendler;
 		$this->data['veloquery'] = Velo::getAll($this->haendler->id);
 		$this->data['querformat'] = true;

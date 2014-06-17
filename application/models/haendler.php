@@ -96,6 +96,7 @@ class Haendler extends CI_Model {
 		$this->person = $query->row()->person;
 		$this->provisionFactor = $query->row()->provision / 100;
 		$this->standgebuehr = $query->row()->standgebuehr;
+		// $this->uptodate = $query->row()->uptodate; Kl#16
 		$this->setStatus($query->row()->status);
 		
 		return $query->row();

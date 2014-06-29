@@ -27,7 +27,7 @@ foreach ($liste->result() as $haendler) {
 			<tr>
 				<th scope="row">' . $haendler->id . '</th>
 				<td>' . $haendler->firma . ' | ' . $haendler->person . '</td>
-				<td>' . base_url() . 'haendlerformular/' . $haendler->code . '</td>
+				<td>' . base_url() . 'index.php/haendlerformular/' . $haendler->code . '</td>
 			</tr>';
 }	
 

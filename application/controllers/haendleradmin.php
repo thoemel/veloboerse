@@ -382,4 +382,94 @@ class Haendleradmin extends MY_Controller {
 		
 		return $success;
 	}
+	
+	/**
+	 * Daten eines Händlers anzeigen / bearbeiten
+	 * @param string $haendler_id
+	 */
+	public function haendlerconfig($haendler_id = '')
+	{
+		// Input validierung
+		if (!empty($haendler_id)) {
+			$this->session->set_userdata('haendler_id', intval($haendler_id));
+		}
+	
+		if (!$this->session->userdata('haendler_id')) {
+			$this->session->set_flashdata('error', 'Zuerst Händler auswählen.');
+			redirect('haendleradmin/index');
+		}
+	
+		$haendler = new Haendler();
+		$haendler->find($haendler_id);
+		$this->data['haendler'] = $haendler;
+		$anzeigename = $haendler->firma;
+		if (empty($anzeigename)) {
+			$anzeigename = $haendler->person;
+		}
+		$this->data['anzeigename'] = $anzeigename;
+	
+/*		$myIds = array();
+		$this->load->model('velo');
+		$myVelos = Velo::getAll($haendler_id);
+		if (0 < $myVelos->num_rows()) {
+			foreach ($myVelos->result() as $row) {
+				$myIds[] = $row->id;
+			}
+			sort($myIds);
+		}
+		$this->data['ids'] = $myIds;
+	*/
+		$this->load->view('haendleradmin/haendlerconfig', $this->data);
+		return;
+	} // End of function haendlerconfig()
+	
+	/**
+	 * Weist eine Händler die persönlichen Angaben zu.
+	 * Übernimmt die Formulareingaben aus haendleradmin/haendlerconfig.
+	 */
+	public function haendlerconfigSpeichern()
+	{
+		// Formulareingaben prüfen
+		$haendler_id = $this->input->post('haendler_id');
+		if (!Haendler::istRegistriert($haendler_id)
+		|| $haendler_id != $this->session->userdata('haendler_id')) {
+			$this->session->set_flashdata('error', 'Falsche Händler-Nummer ' . intval($haendler_id) . '. Versuchs vielleicht mit neu einloggen.');
+			redirect('haendleradmin/index');
+		}
+	
+		// Daten aus Formular lesen
+		$firma = strval($this->input->post('input_Firma'));
+		$person = strval($this->input->post('input_Person'));
+		$adresse = strval($this->input->post('input_Adresse'));
+		$email = strval($this->input->post('input_Email'));
+		$telefon = strval($this->input->post('input_Telefon'));
+		$bankverb = strval($this->input->post('input_Bankverb'));
+		$iban = strval($this->input->post('input_Iban'));
+		$kommentar = strval($this->input->post('input_Kommentar'));
+		
+		// Neue Instanz von Haendler
+		$myHandler  = new Haendler();
+		$myHandler->find($haendler_id);
+		
+		// Überschreiben der Datenbank- mit den Formular-Werten
+		// mToDo: Werte prüfen, z.B. auf nicht leer o.ä.??
+		$myHandler->firma = $firma;
+		$myHandler->person = $person;
+		$myHandler->adresse = $adresse;
+		$myHandler->email = $email;
+		$myHandler->telefon = $telefon;
+		$myHandler->bankverbindung = $bankverb;
+		$myHandler->iban = $iban;
+		$myHandler->kommentar = $kommentar;
+		$myHandler->save();
+		
+	
+		if (!empty($errorsForFlash)) {
+			$this->session->set_flashdata('error', implode('<br>', $errorsForFlash));
+		} else {
+			$this->session->set_flashdata('success', 'Händler-Angaben wurden gespeichert (' . $firma . ').');
+		}
+	
+		redirect('haendleradmin/index');
+	} // End of function quittungenSpeichern
 }

@@ -88,6 +88,7 @@ class Haendler extends CI_Model {
 		$this->busse = $query->row()->busse;
 		$this->code = $query->row()->code;
 		$this->email = $query->row()->email;
+		$this->telefon = $query->row()->telefon;
 		$this->firma = $query->row()->firma;
 		$this->iban = $query->row()->iban;
 		$this->id = $query->row()->id;
@@ -95,6 +96,7 @@ class Haendler extends CI_Model {
 		$this->person = $query->row()->person;
 		$this->provisionFactor = $query->row()->provision / 100;
 		$this->standgebuehr = $query->row()->standgebuehr;
+		// $this->uptodate = $query->row()->uptodate; Kl#16
 		$this->setStatus($query->row()->status);
 		
 		return $query->row();
@@ -173,6 +175,7 @@ class Haendler extends CI_Model {
 		$this->db->set('code', $this->code);
 		$this->db->set('person', $this->person);
 		$this->db->set('email', $this->email);
+		$this->db->set('telefon', $this->telefon);
 		$this->db->set('bankverbindung', $this->bankverbindung);
 		$this->db->set('iban', $this->iban);
 		$this->db->set('kommentar', $this->kommentar);

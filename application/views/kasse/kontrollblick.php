@@ -18,7 +18,7 @@ echo '
 		<div class="col-sm-2">
 			Preis: 
 		</div>
-		<div id="preis" class="col-sm-2">
+		<div id="preis" class="col-sm-4">
 			' . $velo->preis . ' 
 			Fr.
 		</div>
@@ -43,7 +43,7 @@ echo form_hidden('angeschriebener_preis', $velo->preis);
 echo '
 	<div class="checkbox">
 		<label>
-			' . form_checkbox('helfer_kauft', 'yes', false, 'id="helfer_kauft" class="form-control focusPlease"') . '
+			' . form_checkbox('helfer_kauft', 'yes', false, 'id="helfer_kauft" class="form-control"') . '
 			Von HelferIn gekauft
 		</label>
 	</div>

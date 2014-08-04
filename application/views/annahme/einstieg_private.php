@@ -8,6 +8,7 @@ if (!empty($success) && 'speichern_private' == $this->uri->segment(2)) {
 		<dl>
 			<dt>Quittung Nr.</dt><dd>' . $velo->id . '</dd>
 			<dt>Preis</dt><dd>' . $velo->preis . '</dd>
+			<dt>Provision</dt><dd>' . $velo->getProvision($velo->preis) . '</dd>
 			<dt>Ausweis gezeigt</dt><dd>' . $ausweisGezeigt . '</dd>
 		</dl>
 	</div>';

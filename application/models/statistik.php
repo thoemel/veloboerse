@@ -20,10 +20,13 @@ class Statistik extends CI_Model {
 		$CI = & get_instance ();
 		$arrOut = array();
 		
-		$CI->db->where('haendler_id <', 1);
-		$CI->db->where('verkauft', 'yes');
-		$CI->db->where('ausbezahlt', 'no');
-		$query = $CI->db->get('velos');
+		$sql = 'SELECT *
+				FROM velos 
+				WHERE verkauft = "yes" 
+				AND ausbezahlt = "no" 
+				AND (haendler_id < 1 OR haendler_id IS NULL) 
+				ORDER BY id asc';
+		$query = $CI->db->query($sql);
 		
 		return $query->result();
 	}

@@ -33,6 +33,24 @@ echo '
 			</div>
 		</div>
 	</div>
+	<div class="form-group">
+		<div class="col-lg-offset-2 col-lg-10">
+			<div class="checkbox">
+				<label>
+					' . form_checkbox('keine_provision', 'yes', false) . '
+					Keine Provision (von Helfer verkauft)
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Bemerkungen</label>
+		<div class="col-sm-10">
+			<textarea name="bemerkungen" class="form-control" rows="3">' 
+			. $myVelo->bemerkungen 
+			. '</textarea>
+		</div>
+	</div>
 
 	<div class="form-group">
 		<div class="col-lg-offset-2 col-lg-10">

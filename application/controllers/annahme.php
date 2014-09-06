@@ -110,6 +110,10 @@ class Annahme extends MY_Controller {
 		$myVelo->id = $this->input->post('id');
 		$myVelo->preis = $this->input->post('preis');
 		$myVelo->kein_ausweis = (1 == $this->input->post('kein_ausweis')) ? 'yes' : 'no';
+		$myVelo->bemerkungen = $this->input->post('bemerkungen');
+		if ('yes' == $this->input->post('keine_provision')) {
+			$myVelo->keine_provision = 'yes';
+		}
 	
 		// Bild Upload
 		// 		$config['upload_path'] = './img/velos/';

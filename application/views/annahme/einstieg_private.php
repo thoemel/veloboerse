@@ -9,7 +9,16 @@ if (!empty($success) && 'speichern_private' == $this->uri->segment(2)) {
 			<dt>Quittung Nr.</dt><dd>' . $velo->id . '</dd>
 			<dt>Preis</dt><dd>' . $velo->preis . '</dd>
 			<dt>Provision</dt><dd>' . $velo->getProvision($velo->preis) . '</dd>
-			<dt>Ausweis gezeigt</dt><dd>' . $ausweisGezeigt . '</dd>
+			<dt>Ausweis gezeigt</dt><dd>' . $ausweisGezeigt . '</dd>';
+	if ('yes' == $velo->keine_provision) {
+		echo '
+			<dt>Helfer verkauft</dt><dd>Ja <span class="badge">Name muss in Bemerkungen rein!</span></dd>';
+	}
+	if (!empty($velo->bemerkungen)) {
+		echo '
+			<dt>Bemerkungen</dt><dd>' . $velo->bemerkungen . '</dd>';
+	}
+	echo '
 		</dl>
 	</div>';
 }

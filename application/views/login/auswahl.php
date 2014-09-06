@@ -26,6 +26,9 @@ echo '
 	</div>
 	<div class="bottom20 veloformular">
 		'.anchor('login/dispatch/veloformular', 'Formular Velo').'
+	</div>
+	<div class="bottom20 polizei">
+		'.anchor('login/dispatch/polizei', 'Polizei').'
 	</div>';
 
 if ('superadmin' == $this->session->userdata('user_role')) {

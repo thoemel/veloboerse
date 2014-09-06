@@ -48,6 +48,10 @@ class Login extends MY_Controller {
 				$this->session->set_userdata('user_ressort', 'veloformular');
 				redirect('velos/einstieg');
 				break;
+			case 'polizei':
+				$this->session->set_userdata('user_ressort', 'polizei');
+				redirect('polizei/index');
+				break;
 			case 'auswertung':
 				$this->session->set_userdata('user_ressort', 'auswertung');
 				redirect('auswertung/index');

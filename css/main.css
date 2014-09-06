@@ -53,6 +53,9 @@ footer {
 .veloformular {
 	background-color: rgb(255,200,0);
 }
+.polizei {
+	background-color: rgb(245,245,245);
+}
 
 .alert-error {
 	background-color: rgb(220,0,0);

@@ -93,6 +93,23 @@ class Velo extends CI_Model {
 	} // End of function find()
 	
 	
+	/**
+	 * Liefere alle Velos aus der DB
+	 * @param	int	$haendler_id	[optional]
+	 * @return Query Objekt
+	 */
+	public static function gestohlene()
+	{
+		$CI =& get_instance();
+		
+		$CI->db->where('gestohlen', 1);
+		$CI->db->order_by('id', 'asc');
+		$query = $CI->db->get('velos');
+		
+		return $query;
+	} // End of function find()
+	
+	
 	
 	/**
 	 * Gibt die Provision für ein Velo. Benutzt die Provisions Tabelle aus der DB.

@@ -55,6 +55,9 @@ class Auszahlung extends MY_Controller {
 		$quittungNr = $this->input->post('id');
 		if (10000 > $quittungNr) {
 			$this->session->set_flashdata('error', 'Das ist ein Händlervelo. Auszahlung erfolgt nicht hier.');
+			if (empty($quittungNr)) {
+				$this->session->set_flashdata('error', 'Keine Quittungs-Nummer eingegeben. Bitte kontrolliere, ob das letzte Velo korrekt abgehandelt wurde!');
+			}
 			redirect('auszahlung/formular_private');
 			return;
 		}

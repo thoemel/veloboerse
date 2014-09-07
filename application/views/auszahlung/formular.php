@@ -16,7 +16,7 @@ echo '
 ' . form_open('auszahlung/kontrollblick', array('id' => 'auszahlungformular')) . '
 
 ' . form_label('Quittungs-Nummer', 'auszahlung_quittung_input') . '
-' . form_input('quittungNr', '', 'id="auszahlung_quittung_input" class="focusPlease"') . '
+' . form_input('quittungNr', '', 'id="auszahlung_quittung_input"') . '
 
 ' . form_submit('auszahlen', 'Kontrollieren', 'class="btn"') . '
 		

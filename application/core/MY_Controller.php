@@ -28,36 +28,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->model('Statistik');
 		Statistik::registriere();
 		
-		
-		/*
-		 * Action und Button-Text für das Formular oben rechts entsprechend 
-		 * des Ressorts
-		 */
-		$this->addData('formSubmitText', 'suchen');
-		switch ($this->session->userdata('user_ressort')) {
-			case 'privatannahme':
-				$this->addData('formAction', 'annahme/formular_private');
-				$this->addData('formSubmitText', 'erfassen');
-				break;
-			case 'privatauszahlung':
-				$this->addData('formAction', 'auszahlung/kontrollblick');
-				break;
-			case 'kasse':
-				$this->addData('formAction', 'kasse/kontrollblick');
-				break;
-			case 'abholung':
-				$this->addData('formAction', 'abholung/kontrollblick');
-				break;
-			case 'haendlerabholung':
-				$this->addData('formAction', 'abholung/abholen');
-				break;
-			case 'veloformular':
-				$this->addData('formAction', 'velos/formular');
-				break;
-			default:
-				$this->addData('formAction', 'velos/suche');
-				
-		}
+		$this->searchFormHandling();
 		
 		// Standardmässig hat der Body Tag keine Klasse. Kann auch z. B. ' class="alert alert-error"' sein.
 		if ($this->session->userdata('user_ressort')) {
@@ -112,6 +83,56 @@ class MY_Controller extends CI_Controller {
 			Redirect();
 		}
 		
+	}
+	
+	
+	private function searchFormHandling()
+	{
+		/*
+		 * Action und Button-Text für das Formular oben rechts entsprechend 
+		 * des Ressorts
+		 */
+		$this->addData('formSubmitText', 'suchen');
+		switch ($this->session->userdata('user_ressort')) {
+			case 'privatannahme':
+				$this->addData('formAction', 'annahme/formular_private');
+				$this->addData('formSubmitText', 'erfassen');
+				break;
+			case 'privatauszahlung':
+				$this->addData('formAction', 'auszahlung/kontrollblick');
+				break;
+			case 'kasse':
+				$this->addData('formAction', 'kasse/kontrollblick');
+				break;
+			case 'abholung':
+				$this->addData('formAction', 'abholung/kontrollblick');
+				break;
+			case 'haendlerabholung':
+				$this->addData('formAction', 'abholung/abholen');
+				break;
+			case 'veloformular':
+				$this->addData('formAction', 'velos/formular');
+				break;
+			default:
+				$this->addData('formAction', 'velos/suche');
+				
+		}
+		
+		/*
+		 * Auf gewissen Seiten das Suchformular ausblenden, weil es zu Problemen
+		 * führen kann. Wenn es da ist und den Fokus hat, kann man nicht mit 
+		 * Enter das Formular abschicken, sondern setzt einfach eine leere
+		 * Suche ab. Um das zu verhindern, zeigen wir das Formular gar nicht an.
+		 */
+		switch (uri_string()) {
+			case '/auszahlung/kontrollblick':
+			case '/kasse/kontrollblick':
+			case '/abholung/kontrollblick':
+				$this->addData('showSearchForm', false);
+				break;
+			default:
+				$this->addData('showSearchForm', true);
+		}
 	}
 	
 

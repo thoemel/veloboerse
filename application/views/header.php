@@ -59,14 +59,17 @@ if ($this->session->userdata('logged_in')) {
 	echo '				<li>' . anchor('login/form', 'Login') . '</li>';
 }
 echo '
-			</ul>
+			</ul>';
+if (true === $showSearchForm) {
+echo '
 			' . form_open($formAction, array('class'=>'navbar-form navbar-right','role'=>"search")) . '
 				<div class="form-group">
 					' . form_input(array('name'=>'id','class'=>'form-control focusPlease','placeholder'=>"Quittungs-Nr.")) . '
 				</div>
 				<button type="submit" class="btn">' . $formSubmitText . '</button>
-			' . form_close() . '
-		</div><!-- /.navbar-collapse -->
+			' . form_close();
+}
+echo		'</div><!-- /.navbar-collapse -->
 	</nav>';
 ?>
 

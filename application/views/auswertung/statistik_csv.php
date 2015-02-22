@@ -49,3 +49,16 @@ foreach ($haendlerStatistik as $arrHaendler) {
 	. ";" . $arrHaendler['kommentar'] 
 	. "\n";
 }
+
+echo "\n";
+echo "Modalsplit nach Provisionsstufe\n";
+echo "Provisions-Obergrenze;Händler;;Private\n";
+echo ";verkauft;nicht verkauft;verkauft;nicht verkauft\n";
+foreach ($modalSplit[0] as $provision => $verkauftUndNicht) {
+	echo $provision . ";" 
+		. $modalSplit[1][$provision]['verkauft'] . ";"
+		. $modalSplit[1][$provision]['nicht_verkauft'] . ";"
+		. $verkauftUndNicht['verkauft'] . ";"
+		. $verkauftUndNicht['nicht_verkauft'] . ";\n";
+}
+

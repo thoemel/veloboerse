@@ -104,8 +104,8 @@ class Statistik extends CI_Model {
 			$arrOut[0][$row->preis] = array('verkauft'=>0,'nicht_verkauft'=>0);
 			$arrOut[1][$row->preis] = array('verkauft'=>0,'nicht_verkauft'=>0);
 		}
-		$arrOut[0]['max'] = array('verkauft'=>0,'nicht_verkauft'=>0);
-		$arrOut[1]['max'] = array('verkauft'=>0,'nicht_verkauft'=>0);
+		$arrOut[0]['mehr'] = array('verkauft'=>0,'nicht_verkauft'=>0);
+		$arrOut[1]['mehr'] = array('verkauft'=>0,'nicht_verkauft'=>0);
 
 // 		$sql = 'SELECT (haendler_id > 0) as haendlervelo,
 // 					(ceil(preis/100)*100) as obergrenze,
@@ -123,7 +123,7 @@ class Statistik extends CI_Model {
 		foreach ($query->result() as $row) {
 			$verkauftOderNicht = 'yes' == $row->verkauft ? 'verkauft' : 'nicht_verkauft';
 			if ($row->preis > end($arrProvision)) {
-				$arrOut[$row->haendlervelo]['max'][$verkauftOderNicht]++;
+				$arrOut[$row->haendlervelo]['mehr'][$verkauftOderNicht]++;
 				continue;
 			}
 			foreach ($arrProvision as $myP) {

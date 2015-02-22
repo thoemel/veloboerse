@@ -117,4 +117,36 @@ echo '
 </tbody>
 </table>';
 
+
+echo '
+' . heading('Nach Provisionsstufe', 2) . '
+<table class="table table-striped table-bordered table-condensed">
+<thead>
+	<tr>
+		<th scope="col" rowspan="2">Provisions-Obergrenze</th>
+		<th scope="col" colspan="2">Händler</th>
+		<th scope="col" colspan="2">Private</th>
+	</tr>
+	<tr>
+		<th scope="col">Anzahl verkauft</th>
+		<th scope="col">Anzahl nicht verkauft</th>
+		<th scope="col">Anzahl verkauft</th>
+		<th scope="col">Anzahl nicht verkauft</th>
+	</tr>
+</thead>
+</tbody>';
+foreach ($modalSplit[0] as $provision => $verkauftUndNicht) {
+	echo '
+	<tr>
+		<td>' . $provision . '</td>
+		<td>' . $modalSplit[1][$provision]['verkauft'] . '</td>
+		<td>' . $modalSplit[1][$provision]['nicht_verkauft'] . '</td>
+		<td>' . $verkauftUndNicht['verkauft'] . '</td>
+		<td>' . $verkauftUndNicht['nicht_verkauft'] . '</td>
+	</tr>';
+}
+echo '
+</tbody>
+</table>';
+
 include APPPATH . 'views/footer.php';

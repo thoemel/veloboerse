@@ -66,6 +66,7 @@ class Auswertung extends MY_Controller {
 		$velos = Velo::getAll();
 		$cash = 0;
 		$benoetigtesCash = 0;
+		$worstCaseCash = 0;
 		foreach ($velos->result_array() as $thisVelo) {
 			if ($thisVelo['zahlungsart'] == 'bar') {
 				$cash += $thisVelo['preis'];
@@ -75,9 +76,19 @@ class Auswertung extends MY_Controller {
 			{
 				$benoetigtesCash += ($thisVelo['preis'] - Velo::getProvision($thisVelo['preis']));
 			}
+			if (!$thisVelo['haendler_id'] 
+				&& 'no' == $thisVelo['ausbezahlt']
+				&& !in_array($thisVelo['zahlungsart'], array('debit','kredit')))
+			{
+				$worstCaseCash += ($thisVelo['preis'] - Velo::getProvision($thisVelo['preis']));
+			}
+			if (condition) {
+				// Hochrechnung gemäss aktuellem Modalsplit cash/karte;
+			}
 		}
 		$this->addData('cash', $cash);
 		$this->addData('benoetigtesCash', $benoetigtesCash);
+		$this->addData('worstCaseCash', $worstCaseCash);
 		
 		$this->load->view('auswertung/cashMgmt', $this->data);
 		return;
@@ -97,6 +108,8 @@ class Auswertung extends MY_Controller {
 		$this->addData('veloStatistik', Statistik::velos());
 		
 		$this->addData('haendlerStatistik', Statistik::haendler());
+		
+		$this->addData('modalSplit', Statistik::modalsplit());
 		
 		switch ($format) {
 			case 'csv':

@@ -80,6 +80,64 @@ class Statistik extends CI_Model {
 		return $arrOut;
 	}
 	
+	
+	/**
+	 * Verkaufte Velos nach 
+	 * 		Händler/Private
+	 * 			Provisionsstufe
+	 * 				Verkauft/nicht
+	 * @return array(0|1=>array(obergrenze=>array(verkauft=>#,nicht_verkauft=>#)))
+	 */
+	public static function modalsplit()
+	{
+		$CI = & get_instance ();
+		$arrOut = array(0=>array(),1=>array());
+		
+		$CI->db->order_by('preis', 'asc');
+		$provisionsQuery = $CI->db->get('provision');
+		$arrProvision = array();
+		if ($provisionsQuery->num_rows() == 0) {
+			return $arrOut;
+		}
+		foreach ($provisionsQuery->result() as $row) {
+			$arrProvision[] = $row->preis;
+			$arrOut[0][$row->preis] = array('verkauft'=>0,'nicht_verkauft'=>0);
+			$arrOut[1][$row->preis] = array('verkauft'=>0,'nicht_verkauft'=>0);
+		}
+		$arrOut[0]['max'] = array('verkauft'=>0,'nicht_verkauft'=>0);
+		$arrOut[1]['max'] = array('verkauft'=>0,'nicht_verkauft'=>0);
+
+// 		$sql = 'SELECT (haendler_id > 0) as haendlervelo,
+// 					(ceil(preis/100)*100) as obergrenze,
+// 					verkauft, count(verkauft) as anzahl
+// 				FROM velos
+// 				GROUP BY (haendler_id > 0), ceil(preis/100)*100, verkauft
+// 				ORDER BY haendlervelo asc, obergrenze asc, verkauft asc
+// 				LIMIT 0, 100;';
+		$sql = 'SELECT (haendler_id > 0) as haendlervelo, preis, verkauft
+				FROM velos';
+		$query = $CI->db->query($sql);
+		if ($query->num_rows() == 0) {
+			return $arrOut;
+		}
+		foreach ($query->result() as $row) {
+			$verkauftOderNicht = 'yes' == $row->verkauft ? 'verkauft' : 'nicht_verkauft';
+			if ($row->preis > end($arrProvision)) {
+				$arrOut[$row->haendlervelo]['max'][$verkauftOderNicht]++;
+				continue;
+			}
+			foreach ($arrProvision as $myP) {
+				if ($row->preis <= $myP) {
+					$arrOut[$row->haendlervelo][$myP][$verkauftOderNicht]++;
+					break;
+				}
+			}
+		}
+		
+		return $arrOut;
+	}
+	
+	
 	/**
 	 * Erledigt das registrieren von Benutzerzugriffen.
 	 * Ursprünglicher Zweck ist, dass bei der Fehlersuche nach Errormails die

@@ -14,15 +14,25 @@ echo heading('Prognosen', 2) . '
 		</thead>
 		<tbody>
 			<tr>
-				<th scope="row">Maximale Auszahlung</th>
-				<td>' . $newStatistics['maxAuszahlung'] . '</td>
-				<td>Preis aller Privatvelos, die noch nicht ausbezahlt oder abgeholt wurden,<br>
-					abzüglich der Provision.</td>
-			</tr>
-			<tr>
 				<th scope="row">Einnahmen bar bisher</th>
 				<td>' . $newStatistics['einnahmenBisher'] . '</td>
 				<td>Preis aller Velos, die bisher verkauft und bar bezahlt wurden.</td>
+			</tr>
+			<tr>
+				<th scope="row">Ausbezahlt bisher</th>
+				<td>' . $newStatistics['ausbezahlt'] . '</td>
+				<td></td>
+			</tr>
+			<tr>
+				<th scope="row">Berechneter Kassenstand</th>
+				<td>' . ($newStatistics['einnahmenBisher'] - $newStatistics['ausbezahlt']) . '</td>
+				<td>Ganz einfach Einnahmen bar bisher minus ausbezahlter Betrag bisher.</td>
+			</tr>
+			<tr>
+				<th scope="row">Maximale Auszahlung ab jetzt</th>
+				<td>' . $newStatistics['maxAuszahlung'] . '</td>
+				<td>Preis aller Privatvelos, die noch nicht ausbezahlt oder abgeholt wurden,<br>
+					abzüglich der Provision.</td>
 			</tr>
 			<tr>
 				<th scope="row">Einnahmen bar ab jetzt</th>

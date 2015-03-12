@@ -67,6 +67,17 @@ class Statistik extends CI_Model {
 		$query = $CI->db->query($sql);
 		$einnahmenBisher = $query->row()->einnahmen;
 		
+		// Schon ausbezahlt
+		$ausbezahlt = 0;
+		$sql = 'SELECT	preis
+				FROM	velos
+				WHERE	(haendler_id IS NULL OR haendler_id = 0)
+				AND		ausbezahlt = "yes"';
+		$query = $CI->db->query($sql);
+		foreach ($query->result() as $row) {
+			$ausbezahlt += $row->preis;
+			$ausbezahlt -= Velo::getProvision($row->preis);
+		}
 		
 		/*
 		 * Erwartete Bargeld-Einnahmen ab jetzt
@@ -103,6 +114,7 @@ class Statistik extends CI_Model {
 		$arrOut = array(
 				'maxAuszahlung'					=> $maxAuszahlung, 
 				'einnahmenBisher'				=> $einnahmenBisher, 
+				'ausbezahlt'					=> $ausbezahlt,
 				'einnahmenPrognoseAbJetzt'		=> $prognoseEinnahmenHeute,
 				'statAnteilVerkauftePrivat'		=> $statAnteilVerkauftePrivat,
 				'statAnteilVerkaufteHaendler'	=> $statAnteilVerkaufteHaendler,

@@ -31,6 +31,88 @@ class Statistik extends CI_Model {
 		return $query->result();
 	}
 	
+	
+	/**
+	 * Statistische Zahlen für die Abschätzung, wie viel Bargeld wir auf Platz brauchen.
+	 * 
+	 * @return array	Keys: maxAuszahlung, einnahmenBisher, einnahmenPrognoseAbJetzt, statAnteilVerkauftePrivat, statAnteilVerkaufteHaendler, statAnteilVerkaufteTotal
+	 */
+	public static function cashMgmt()
+	{
+		$CI = & get_instance ();
+		
+		// Annahmen: statistischer Anteil verkauft/angeboten Privat (2014h)
+		$statAnteilVerkauftePrivat = 0.56;
+		$statAnteilVerkaufteHaendler = 0.49;
+		$statAnteilVerkaufteTotal = 0.53;
+		
+		// Maximaler auszuzahlender Betrag Privatvelos
+		$maxAuszahlung = 0;
+		$sql = 'SELECT	preis
+				FROM	velos
+				WHERE	(haendler_id IS NULL OR haendler_id = 0)
+				AND		ausbezahlt = "no"
+				AND		abgeholt = "no"';
+		$query = $CI->db->query($sql);
+		foreach ($query->result() as $row) {
+			$maxAuszahlung += $row->preis;
+			$maxAuszahlung -= Velo::getProvision($row->preis);
+		}
+		
+		// Heute eingenommenes Bargeld
+		$sql = 'SELECT	SUM(preis) as einnahmen
+				FROM	velos
+				WHERE	verkauft = "yes"
+				AND		zahlungsart = "bar"';
+		$query = $CI->db->query($sql);
+		$einnahmenBisher = $query->row()->einnahmen;
+		
+		
+		/*
+		 * Erwartete Bargeld-Einnahmen ab jetzt
+		 */
+		// Anteil Barzahlung
+		$statAnteilBarHeute = 1;
+		$sql = 'SELECT zahlungsart, count( id ) as anz
+				FROM `velos`
+				WHERE verkauft = "yes"
+				AND zahlungsart != ""
+				GROUP BY zahlungsart';
+		$query = $CI->db->query($sql);
+		$sumVerkaufte = 0;
+		foreach ($query->result() as $row) {
+			$sumVerkaufte += $row->anz;
+			if ($row->zahlungsart == 'bar') {
+				$sumBar = $row->anz;
+			}
+		}
+		if (0 != $sumVerkaufte) {
+			$statAnteilBarHeute = $sumBar / $sumVerkaufte;
+		}
+		
+		// Geschätzte Anzahl Verkäufe (-> Preis)
+		$sql = 'SELECT sum(preis) as preisAufPlatz
+				FROM `velos`
+				WHERE verkauft = "no"
+				AND abgeholt = "no"';
+		$query = $CI->db->query($sql);
+		$preisAufPlatz = $query->row()->preisAufPlatz;
+		$prognoseVerkaufHeute = $preisAufPlatz * $statAnteilVerkaufteTotal;
+		$prognoseEinnahmenHeute = $prognoseVerkaufHeute * $statAnteilBarHeute;
+		
+		$arrOut = array(
+				'maxAuszahlung'					=> $maxAuszahlung, 
+				'einnahmenBisher'				=> $einnahmenBisher, 
+				'einnahmenPrognoseAbJetzt'		=> $prognoseEinnahmenHeute,
+				'statAnteilVerkauftePrivat'		=> $statAnteilVerkauftePrivat,
+				'statAnteilVerkaufteHaendler'	=> $statAnteilVerkaufteHaendler,
+				'statAnteilVerkaufteTotal'		=> $statAnteilVerkaufteTotal,
+				'statAnteilBarHeute'			=> $statAnteilBarHeute
+		);
+		return $arrOut;
+	}
+	
+	
 	/**
 	 * Statistische Angaben pro Händler
 	 */

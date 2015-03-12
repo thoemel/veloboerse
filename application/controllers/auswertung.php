@@ -82,13 +82,14 @@ class Auswertung extends MY_Controller {
 			{
 				$worstCaseCash += ($thisVelo['preis'] - Velo::getProvision($thisVelo['preis']));
 			}
-			if (condition) {
-				// Hochrechnung gemäss aktuellem Modalsplit cash/karte;
-			}
+// 			if (condition) {
+// 				// Hochrechnung gemäss aktuellem Modalsplit cash/karte;
+// 			}
 		}
 		$this->addData('cash', $cash);
 		$this->addData('benoetigtesCash', $benoetigtesCash);
 		$this->addData('worstCaseCash', $worstCaseCash);
+		$this->addData('newStatistics', Statistik::cashMgmt());
 		
 		$this->load->view('auswertung/cashMgmt', $this->data);
 		return;

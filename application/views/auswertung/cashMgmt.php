@@ -3,10 +3,60 @@ include APPPATH . 'views/header.php';
 
 echo heading('Cash Management', 1);
 
-echo '<p>So viel Cash haben wir eingenommen: CHF ' . $cash . '</p>';
+echo heading('Prognosen', 2) . '
+		<table class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th scope="col">Was</th>
+				<th scope="col">Wieviel</th>
+				<th scope="col">Bemerkungen</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">Maximale Auszahlung</th>
+				<td>' . $newStatistics['maxAuszahlung'] . '</td>
+				<td>Preis aller Privatvelos, die noch nicht ausbezahlt oder abgeholt wurden,<br>
+					abzüglich der Provision.</td>
+			</tr>
+			<tr>
+				<th scope="row">Einnahmen bar bisher</th>
+				<td>' . $newStatistics['einnahmenBisher'] . '</td>
+				<td>Preis aller Velos, die bisher verkauft und bar bezahlt wurden.</td>
+			</tr>
+			<tr>
+				<th scope="row">Einnahmen bar ab jetzt</th>
+				<td>' . round($newStatistics['einnahmenPrognoseAbJetzt']) . '</td>
+				<td>Preis aller Velos auf Platz, <br>
+					verrechnet mit Anteil Verkaufte/Angebotene<br>
+					und Anteil AnzahlBarzahlung/AnzahlVerkauft<br>
+					(Datengrundlage siehe unten)</td>
+			</tr>
+		</tbody>
+		</table>';
 
-echo '<p>So viel Cash brauchen wir für die Auszahlung gemäss jetzigem Verkaufsstand: CHF ' . $benoetigtesCash . '</p>';
-
-echo '<p>So viel Cash brauchen maximal für die Auszahlung: CHF ' . $worstCaseCash . '</p>';
+echo heading('Annahmen', 2) . '
+		<table class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th scope="col">Was</th>
+				<th scope="col">Wieviel</th>
+				<th scope="col">Bemerkungen</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">Statistischer Anteil Verkaufte/Angebotene Total</th>
+				<td>' . $newStatistics['statAnteilVerkaufteTotal'] . '</td>
+				<td>(Herbst 2014)</td>
+			</tr>
+			<tr>
+				<th scope="row">Statistischer Anteil Barzahlung</th>
+				<td>' . $newStatistics['einnahmenBisher'] . '</td>
+				<td>Berechnet aus Daten von heute.<br>
+					Zum Vergleich: Im Herbst 2014 war er 0.506</td>
+			</tr>
+		</tbody>
+		</table>';
 
 include APPPATH . 'views/footer.php';

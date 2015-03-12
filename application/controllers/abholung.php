@@ -104,9 +104,7 @@ class Abholung extends MY_Controller {
 			$this->addData('haendler', $myHandler);
 			$verbleibend = $myHandler->anzahlNochDrinnen();
 			$this->addData('verbleibend', $verbleibend);
-			if (0 == $verbleibend) {
-				$myHandler->setStatus('abgeholt');
-				$myHandler->save();
+			if ('abgeholt' == $myHandler->getStatus()) {
 				$this->addData('success', '<br><br>Alle Velos dieses Händlers sind entweder verkauft oder abgeholt.');
 				$this->addData('bodyClass', ' class="alert alert-success"');
 			}

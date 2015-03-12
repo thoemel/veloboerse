@@ -183,6 +183,22 @@ class Velo extends CI_Model {
 			$success = $this->db->update('velos');
 		}
 		
+		// Check haendler Status
+		if ($this->haendler_id > 0) {
+			$haendler = new Haendler();
+			$haendler->find($this->haendler_id);
+			if (0 == $haendler->anzahlNochDrinnen() && $haendler->getStatus() == 'angenommen') {
+				// Das war das letzte Velo dieses Händlers, das die Halle verliess (durch Kasse oder Abholung)
+				$haendler->setStatus('abgeholt');
+				$success = $success && $haendler->save();
+			}
+			if (0 < $haendler->anzahlNochDrinnen() && $haendler->getStatus() == 'abgeholt') {
+				// Ggf. wenn ein Velo nachträglich übers Allerwelts-Formular bearbeitet wurde
+				$haendler->setStatus('angenommen');
+				$success = $success && $haendler->save();
+			}
+		}
+		
 		return $success;
 	} // End of function save()
 	

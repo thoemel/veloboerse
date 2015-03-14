@@ -62,7 +62,7 @@ echo heading('Annahmen', 2) . '
 			</tr>
 			<tr>
 				<th scope="row">Statistischer Anteil Barzahlung</th>
-				<td>' . $newStatistics['einnahmenBisher'] . '</td>
+				<td>' . $newStatistics['statAnteilBarHeute'] . '</td>
 				<td>Berechnet aus Daten von heute.<br>
 					Zum Vergleich: Im Herbst 2014 war er 0.506</td>
 			</tr>

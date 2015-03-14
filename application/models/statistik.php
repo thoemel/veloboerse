@@ -52,7 +52,8 @@ class Statistik extends CI_Model {
 				FROM	velos
 				WHERE	(haendler_id IS NULL OR haendler_id = 0)
 				AND		ausbezahlt = "no"
-				AND		abgeholt = "no"';
+				AND		abgeholt = "no"
+				AND		verkauft = "no"';
 		$query = $CI->db->query($sql);
 		foreach ($query->result() as $row) {
 			$maxAuszahlung += $row->preis;

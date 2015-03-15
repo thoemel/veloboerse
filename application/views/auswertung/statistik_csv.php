@@ -46,7 +46,7 @@ foreach ($haendlerStatistik as $arrHaendler) {
 	. ";" . $arrHaendler['einstellgebuehr'] 
 	. ";" . $arrHaendler['standgebuehr'] 
 	. ";" . $arrHaendler['betragAusbezahlt'] 
-	. ";" . $arrHaendler['kommentar'] 
+	. ";\"" . $arrHaendler['kommentar'] . "\""
 	. "\n";
 }
 

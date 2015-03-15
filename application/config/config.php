@@ -200,7 +200,15 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 2;
+switch ($_SERVER['SERVER_NAME']) {
+	case 'dev.provelobern.ch':
+		$config['log_threshold'] = 2;
+		break;
+	case 'provelobern.ch':
+	case 'www.provelobern.ch':
+	default:
+		$config['log_threshold'] = 1;
+}
 
 
 /*

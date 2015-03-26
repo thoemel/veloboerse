@@ -7,7 +7,16 @@ if ($this->session->flashdata('gespeichertesVelo')) {
 		<h3>Gespeicherte Angaben</h3>
 		<dl>
 			<dt>Quittung Nr.</dt><dd>' . $velo->id . '</dd>
-			<dt>Keine Provision</dt><dd>' . $keineProvision . '</dd>
+			<dt>Preis</dt><dd>' . $velo->preis. '</dd>
+			';
+if ('yes' == $velo->keine_provision) {
+	echo '<dt>Keine Provision</dt><dd>' . $keineProvision . '</dd>';
+	echo '<dt>Auszahlung</dt><dd>' . $velo->preis . '</dd>';
+} else {
+	echo '<dt>Provision</dt><dd>' . velo::getProvision($velo->preis) . '</dd>';
+	echo '<dt>Auszahlung</dt><dd>' . ($velo->preis - velo::getProvision($velo->preis)) . '</dd>';
+}
+echo		'
 		</dl>
 	</div>';
 }

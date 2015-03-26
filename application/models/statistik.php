@@ -35,7 +35,7 @@ class Statistik extends CI_Model {
 	/**
 	 * Statistische Zahlen für die Abschätzung, wie viel Bargeld wir auf Platz brauchen.
 	 * 
-	 * @return array	Keys: maxAuszahlung, einnahmenBisher, einnahmenPrognoseAbJetzt, statAnteilVerkauftePrivat, statAnteilVerkaufteHaendler, statAnteilVerkaufteTotal
+	 * @return array	Keys: maxAuszahlung, probAuszahlung, einnahmenBisher, einnahmenPrognoseAbJetzt, statAnteilVerkauftePrivat, statAnteilVerkaufteHaendler, statAnteilVerkaufteTotal
 	 */
 	public static function cashMgmt()
 	{
@@ -114,6 +114,7 @@ class Statistik extends CI_Model {
 		
 		$arrOut = array(
 				'maxAuszahlung'					=> $maxAuszahlung, 
+				'probAuszahlung'				=> ($maxAuszahlung * $statAnteilVerkauftePrivat),
 				'einnahmenBisher'				=> $einnahmenBisher, 
 				'ausbezahlt'					=> $ausbezahlt,
 				'einnahmenPrognoseAbJetzt'		=> $prognoseEinnahmenHeute,

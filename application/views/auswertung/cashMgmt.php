@@ -29,6 +29,13 @@ echo heading('Prognosen', 2) . '
 				<td>Ganz einfach Einnahmen bar bisher minus ausbezahlter Betrag bisher.</td>
 			</tr>
 			<tr>
+				<th scope="row">Wahrscheinliche Auszahlung ab jetzt</th>
+				<td>' . round($newStatistics['probAuszahlung']) . '</td>
+				<td>Preis aller Privatvelos, die noch nicht ausbezahlt oder abgeholt wurden<br>
+					(abzüglich der Provision), multipliziert mit dem statistischen Anteil
+					verkaufte/total Privatvelos.</td>
+			</tr>
+			<tr>
 				<th scope="row">Maximale Auszahlung ab jetzt</th>
 				<td>' . $newStatistics['maxAuszahlung'] . '</td>
 				<td>Preis aller Privatvelos, die noch nicht ausbezahlt oder abgeholt wurden,<br>
@@ -58,6 +65,11 @@ echo heading('Annahmen', 2) . '
 			<tr>
 				<th scope="row">Statistischer Anteil Verkaufte/Angebotene Total</th>
 				<td>' . $newStatistics['statAnteilVerkaufteTotal'] . '</td>
+				<td>(Herbst 2014)</td>
+			</tr>
+			<tr>
+				<th scope="row">Statistischer Anteil Verkaufte/Angebotene Private</th>
+				<td>' . $newStatistics['statAnteilVerkauftePrivat'] . '</td>
 				<td>(Herbst 2014)</td>
 			</tr>
 			<tr>

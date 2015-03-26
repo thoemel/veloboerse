@@ -44,6 +44,7 @@ class Kasse extends MY_Controller {
 			return;
 		}
 		$this->addData('velo', $myVelo);
+		$this->addData('hideNavi', true);
 		
 		$this->load->view('kasse/kontrollblick', $this->data);
 	}

@@ -36,41 +36,43 @@ if (!empty($querformat)) {
 
 
 <?php 
-echo	'
-	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#vb-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			' . anchor('', img('img/logo_nur_ringe.png').'&nbsp;Velobörse', array('class'=>'navbar-brand')) . '
-		</div><!-- End of navbar-header -->
-	
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="vb-navbar-collapse-1">
-			<ul class="nav navbar-nav">';
-if ($this->session->userdata('logged_in')) {
-	echo '				<li>' . anchor('login/showChoices', 'Ressort') . '</li>';
-	echo '				<li>' . anchor('login/logout', 'Logout') . '</li>';
-} else {
-	echo '				<li>' . anchor('login/form', 'Login') . '</li>';
-}
-echo '
-			</ul>';
-if (true === $showSearchForm) {
-echo '
-			' . form_open($formAction, array('class'=>'navbar-form navbar-right','role'=>"search")) . '
-				<div class="form-group">
-					' . form_input(array('name'=>'id','class'=>'form-control focusPlease','placeholder'=>"Quittungs-Nr.")) . '
-				</div>
-				<button type="submit" class="btn">' . $formSubmitText . '</button>
-			' . form_close();
-}
-echo		'</div><!-- /.navbar-collapse -->
-	</nav>';
+if (!isset($hideNavi) || false == $hideNavi) {
+	echo	'
+		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#vb-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				' . anchor('', img('img/logo_nur_ringe.png').'&nbsp;Velobörse', array('class'=>'navbar-brand')) . '
+			</div><!-- End of navbar-header -->
+		
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="vb-navbar-collapse-1">
+				<ul class="nav navbar-nav">';
+	if ($this->session->userdata('logged_in')) {
+		echo '				<li>' . anchor('login/showChoices', 'Ressort') . '</li>';
+		echo '				<li>' . anchor('login/logout', 'Logout') . '</li>';
+	} else {
+		echo '				<li>' . anchor('login/form', 'Login') . '</li>';
+	}
+	echo '
+				</ul>';
+	if (true === $showSearchForm) {
+	echo '
+				' . form_open($formAction, array('class'=>'navbar-form navbar-right','role'=>"search")) . '
+					<div class="form-group">
+						' . form_input(array('name'=>'id','class'=>'form-control focusPlease','placeholder'=>"Quittungs-Nr.")) . '
+					</div>
+					<button type="submit" class="btn">' . $formSubmitText . '</button>
+				' . form_close();
+	}
+	echo		'</div><!-- /.navbar-collapse -->
+		</nav>';
+} // End if not $hideNavi
 ?>
 
 	<div class="container">

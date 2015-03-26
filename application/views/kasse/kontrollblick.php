@@ -41,9 +41,9 @@ echo form_hidden('provision', Velo::getProvision($velo->preis));
 echo form_hidden('angeschriebener_preis', $velo->preis);
 
 echo '
-	<div class="checkbox">
-		<label>
-			' . form_checkbox('helfer_kauft', 'yes', false, 'id="helfer_kauft" class="form-control"') . '
+	<div class="form-group">
+		<label class="checkbox-inline">
+			' . form_checkbox('helfer_kauft', 'yes', false, 'id="helfer_kauft"') . '
 			Von HelferIn gekauft
 		</label>
 	</div>
@@ -64,7 +64,9 @@ echo '
 if (0 == $velo->gestohlen) {
 	echo '
 		<div class="form-group">
-				<button type="submit" class="btn btn-default">Bestätigen</button>
+				<button type="submit" id="bestaetigen_kasse" class="btn btn-default">
+					Bestätigen
+		</button>
 		</div>';
 }
 if (1 == $velo->gestohlen) {
@@ -81,8 +83,8 @@ echo '
 </div>
 			
 <div>
-	<p>' . anchor('velos/formular/' . $velo->id, 'Ausnahmen bearbeiten') . '</p>
-	<p>' . anchor('login/dispatch/abholung', 'Zur Abholung (nicht-verkaufte Velos zurückgeben)') . '</p>
+	<p><br><br><br><br><br><br>
+		' . anchor('kasse/', 'Dieses Velo nicht verkaufen.') . '</p>
 </div>';
 
 include APPPATH . 'views/footer.php';

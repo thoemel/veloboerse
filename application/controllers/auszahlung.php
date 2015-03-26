@@ -79,6 +79,7 @@ class Auszahlung extends MY_Controller {
 		}
 		$this->addData('velo', $myVelo);
 		$this->addData('auszahlung_betrag', ($myVelo->preis - Velo::getProvision($myVelo->preis)));
+		$this->addData('hideNavi', true);
 		
 		$this->load->view('auszahlung/kontrollblick', $this->data);
 	}

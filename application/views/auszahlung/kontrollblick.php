@@ -71,6 +71,12 @@ if (1 == $velo->gestohlen) {
 echo form_close();
 
 echo '
+</div>
+
+<div>
+	<p><br><br><br><br><br><br>
+		' . anchor('auszahlung/formular_private/', 
+				'Nicht auszahlen, nächste Quittung scannen.') . '</p>
 </div>';
 
 include APPPATH . 'views/footer.php';

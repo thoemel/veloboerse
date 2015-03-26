@@ -35,7 +35,7 @@ class Statistik extends CI_Model {
 	/**
 	 * Statistische Zahlen für die Abschätzung, wie viel Bargeld wir auf Platz brauchen.
 	 * 
-	 * @return array	Keys: maxAuszahlung, probAuszahlung, einnahmenBisher, einnahmenPrognoseAbJetzt, statAnteilVerkauftePrivat, statAnteilVerkaufteHaendler, statAnteilVerkaufteTotal
+	 * @return array	Keys: maxAuszahlung, probAuszahlung, einnahmenBisher, einnahmenPrognoseAbJetzt, statAnteilVerkauftePrivat, statAnteilVerkaufteHaendler, statAnteilVerkaufteTotal, countPrivateAufPlatz
 	 */
 	public static function cashMgmt()
 	{
@@ -55,6 +55,7 @@ class Statistik extends CI_Model {
 				AND		abgeholt = "no"
 				AND		verkauft = "no"';
 		$query = $CI->db->query($sql);
+		$countPrivateAufPlatz = $query->num_rows();
 		foreach ($query->result() as $row) {
 			$maxAuszahlung += $row->preis;
 			$maxAuszahlung -= Velo::getProvision($row->preis);
@@ -121,7 +122,8 @@ class Statistik extends CI_Model {
 				'statAnteilVerkauftePrivat'		=> $statAnteilVerkauftePrivat,
 				'statAnteilVerkaufteHaendler'	=> $statAnteilVerkaufteHaendler,
 				'statAnteilVerkaufteTotal'		=> $statAnteilVerkaufteTotal,
-				'statAnteilBarHeute'			=> $statAnteilBarHeute
+				'statAnteilBarHeute'			=> $statAnteilBarHeute,
+				'countPrivateAufPlatz'			=> $countPrivateAufPlatz,
 		);
 		return $arrOut;
 	}

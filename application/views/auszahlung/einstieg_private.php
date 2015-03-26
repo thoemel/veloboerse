@@ -28,9 +28,24 @@ echo '
 ';
 
 echo '
-	<p>Gib im Formular die Quittungs-Nummer ein, damit Du die Auszahlung abwickeln kannst.</p>';
-
-echo '
+	<p>Gib im Formular die Quittungs-Nummer ein, damit Du die Auszahlung abwickeln kannst.</p>
+	<h2>Kleine Statistik</h2>
+	<table class="table table-striped table-bordered table-condensed">
+	<tbody>
+		<tr>
+			<th scope="row">Velos auf Platz</th>
+			<td>' . $newStatistics['countPrivateAufPlatz'] . '</td>
+		</tr>
+		<tr>
+			<th scope="row">Vermuteter Bargeldbedarf</th>
+			<td>' . number_format(round($newStatistics['probAuszahlung']), 0, '.', '\'') . '</td>
+		</tr>
+		<tr>
+			<th scope="row">Maximaler Bargeldbedarf</th>
+			<td>' . number_format($newStatistics['maxAuszahlung'], 0, '.', '\'') . '</td>
+		</tr>
+	</tbody>
+	</table>
 </div>';
 
 include APPPATH . 'views/footer.php';

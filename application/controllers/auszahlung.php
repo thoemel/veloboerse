@@ -38,7 +38,20 @@ class Auszahlung extends MY_Controller {
 			$keineProvision = ('yes' == $myVelo->keine_provision) ? 'Ja' : 'Nein';
 			$this->addData('keineProvision', $keineProvision);
 		}
+		
+		$this->addData('newStatistics', Statistik::cashMgmt());
+		
 		$this->load->view('auszahlung/einstieg_private', $this->data);
+	}
+	
+	
+	/**
+	 * Per Default auf formular_index umleiten.
+	 */
+	public function index()
+	{
+		$this->formular_private();
+		return;
 	}
 
 

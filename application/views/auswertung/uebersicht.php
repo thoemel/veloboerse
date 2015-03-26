@@ -13,6 +13,13 @@ echo '
 		<li>' . anchor('auswertung/afrika', 'Velos für Afrika') . '</li>
 	</ul>
 </div>';
+echo '
+	' . heading('Nächste Börse einrichten', 1) . '
+<div class="row">
+	<p>
+		' . anchor('vorbereitung/index', 'Vorgehen') . '
+	</p>
+</div>';
 
 
 include APPPATH . 'views/footer.php';

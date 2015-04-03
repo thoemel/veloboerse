@@ -11,6 +11,11 @@ echo '
 	</ol>
 	
 	<h1>Händleradmin: Direktlinks</h1>
+				
+	<div>
+		<p>' . anchor('haendleradmin/direktLinksDeaktivieren', 'Alle erneuern.',
+				array('title'=>'Ersetzt die bestehenden Direktlinks durch neue.')) . '</p>
+	</div>
 	
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>
@@ -18,6 +23,7 @@ echo '
 				<th scope="column">Nr.</th>
 				<th scope="column">Firma | Person</th>
 				<th scope="column">Link</th>
+				<th scope="column">erneuern</th>
 			</tr>
 		</thead>
 		<tbody>';
@@ -28,6 +34,9 @@ foreach ($liste->result() as $haendler) {
 				<th scope="row">' . $haendler->id . '</th>
 				<td>' . $haendler->firma . ' | ' . $haendler->person . '</td>
 				<td>' . base_url() . 'index.php/haendlerformular/' . $haendler->code . '</td>
+				<td>' . anchor('haendleradmin/direktLinksDeaktivieren/' . $haendler->id,
+							'erneuern', 
+							array('title'=>'Ersetzt den bestehenden Direktlink dieses Händlers durch einen neuen.')) . '</td>
 			</tr>';
 }	
 

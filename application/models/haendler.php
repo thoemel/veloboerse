@@ -67,6 +67,26 @@ class Haendler extends CI_Model {
 	
 	
 	/**
+	 * Codes für Händler neu setzen mit UUID().
+	 * @param	int		$haendler_id	Nur für diesen Händler, falls nicht 0.
+	 * @return	boolean	True, wenn Query erfolgreich.
+	 */
+	public static function direktLinksDeaktivieren($haendler_id)
+	{
+		$CI =& get_instance();
+		$sql = 'UPDATE haendler SET code = UUID()';
+		
+		if ($haendler_id > 0) {
+			if (!self::istRegistriert($haendler_id)) {
+				return false;
+			}
+			$sql .= ' WHERE id = ?';
+		}
+		return $CI->db->query($sql, array($haendler_id));
+	}
+	
+	
+	/**
 	 * Sucht in der DB nach dem Händler mit der entsprechenden ID.
 	 * 
 	 * @throws	Exception, falls kein Händler gefunden.

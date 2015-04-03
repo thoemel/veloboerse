@@ -161,6 +161,29 @@ class Haendleradmin extends MY_Controller {
 	
 	
 	/**
+	 * Ersetzt die bestehenden Direktlinks durch neue.
+	 * @param	int		$haendler_id	Nur für diesen Händler, falls id gegeben.
+	 * @return	void
+	 */
+	public function direktLinksDeaktivieren($haendler_id = 0)
+	{
+		$success = Haendler::direktLinksDeaktivieren((int)$haendler_id);
+		if (false == $success) {
+			$this->session->set_flashdata('error', 'Direktlink(s) deaktivieren ist fehlgeschlagen.');
+		} else {
+			if (0 < $haendler_id) {
+				$this->session->set_flashdata('success', 'Dieser Händler hat nun einen neuen Direktlink.');
+			} else {
+				$this->session->set_flashdata('success', 'Direktlinks deaktivieren war erfolgreich. Alle Händler haben nun neue Direktlinks.');
+			}
+		}
+		
+		redirect('haendleradmin/direktlinks');
+		return;
+	}
+	
+	
+	/**
 	 * Google-docs File empfangen und Import starten.
 	 * Ich erwarte, dass ein csv à la Excel kommt. Also Semikolon als Delimiter
 	 * und doppelten Anführungszeichen als Text-Wrapper.

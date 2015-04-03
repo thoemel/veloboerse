@@ -249,8 +249,10 @@ class Statistik extends CI_Model {
 		if (! empty ( $_POST )) {
 			$CI->db->set ( 'post_json', json_encode ( $_POST ) );
 		}
-		$CI->db->set ( 'user_id', $CI->session->userdata ( 'user_id' ) );
-		$CI->db->set ( 'user_agent', $CI->session->userdata ( 'user_agent' ) );
+		$user_id = NULL === $CI->session->userdata ( 'user_id' ) ? 0 : $CI->session->userdata ( 'user_id' );
+		$CI->db->set ( 'user_id', $user_id );
+		$user_agent = NULL === $CI->session->userdata ( 'user_agent' ) ? '' : $CI->session->userdata ( 'user_agent' );
+		$CI->db->set ( 'user_agent', $user_agent );
 		$CI->db->insert ( 'statistik' );
 		
 		return;

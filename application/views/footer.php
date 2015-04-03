@@ -17,7 +17,7 @@ $min = ('dev' == substr($_SERVER['SERVER_NAME'], 0, 3)) ? '' : '.min';
 echo '
 <script src="' . base_url() . 'js/vendor/bootstrap' . $min . '.js"></script>
 
-<script src="' . base_url() . 'js/main.js"></script>';
+<script src="' . base_url() . 'js/main.js?' . (filemtime('js/main.js')) . '"></script>';
 ?>
 
 </body>

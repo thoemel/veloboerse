@@ -81,9 +81,27 @@ if (!isset($hideNavi) || false == $hideNavi) {
 <?php 
 if (1 == $this->session->userdata('logged_in')) {
 	echo '
-		<div id="confirmation">
-			<h2>Formular abgeschickt - warte auf Antwort</h2>
-		</div>';
+		<div id="confirmation_modal" class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		          <h4 class="modal-title" id="gridSystemModalLabel">Warte auf Antwort</h4>
+		        </div>
+		        <div class="modal-body">
+		          <div class="container-fluid">
+		            <div class="row">
+		              <div class="col-md-12">
+						Das Formular wurde abgeschickt. <br>
+						Wir müssen auf Antwort warten, weil sonst das System aus dem Takt gerät!
+					  </div>
+		            </div>
+		          </div>
+		        </div>
+		      </div><!-- /.modal-content -->
+		    </div><!-- /.modal-dialog -->
+		  </div><!-- /.modal -->
+		';
 }
 
 if (false != $this->session->flashdata('success')) {

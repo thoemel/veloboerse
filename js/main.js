@@ -26,7 +26,7 @@ $(document).ready(function() {
 	 * solange der erste Request noch nicht fertig ist.
 	 */
 	$('form').on('submit', function() {
-		$('#confirmation').show();
+		$('#confirmation_modal').modal('show');
 	});
 });
 

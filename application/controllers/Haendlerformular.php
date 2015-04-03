@@ -195,6 +195,7 @@ class Haendlerformular extends MY_Controller {
 		$typen = $this->input->post('typ');
 		$rahmennummern = $this->input->post('rahmennummer');
 		$vignettennummern = $this->input->post('vignettennummer');
+		$stornierte = NULL === $this->input->post('storniert') ? array() : $this->input->post('storniert');
 		$countVelos = count($ids);
 		for ($i = 0; $i < $countVelos; $i++) {
 			$myVelo = new Velo();
@@ -210,6 +211,10 @@ class Haendlerformular extends MY_Controller {
 			$myVelo->marke = $marken[$i];
 			$myVelo->rahmennummer = $rahmennummern[$i];
 			$myVelo->vignettennummer = $vignettennummern[$i];
+			// Checkboxen werden nur übermittelt, falls gecheckt. Darum ist der Value
+			// auf die velo->id gesetzt.
+			
+			$myVelo->storniert = in_array($myVelo->id, $stornierte);
 			$ret = $ret && $myVelo->save();
 		}
 		

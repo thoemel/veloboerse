@@ -24,7 +24,7 @@ class Statistik extends CI_Model {
 				FROM velos 
 				WHERE verkauft = "yes" 
 				AND ausbezahlt = "no" 
-				AND (haendler_id < 1 OR haendler_id IS NULL) 
+				AND (haendler_id = 0) 
 				ORDER BY id asc';
 		$query = $CI->db->query($sql);
 		
@@ -50,7 +50,7 @@ class Statistik extends CI_Model {
 		$maxAuszahlung = 0;
 		$sql = 'SELECT	preis
 				FROM	velos
-				WHERE	(haendler_id IS NULL OR haendler_id = 0)
+				WHERE	haendler_id = 0
 				AND		ausbezahlt = "no"
 				AND		abgeholt = "no"
 				AND		verkauft = "no"';
@@ -73,7 +73,7 @@ class Statistik extends CI_Model {
 		$ausbezahlt = 0;
 		$sql = 'SELECT	preis
 				FROM	velos
-				WHERE	(haendler_id IS NULL OR haendler_id = 0)
+				WHERE	haendler_id = 0
 				AND		ausbezahlt = "yes"';
 		$query = $CI->db->query($sql);
 		foreach ($query->result() as $row) {
@@ -432,7 +432,7 @@ class Statistik extends CI_Model {
 		);
 		
 		$sql = 'SELECT count(preis) as anzahl, sum(preis) as preis, 
-    			(haendler_id IS NOT NULL AND haendler_id >=1) as istHaendler 
+    			(haendler_id > 0) as istHaendler 
 				FROM `velos` 
 				WHERE verkauft = ? 
 				group by istHaendler';

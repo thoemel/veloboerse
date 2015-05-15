@@ -2,11 +2,12 @@
 class Velo extends CI_Model {
 
 	public $abgeholt = 'no';
+	public $afrika = 0;
 	public $ausbezahlt = 'no';
 	public $bemerkungen = '';
 	public $farbe = '';
 	public $gestohlen = FALSE;
-	public $haendler_id	= NULL;
+	public $haendler_id	= 0;
 	public $helfer_kauft = 'no';
 	public $id = 0;
 	public $img = '';
@@ -49,6 +50,7 @@ class Velo extends CI_Model {
 		}
 
 		$this->abgeholt = $query->row()->abgeholt;
+		$this->afrika = $query->row()->afrika;
 		$this->ausbezahlt = $query->row()->ausbezahlt;
 		$this->bemerkungen = $query->row()->bemerkungen;
 		$this->farbe = $query->row()->farbe;
@@ -156,6 +158,7 @@ class Velo extends CI_Model {
 	public function save()
 	{
 		$this->db->set('abgeholt', $this->abgeholt);
+		$this->db->set('afrika', $this->afrika);
 		$this->db->set('ausbezahlt', $this->ausbezahlt);
 		$this->db->set('bemerkungen', $this->bemerkungen);
 		$this->db->set('farbe', $this->farbe);

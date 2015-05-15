@@ -44,6 +44,16 @@ echo '
 		</div>
 	</div>
 	<div class="form-group">
+		<div class="col-lg-offset-2 col-lg-10">
+			<div class="checkbox">
+				<label>
+					' . form_checkbox('velafrika', '1', false) . '
+					Bei Nichtverkauf an Velafrika gespendet
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">Bemerkungen</label>
 		<div class="col-sm-10">
 			<textarea name="bemerkungen" class="form-control" rows="3">' 

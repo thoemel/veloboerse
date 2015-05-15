@@ -28,7 +28,13 @@ class Statistik extends CI_Model {
 				ORDER BY id asc';
 		$query = $CI->db->query($sql);
 		
-		return $query->result();
+		$sql = 'SELECT *
+				FROM velos
+				WHERE afrika = 1
+				ORDER BY id asc';
+		$q2 = $CI->db->query($sql);
+		return array('verkauft_nicht_ausbezahlt' => $query->result(),
+					'afrika_registriert' => $q2->result());
 	}
 	
 	

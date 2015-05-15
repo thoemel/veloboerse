@@ -127,6 +127,13 @@ echo '
 			<label class="radio-inline">' . form_radio('storniert', 0, (false == $myVelo->storniert)) . ' nein</label>
 		</div>
 	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Velafrika</label>
+		<div class="col-sm-10">
+			<label class="radio-inline">' . form_radio('velafrika', 1, (true == $myVelo->afrika)) . ' ja</label>
+			<label class="radio-inline">' . form_radio('velafrika', 0, (false == $myVelo->afrika)) . ' nein</label>
+		</div>
+	</div>
 	
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Bemerkungen</label>

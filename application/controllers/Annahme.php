@@ -143,6 +143,8 @@ class Annahme extends MY_Controller {
 			$this->addData('velo', $myVelo);
 			$ausweisGezeigt = ('yes' == $myVelo->kein_ausweis) ? 'Nein' : 'Ja';
 			$this->addData('ausweisGezeigt', $ausweisGezeigt);
+			$velafrika = (1 == $myVelo->afrika) ? 'Ja' : 'Nein';
+			$this->addData('velafrika', $velafrika);
 			$this->load->view('annahme/einstieg_private', $this->data);
 		}
 	

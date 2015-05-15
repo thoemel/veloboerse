@@ -2,7 +2,7 @@
 class Velo extends CI_Model {
 
 	public $abgeholt = 'no';
-	public $afrika = 0;
+	public $afrika = FALSE;
 	public $ausbezahlt = 'no';
 	public $bemerkungen = '';
 	public $farbe = '';

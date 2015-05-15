@@ -45,6 +45,7 @@ class Velos extends MY_Controller {
 			$myVelo->id = $this->input->post('id');
 		}
 		$myVelo->abgeholt			= $this->input->post('abgeholt');
+		$myVelo->afrika				= $this->input->post('velafrika');
 		$myVelo->ausbezahlt			= $this->input->post('ausbezahlt');
 		$myVelo->bemerkungen		= $this->input->post('bemerkungen');
 		$myVelo->gestohlen			= $this->input->post('gestohlen');

@@ -10,7 +10,7 @@ echo '
 
 foreach ($myVelo as $key => $value) {
 	$value = str_replace(array('yes','no'), array('ja','nein'), $value);
-	if (in_array($key, array('gestohlen','problemfall','storniert'))) {
+	if (in_array($key, array('gestohlen','problemfall','storniert','afrika'))) {
 		$value = str_replace(array('1','0'), array('ja','nein'), $value);
 	}
 	if (empty($value)) {

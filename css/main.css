@@ -75,6 +75,12 @@ footer {
 	display: none;
 }
 
+.verklickt_form input {
+	width: 1px;
+	height: 1px;
+	border: none;
+}
+
 
 @media print {
     .noprint {

@@ -86,5 +86,14 @@ echo '
 	<p><br><br><br><br><br><br>
 		' . anchor('kasse/', 'Dieses Velo nicht verkaufen.') . '</p>
 </div>';
+				
+echo '
+<div class="verklickt_form">
+	<form action="'.site_url('kasse/verklickt').'" method="post" role="form">';
+echo form_hidden('id', $velo->id);
+echo form_submit('verklickt_submit', 'verklickt_submit', 'class="focusPlease"');
+echo form_close();
+echo '		
+</div>';
 
 include APPPATH . 'views/footer.php';

@@ -98,4 +98,17 @@ class Kasse extends MY_Controller {
 	} // End of function verkaufe()
 	
 	
+	/**
+	 * Falls jemand den Verkauf nicht abschliesst und schon eine neue Quittung scannt,
+	 * kommt er hierher (Fokus ist auf einem andern Formular.
+	 * Wir leiten ihn weiter zur Kontrollblick-Methode, allerdings mit einer Warnmeldung.
+	 */
+	public function verklickt()
+	{
+		$this->addData('quittungNr', $this->input->post('id'));
+		$this->load->view('kasse/verklickt', $this->data);
+		return;
+	} // End of function verklickt()
+	
+	
 } // End of class Kasse

@@ -130,6 +130,7 @@ class Velo extends CI_Model {
 		if (1 == $query->num_rows()) {
 			$provision = $query->row()->provision;
 		} else {
+			// ueber 3000 immer 10%
 			$provision = $preis / 10;
 		}
 		return $provision;
@@ -148,6 +149,25 @@ class Velo extends CI_Model {
 		$CI->db->where('id', $quittungNr);
 		$query = $CI->db->get('velos', 1);
 		return ( 1 == $query->num_rows() );
+	}
+	
+	
+	/**
+	 * Liefert die ganze Provisionsliste als Array.
+	 * @return array($obergrenze => $provision)	Sortiert nach aufsteigender Obergrenze
+	 */
+	public static function provisionsliste()
+	{
+		$arrOut = array();
+		$CI =& get_instance();
+		
+		$CI->db->order_by('preis', 'asc');
+		$query = $CI->db->get('provision');
+		foreach ($query->result() as $row) {
+			$arrOut[$row->preis] = (int)($row->provision);
+		}
+		
+		return $arrOut;
 	}
 	
 	

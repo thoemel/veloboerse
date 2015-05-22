@@ -20,6 +20,8 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('#preis_input').keyup(calcProvisionDynamic);
+	
 	/*
 	 * Layer einblenden, wannimmer ein Formular abgeschickt wird.
 	 * Dies damit nicht ein zweites mal gescannt wird, 
@@ -62,5 +64,27 @@ function calcProvisionAtCashier() {
 		preis = angeschriebener_preis;
 	}
 	$('#preis').text(preis);
+	return;
+}
+
+
+function calcProvisionDynamic() {
+	var preis = parseInt($('#preis_input').val());
+	provision = provisionsliste[3000];
+	
+	if (preis < 25) { 
+		$('.provision').text(0); 
+		return;
+	}
+	
+	// Provisionsliste von oben nach unten durchloopen
+	jQuery.each(provisionsliste, function(i, val) {
+		if (preis > parseInt(i)) {
+			$('.provision').text(provision);
+			return;
+		}
+		provision = val;
+	});
+	
 	return;
 }

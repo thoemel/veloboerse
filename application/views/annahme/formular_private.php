@@ -19,8 +19,10 @@ echo '
 
 	<div class="form-group">
 		<label for="preis_input" class="col-lg-2 control-label">Preis</label>
-		<div class="col-lg-10">
+		<div class="col-lg-4">
 			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => '', 'class' => 'focusPlease form-control')) . '
+				<span class="col-lg-3">Provision:</span>
+				<span class="col-lg-3 provision">0</span>
 		</div>
 	</div>
 	<div class="form-group">
@@ -70,5 +72,11 @@ echo '
 
 </form>
 </div>';
+
+// JSON object with provisionsliste
+echo '
+<script type="text/javascript">
+	var provisionsliste = ' . json_encode($provisionsliste) . ';
+</script>';
 
 include APPPATH . 'views/footer.php';

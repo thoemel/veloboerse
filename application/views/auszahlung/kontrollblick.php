@@ -4,7 +4,7 @@ include APPPATH . 'views/header.php';
 echo '
 
 ' . $divAround . '
-	<h1>Auszahlung bestätigen</h1>
+	<h1>' . $h1 . '</h1>
 
 	<div class="row">
 		<div class="col-sm-2">

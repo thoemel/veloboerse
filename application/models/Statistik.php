@@ -196,7 +196,7 @@ class Statistik extends CI_Model {
 	{
 		$CI = & get_instance ();
 		$arrOut = array(0=>array(),1=>array());
-		
+
 		$CI->db->order_by('preis', 'asc');
 		$provisionsQuery = $CI->db->get('provision');
 		$arrProvision = array();
@@ -219,7 +219,9 @@ class Statistik extends CI_Model {
 // 				ORDER BY haendlervelo asc, obergrenze asc, verkauft asc
 // 				LIMIT 0, 100;';
 		$sql = 'SELECT (haendler_id > 0) as haendlervelo, preis, verkauft
-				FROM velos';
+				FROM velos
+				WHERE storniert = 0
+				AND gestohlen = 0';
 		$query = $CI->db->query($sql);
 		if ($query->num_rows() == 0) {
 			return $arrOut;

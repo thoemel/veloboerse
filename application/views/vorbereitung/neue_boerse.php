@@ -2,6 +2,22 @@
 include APPPATH . 'views/header.php';
 
 echo '
+	' . heading('ToDos während der Börse', 2) . '
+<div class="row">
+	<p>
+		Das ist zu tun während der Börse
+	</p>
+	<ul>
+		<li>Direktlinks der Händler deaktivieren<br>
+			<i>Das geht im Ressort Händleradmin -> Direktlinks</i>
+		</li>
+		<li>Händlerstatus auf "angenommen" setzen.<br>
+			<i>update `haendler` SET status = "angenommen";</i></li>
+		<li></li>
+	</ul>
+</div>';
+
+echo '
 	' . heading('Nächste Börse einrichten', 1) . '
 <div class="row">
 	<p>
@@ -13,10 +29,9 @@ echo '
 		</li>
 		<li></li>
 		<li></li>
-		<li>Nachdem alle Händler ihre Velos eingetragen haben die Direktlinks
-			disablen. <i>update haendler set code = uuid();</i></li>
 	</ul>
 </div>';
+
 
 
 include APPPATH . 'views/footer.php';

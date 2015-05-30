@@ -21,15 +21,15 @@ if (count($registeredUsers) > 0) {
         echo '<li>';
         echo anchor('admin/switchToUser/' . $user->id, 
                     '&nbsp;',
-					array('title' => 'als '.$user->email.' einloggen', 'class' => 'icon-share-alt'));
+					array('title' => 'als '.$user->email.' einloggen', 'class' => 'glyphicon glyphicon-share-alt'));
         echo '&nbsp;&nbsp;';
         echo anchor('admin/userForm/' . $user->id, 
                     '&nbsp;',
-        			array('title' => 'editieren', 'class' => 'icon-edit'));
+        			array('title' => 'editieren', 'class' => 'glyphicon glyphicon-edit'));
         echo '&nbsp;&nbsp;';
         echo anchor('admin/deleteUser/' . $user->id, 
                     '&nbsp;',
-                    array('title' => 'löschen', 'class' => 'icon-trash', 'onclick' => 'return window.confirm(\'Willst Du den Benuztzer wirklich löschen?\');'));
+                    array('title' => 'löschen', 'class' => 'glyphicon glyphicon-trash', 'onclick' => 'return window.confirm(\'Willst Du den Benuztzer wirklich löschen?\');'));
         echo '&nbsp;&nbsp;';
         echo $user->email . ' (' . $user->role . ')';
         echo '</li>';

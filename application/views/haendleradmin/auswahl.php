@@ -17,6 +17,7 @@ echo '
 				<th scope="column">Person</th>
 				<th scope="column">Status</th>
 				<th scope="column">Quittungen</th>
+				<th scope="column">Velos</th>
 				<th scope="column">Abrechnung</th>
 				<th scope="column">Bearbeiten</th>
 			</tr>
@@ -30,7 +31,8 @@ foreach ($liste->result() as $haendler) {
 				<td>' . $haendler->firma . '</td>
 				<td>' . $haendler->person . '</td>
 				<td>' . $haendler->status . '</td>
-				<td>' . anchor('haendleradmin/quittungen/' . $haendler->id, 'Quittungen zuweisen', 'inactive="true"') . '</td>
+				<td>' . anchor('haendleradmin/quittungen/' . $haendler->id, 'zuweisen', 'inactive="true"') . '</td>
+				<td>' . anchor('haendlerformular/' . $haendler->code, 'kontrollieren', 'inactive="true"') . '</td>
 				<td>' . anchor('haendleradmin/abrechnung/' . $haendler->id, 'Abrechnung'). '</td>
 				<td>' . anchor('haendleradmin/haendlerconfig/' . $haendler->id, 'Bearbeiten'). '</td>		
 			</tr>';

@@ -5,7 +5,7 @@ if (!empty($abgeholt)) {
 	if (isset($haendler)) {
 		echo '
 		<div class="alert alert-info">
-			<h2>Händler Nr. ' . $haendler->id . '</h2>
+			<h2>Händler Nr. ' . $haendler->id . ', ' . $haendler->person . '</h2>
 			<p class="verybig">Noch 
 				<span class="badge verybig">' . $verbleibend . '</span> Velos</p>
 		</div>';

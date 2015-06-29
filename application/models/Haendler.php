@@ -12,6 +12,7 @@ class Haendler extends CI_Model {
 	public $person = '';
 	public $provisionFactor = 0.15;
 	public $standgebuehr = 0;
+	public $uptodate = 0;
 	
 	/**
 	 * Entspricht einem Eintrag des Enum-Felds der Tabelle haendler.status
@@ -116,7 +117,7 @@ class Haendler extends CI_Model {
 		$this->person = $query->row()->person;
 		$this->provisionFactor = $query->row()->provision / 100;
 		$this->standgebuehr = $query->row()->standgebuehr;
-		// $this->uptodate = $query->row()->uptodate; Kl#16
+		$this->uptodate = $query->row()->uptodate;
 		$this->setStatus($query->row()->status);
 		
 		return $query->row();
@@ -202,6 +203,7 @@ class Haendler extends CI_Model {
 		$this->db->set('provision', ($this->provisionFactor * 100));
 		$this->db->set('standgebuehr', $this->standgebuehr);
 		$this->db->set('busse', $this->busse);
+		$this->db->set('uptodate', $this->uptodate);
 		
 		// Private Felder
 		$this->db->set('status', $this->getStatus());

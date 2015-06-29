@@ -46,6 +46,59 @@ class Haendlerformular extends MY_Controller {
 	
 	
 	/**
+	 * Weist eine Händler die persönlichen Angaben zu.
+	 * Übernimmt die Formulareingaben aus haendlerformular/haendlerconfig.
+	 * Das darf weniger, als wenn über die Haendleradmin aufgerufen (login).
+	 */
+	public function haendlerconfigSpeichern()
+	{
+		// Formulareingaben prüfen
+		$haendler_id = $this->input->post('haendler_id');
+		if (!Haendler::istRegistriert($haendler_id)
+		|| $haendler_id != $this->session->userdata('haendler_id')) {
+			$this->session->set_flashdata('error', 'Falsche Händler-Nummer ' . intval($haendler_id) . '. Versuchs vielleicht mit neu einloggen.');
+			redirect('haendleradmin/index');
+		}
+	
+		// Daten aus Formular lesen
+		// TODO Formularwerte prüfen
+		$firma = strval($this->input->post('input_Firma'));
+		$person = strval($this->input->post('input_Person'));
+		$adresse = strval($this->input->post('input_Adresse'));
+		$email = strval($this->input->post('input_Email'));
+		$telefon = strval($this->input->post('input_Telefon'));
+		$bankverb = strval($this->input->post('input_Bankverb'));
+		$iban = strval($this->input->post('input_Iban'));
+		$kommentar = strval($this->input->post('input_Kommentar'));
+		
+		// Neue Instanz von Haendler
+		$myHandler  = new Haendler();
+		$myHandler->find($haendler_id);
+		
+		// Überschreiben der Datenbank- mit den Formular-Werten
+		$myHandler->firma = $firma;
+		$myHandler->person = $person;
+		$myHandler->adresse = $adresse;
+		$myHandler->email = $email;
+		$myHandler->telefon = $telefon;
+		$myHandler->bankverbindung = $bankverb;
+		$myHandler->iban = $iban;
+		$myHandler->kommentar = $kommentar;
+		$myHandler->uptodate = 1;
+		$myHandler->save();
+		
+	
+		if (!empty($errorsForFlash)) {
+			$this->session->set_flashdata('error', implode('<br>', $errorsForFlash));
+		} else {
+			$this->session->set_flashdata('success', 'Händler-Angaben wurden gespeichert (' . $firma . ').');
+		}
+	
+		redirect('haendlerformular/index');
+	} // End of function quittungenSpeichern
+	
+	
+	/**
 	 * Index Page for this controller.
 	 */
 	public function index()
@@ -58,38 +111,28 @@ class Haendlerformular extends MY_Controller {
 			show_error('Sorry, Sie sind nicht berechtigt.');
 		}
 		
-		/* Kl#16: ToDo: Hier Unterscheidung, welche Seite geladen wird: 
-		 * uptodate = false -> Haendlerconfig
-		 * uptodate = true && keine Quittungsnummern zugewiesen (über HändlerId suchen in velos-DB) -> Seite 'In Bearbeitung'
-		 * uptodate = true && Quittungsnummern zugewiesen -> 'haendlerformular/formular'
-		 * 
-		 * If (uptodate = false)
-		 * {
-		 * 		--Benötigte Daten bereitstellen
-		 * 		$this->load->view('haendlerformular/haendlerconfig', $this->data);
-		 * }
-		 * Else If (uptodate = true && keine Quittungsnummern zugewiesen)
-		 * {
-		 * 		--Benötigte Daten bereitstellen
-		 * 		$this->load->view('haendlerformular/inBearbeitung', $this->data);
-		 * }
-		 * Else If (uptodate = true && Quittungsnummern zugewiesen)
-		 * {
-		 * 		(bestehend)
-		 * 		$this->data['haendler'] = $this->haendler;
-		 * 		$this->data['veloquery'] = Velo::getAll($this->haendler->id);
-		 * 		$this->data['querformat'] = true;
-		 * 		$this->load->view('haendlerformular/formular', $this->data);
-		 * }
-		 * */
+		$myVelos = Velo::getAll($this->haendler->id);
 		
-
-		$this->data['haendler'] = $this->haendler;
-		$this->data['veloquery'] = Velo::getAll($this->haendler->id);
-		$this->data['querformat'] = true;
-		$this->load->view('haendlerformular/formular', $this->data);
+		if (0 == $this->haendler->uptodate) 
+		{
+			$this->data['haendler'] = $this->haendler;
+			$this->load->view('haendlerformular/haendlerconfig' , $this->data);
+			//return ;
+		}
+		elseif (1 == $this->haendler->uptodate AND 0 >= $myVelos->num_rows())
+		{
+			$this->data['haendler'] = $this->haendler;
+			$this->load->view('haendlerformular/inBearbeitung' , $this->data);
+		}
+		elseif (1 == $this->haendler->uptodate AND 0 < $myVelos->num_rows())
+		{
+			$this->data['haendler'] = $this->haendler;
+			$this->data['veloquery'] = Velo::getAll($this->haendler->id);
+			$this->data['querformat'] = true;
+			$this->load->view('haendlerformular/formular', $this->data);
+		}
 		return ;
-	}
+	} // End of function index()
 	
 	
 	/**

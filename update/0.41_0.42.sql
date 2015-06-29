@@ -1,0 +1,1 @@
+ALTER TABLE `haendler` ADD `uptodate` TINYINT NOT NULL DEFAULT '0';

@@ -49,8 +49,15 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'probern_boerse';
-$db['default']['password'] = 'upVGSUY3LbMCzKeC';
+switch ($_SERVER['SERVER_NAME']){
+	case 'localhost':
+		$db['default']['username'] = 'root';
+		$db['default']['password'] = '';
+	break;
+	default:
+		$db['default']['username'] = 'probern_boerse';
+		$db['default']['password'] = 'upVGSUY3LbMCzKeC';
+}
 $db['default']['database'] = 'probern_boerse';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';

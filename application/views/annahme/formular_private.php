@@ -18,14 +18,16 @@ echo '
 	<h3>Quittung Nummer: ' . $myVelo->id . '</h3>
 
 	<div class="form-group">
+		<label for="preis_input" class="col-lg-2 control-label">Provision</label>
+		<div class="col-lg-4 provision">0</div>
+	</div>
+	<div class="form-group">
 		<label for="preis_input" class="col-lg-2 control-label">Preis</label>
 		<div class="col-lg-4">
 			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => '', 'class' => 'focusPlease form-control')) . '
-				<span class="col-lg-3">Provision:</span>
-				<span class="col-lg-3 provision">0</span>
 		</div>
 	</div>
-	<div class="form-group">
+					<div class="form-group">
 		<div class="col-lg-offset-2 col-lg-10">
 			<div class="checkbox">
 				<label>

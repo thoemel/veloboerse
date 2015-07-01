@@ -91,5 +91,9 @@ function calcProvisionDynamic() {
 	}
 	
 	$('.provision').text(provision);
+	
+	var auszahlungsbetrag = preis - provision;
+	$('.auszahlungsbetrag').text(auszahlungsbetrag);
+	
 	return;
 }

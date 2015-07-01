@@ -18,8 +18,8 @@ echo '
 	<h3>Quittung Nummer: ' . $myVelo->id . '</h3>
 
 	<div class="form-group">
-		<label for="preis_input" class="col-lg-2 control-label">Provision</label>
-		<div class="col-lg-4 provision">0</div>
+		<div class="col-lg-offset-2 col-lg-2">Provision: <span class="provision">0</span></div>
+		<div class="col-lg-2">Auszahlung: <span class="auszahlungsbetrag">0</span></div>
 	</div>
 	<div class="form-group">
 		<label for="preis_input" class="col-lg-2 control-label">Preis</label>

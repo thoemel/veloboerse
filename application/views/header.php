@@ -54,10 +54,24 @@ if (!isset($hideNavi) || false == $hideNavi) {
 			<div class="collapse navbar-collapse" id="vb-navbar-collapse-1">
 				<ul class="nav navbar-nav">';
 	if ($this->session->userdata('logged_in')) {
-		echo '				<li>' . anchor('login/showChoices', 'Ressort') . '</li>';
-		echo '				<li>' . anchor('login/logout', 'Logout') . '</li>';
+		echo '
+					<li class="dropdown">
+          				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							Ressorts <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">';
+		foreach ($ressortNavi as $href => $name) {
+			echo '
+            				<li>' . anchor($href, $name) . '</li>';
+		}
+		echo '
+						</ul>
+			        </li>';
+		echo '
+					<li>' . anchor('login/logout', 'Logout') . '</li>';
 	} else {
-		echo '				<li>' . anchor('login/form', 'Login') . '</li>';
+		echo '
+					<li>' . anchor('login/form', 'Login') . '</li>';
 	}
 	echo '
 				</ul>';

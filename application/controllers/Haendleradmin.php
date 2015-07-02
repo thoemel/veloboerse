@@ -424,7 +424,10 @@ class Haendleradmin extends MY_Controller {
 		}
 	
 		$haendler = new Haendler();
-		$haendler->find($haendler_id);
+		if ('' != $haendler_id) {
+			$haendler->find($haendler_id);
+		}
+		
 		$this->data['haendler'] = $haendler;
 		$anzeigename = $haendler->firma;
 		if (empty($anzeigename)) {
@@ -455,10 +458,12 @@ class Haendleradmin extends MY_Controller {
 	{
 		// Formulareingaben prüfen
 		$haendler_id = $this->input->post('haendler_id');
-		if (!Haendler::istRegistriert($haendler_id)
-		|| $haendler_id != $this->session->userdata('haendler_id')) {
-			$this->session->set_flashdata('error', 'Falsche Händler-Nummer ' . intval($haendler_id) . '. Versuchs vielleicht mit neu einloggen.');
-			redirect('haendleradmin/index');
+		if (0 != $haendler_id) {
+			if (!Haendler::istRegistriert($haendler_id)
+			|| $haendler_id != $this->session->userdata('haendler_id')) {
+				$this->session->set_flashdata('error', 'Falsche Händler-Nummer ' . intval($haendler_id) . '. Versuchs vielleicht mit neu einloggen.');
+				redirect('haendleradmin/index');
+			}
 		}
 	
 		// Daten aus Formular lesen
@@ -475,7 +480,9 @@ class Haendleradmin extends MY_Controller {
 		
 		// Neue Instanz von Haendler
 		$myHandler  = new Haendler();
-		$myHandler->find($haendler_id);
+		if (0 != $haendler_id) {
+			$myHandler->find($haendler_id);
+		}
 		
 		// Überschreiben der Datenbank- mit den Formular-Werten
 		// mToDo: Werte prüfen, z.B. auf nicht leer o.ä.??

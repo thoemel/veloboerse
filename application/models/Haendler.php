@@ -233,9 +233,10 @@ class Haendler extends CI_Model {
 		$this->db->set('status', $this->getStatus());
 		
 		if (!self::istRegistriert($this->id)) {
-			$this->db->set('code', uniqid());
+			$this->db->set('code', uniqid()); // Keine UUID, das kommt weiter unten
 			$success = $this->db->insert('haendler');
 			$this->id = $this->db->insert_id();
+			self::direktLinksDeaktivieren($this->id); // Das macht eine richtige UUID
 		} else {
 			$this->db->where('id', $this->id);
 			$success = $this->db->update('haendler');

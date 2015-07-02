@@ -54,8 +54,8 @@ class Annahme extends MY_Controller {
 		$myVelo->id = $id;
 		$this->data['myVelo'] = $myVelo;
 		$provisionsliste = Velo::provisionsliste();
-		ksort($provisionsliste);
-		$this->data['provisionsliste'] = array_reverse($provisionsliste, true);
+		$tstest = json_encode($provisionsliste);
+		$this->data['provisionsliste'] = $provisionsliste;
 		$this->load->view('annahme/formular_private', $this->data);
 	} // End of function formular_private
 	

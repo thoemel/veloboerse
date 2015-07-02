@@ -28,6 +28,9 @@ class MY_Controller extends CI_Controller {
 		$this->load->model('Statistik');
 		Statistik::registriere();
 		
+		// Ressort Navi
+		$this->ressortNavi();
+		
 		$this->searchFormHandling();
 		
 		// Standardmässig hat der Body Tag keine Klasse. Kann auch z. B. ' class="alert alert-error"' sein.
@@ -83,6 +86,42 @@ class MY_Controller extends CI_Controller {
 			Redirect();
 		}
 		
+	}
+	
+	
+	/**
+	 * Gibt ein Array mit den Ressorts, für die der User Berechtigt ist.
+	 * Schreibt dieses Array auch in $this->data, damit es in den Controllern
+	 * und Views verfügbar ist.
+	 * 
+	 * @return array($href => $name)
+	 */
+	public function ressortNavi() {
+		// Default navi for not logged-in user
+		$arrOut = array('login/form'	=> 'Login');
+		
+		// Normal users
+		if ($this->session->userdata('logged_in')) {
+			$arrOut = array(
+				'login/dispatch/privatannahme'	=> 'Annahme Private',
+				'login/dispatch/privatauszahlung'	=> 'Auszahlung Private',
+				'login/dispatch/kasse'				=> 'Kasse',
+				'login/dispatch/abholung'			=> 'Abholung Private',
+				'login/dispatch/haendlerabholung'	=> 'Abholung Händler',
+				'login/dispatch/haendleradmin'		=> 'Händleradmin',
+				'login/dispatch/veloformular'		=> 'Formular Velo',
+				'login/dispatch/polizei'			=> 'Polizei',
+			);
+		}
+		
+		// Superadmins
+		if ('superadmin' == $this->session->userdata('user_role')) {
+			$arrOut['login/dispatch/auswertung'] = 'Auswertung';
+		}
+		
+		$this->data['ressortNavi'] = $arrOut;
+		
+		return $arrOut;
 	}
 	
 	

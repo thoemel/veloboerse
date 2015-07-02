@@ -70,21 +70,30 @@ function calcProvisionAtCashier() {
 
 function calcProvisionDynamic() {
 	var preis = parseInt($('#preis_input').val());
-	provision = provisionsliste[3000];
+	provision = 0;
 	
-	if (preis < 25) { 
-		$('.provision').text(0); 
-		return;
-	}
-	
-	// Provisionsliste von oben nach unten durchloopen
+	// Provisionsliste von unten nach oben durchloopen
+	var prevWasIt = false;
 	jQuery.each(provisionsliste, function(i, val) {
-		if (preis > parseInt(i)) {
-			$('.provision').text(provision);
+		if (prevWasIt) {
 			return;
 		}
 		provision = val;
+		if (preis <= parseInt(i)) {
+			prevWasIt = true;
+		}
+		return;
 	});
+	
+	// Falls wir über der obersten Provisionsgrenze sind, werden 10% verrechnet.
+	if (preis > 3000) { 
+		provision = preis * 0.1;
+	}
+	
+	$('.provision').text(provision);
+	
+	var auszahlungsbetrag = preis - provision;
+	$('.auszahlungsbetrag').text(auszahlungsbetrag);
 	
 	return;
 }

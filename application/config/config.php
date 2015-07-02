@@ -274,6 +274,7 @@ $config['encryption_key'] = 'sölv94**ç';
 |
 */
 $config['sess_driver']		= 'files';
+$config['sess_save_path']		= FCPATH . 'sessions/';
 $config['sess_cookie_name']		= 'ci_session';
 $config['sess_expiration']		= 7200;
 $config['sess_match_ip']		= FALSE;

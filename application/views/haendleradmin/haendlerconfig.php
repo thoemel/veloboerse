@@ -66,26 +66,12 @@ echo '
 			' . form_input(array('id' => 'typ_input', 'name' => 'input_Iban', 'value' => $haendler->iban, 'class' => 'form-control')) . '
 		</div>
 	</div>
-<!-- Abschnitt, wenn keine Anpassung von Bankverbindung und IBAN möglich
-<	<div class="form-group">
-<		<label for="typ_input" class="col-sm-2 control-label"></label>
-<		<div class="col-sm-6">
-<			<p class="form-control-static">Keine Anpassung von Bankverbindung und IBAN via Formular!</p>
-<		</div>
-<	</div>
-<	<div class="form-group">
-<		<label for="typ_input" class="col-sm-2 control-label">Bankverbindung</label>
-<		<div class="col-sm-4">
-<			<p class="form-control-static">'. $haendler->bankverbindung .'</p>
-<		</div>
-<	</div>
-<	<div class="form-group">
-<		<label class="col-sm-2 control-label">IBAN</label>
-<		<div class="col-sm-4">
-<				<p class="form-control-static">'. $haendler->iban .'</p>	
-<		</div>
-<	</div>
--->		
+	<div class="form-group">
+		<label for="typ_input" class="col-sm-2 control-label">Busse</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'typ_input', 'name' => 'input_busse', 'value' => $haendler->busse, 'class' => 'form-control')) . '
+		</div>
+	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Kommentar</label>
 		<div class="col-sm-10">
@@ -100,7 +86,7 @@ echo '
 			' . form_input(array('id' => 'typ_input', 'name' => 'input_uptodate', 'value' => $haendler->uptodate, 'class' => 'form-control')) . '
 		</div>
 		<span id="uptodateExpl" class="help-block">
-			Falls ein Händler zu früh gespeichert hat und noch Angaben ändern will, hier wieder auf 0 (null) setzen.
+			Falls ein Händler zu früh gespeichert hat und noch Angaben ändern will, hier wieder von 1 auf 0 setzen.
 		</span>
 	</div>
 

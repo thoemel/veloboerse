@@ -470,6 +470,7 @@ class Haendleradmin extends MY_Controller {
 		$bankverb = strval($this->input->post('input_Bankverb'));
 		$iban = strval($this->input->post('input_Iban'));
 		$kommentar = strval($this->input->post('input_Kommentar'));
+		$busse = strval($this->input->post('input_busse'));
 		$uptodate = strval($this->input->post('input_uptodate'));
 		
 		// Neue Instanz von Haendler
@@ -486,6 +487,7 @@ class Haendleradmin extends MY_Controller {
 		$myHandler->bankverbindung = $bankverb;
 		$myHandler->iban = $iban;
 		$myHandler->kommentar = $kommentar;
+		$myHandler->busse = $busse;
 		$myHandler->uptodate = $uptodate;
 		$myHandler->save();
 		

@@ -477,6 +477,8 @@ class Haendleradmin extends MY_Controller {
 		$kommentar = strval($this->input->post('input_Kommentar'));
 		$busse = strval($this->input->post('input_busse'));
 		$uptodate = strval($this->input->post('input_uptodate'));
+		$anzahlVelos = strval($this->input->post('input_velos'));
+		$standgebuehr = strval($this->input->post('input_standgebuehr'));
 		
 		// Neue Instanz von Haendler
 		$myHandler  = new Haendler();
@@ -496,6 +498,7 @@ class Haendleradmin extends MY_Controller {
 		$myHandler->kommentar = $kommentar;
 		$myHandler->busse = $busse;
 		$myHandler->uptodate = $uptodate;
+		$myHandler->anzahlVelos = $anzahlVelos;
 		$myHandler->save();
 		
 	

@@ -14,6 +14,7 @@ class Haendler extends CI_Model {
 	public $standgebuehr = 0;
 	public $uptodate = 0;
 	public $telefon = '';
+	public $anzahlVelos = 0;
 	
 	/**
 	 * Entspricht einem Eintrag des Enum-Felds der Tabelle haendler.status
@@ -119,7 +120,9 @@ class Haendler extends CI_Model {
 		$this->provisionFactor = $query->row()->provision / 100;
 		$this->standgebuehr = $query->row()->standgebuehr;
 		$this->uptodate = $query->row()->uptodate;
+		$this->anzahlVelos = $query->row()->anzahlVelos;
 		$this->setStatus($query->row()->status);
+		
 		
 		return $query->row();
 	}
@@ -205,6 +208,7 @@ class Haendler extends CI_Model {
 		$this->db->set('standgebuehr', $this->standgebuehr);
 		$this->db->set('busse', $this->busse);
 		$this->db->set('uptodate', $this->uptodate);
+		$this->db->set('anzahlVelos', $this->anzahlVelos);
 		
 		// Private Felder
 		$this->db->set('status', $this->getStatus());

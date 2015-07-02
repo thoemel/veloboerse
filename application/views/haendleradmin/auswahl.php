@@ -37,7 +37,7 @@ foreach ($liste->result() as $haendler) {
 		echo '<td>NEIN</td>';
 	}
 	else {
-		echo '<td>JA-> ' . $haendler->uptodate . ' </td>';
+		echo '<td>JA-> ' . $haendler->anzahlVelos . ' </td>';
 	}
 				
 	echo '

@@ -73,6 +73,18 @@ echo '
 		</div>
 	</div>
 	<div class="form-group">
+		<label for="typ_input" class="col-sm-2 control-label">Anzahl Vélos</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'typ_input', 'name' => 'input_velos', 'value' => $haendler->anzahlVelos, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="typ_input" class="col-sm-2 control-label">Standgebühr</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'typ_input', 'name' => 'input_standgebuehr', 'value' => $haendler->standgebuehr, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">Kommentar</label>
 		<div class="col-sm-10">
 			<textarea name="input_Kommentar" class="form-control" rows="3">' 

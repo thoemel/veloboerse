@@ -4,8 +4,12 @@ include APPPATH . 'views/header.php';
 echo '
 <div class="haendleradmin">
 	<h1>Händleradmin</h1>
-	' . anchor('haendleradmin/direktlinks', 'Direktlinks') . '
-	
+	<div class="bottom20 Direktlinks">
+		' . anchor('haendleradmin/direktlinks', 'Direktlinks') . '
+	</div>
+	<div class="bottom20 Händler hinzufügen">
+	' . anchor('haendleradmin/haendlerconfig/', 'Händler hinzufügen') . '
+	</div>
 	
 	<h2>Händler wählen</h2>
 	
@@ -13,6 +17,7 @@ echo '
 		<thead>
 			<tr>
 				<th scope="column">Nr.</th>
+				<th scope="column">Bereit?</th>
 				<th scope="column">Firma</th>
 				<th scope="column">Person</th>
 				<th scope="column">Status</th>
@@ -27,7 +32,15 @@ echo '
 foreach ($liste->result() as $haendler) {
 	echo '
 			<tr>
-				<th scope="row">' . $haendler->id . '</th>
+				<th scope="row">' . $haendler->id . '</th>';
+	if (0 == $haendler->uptodate) {
+		echo '<td>NEIN</td>';
+	}
+	else {
+		echo '<td>JA-> ' . $haendler->uptodate . ' </td>';
+	}
+				
+	echo '
 				<td>' . $haendler->firma . '</td>
 				<td>' . $haendler->person . '</td>
 				<td>' . $haendler->status . '</td>

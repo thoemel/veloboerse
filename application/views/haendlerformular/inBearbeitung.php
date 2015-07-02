@@ -12,10 +12,9 @@ if ($this->session->userdata('logged_in')) {
 }
 echo heading('In Bearbeitung', 1) . '
 ' . heading('Name: ' . $haendler->person, 2);
+echo heading('--------------------', 3);
+echo heading('Ihre Angaben werden von ProVélo Bern überprüft und die gewünschte Anzahl Quittungsnummern zugewiesen.', 4);
+echo heading('Sobald die Quittungsnummern zugewiesen sind, gelangen Sie hier zur Seite, wo Sie ihre Vélos eintragen können.', 4);
 
-echo '
-	<p>Ihre Angaben werden überprüft und die entsprechende Anzahl Quittungsnummern zugewiesen.</p>
-		
-	<p>Hier noch mehr PROSA einfügen!!!</p>';
 
 include APPPATH . 'views/footer.php';

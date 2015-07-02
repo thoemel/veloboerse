@@ -520,6 +520,7 @@ class Haendleradmin extends MY_Controller {
 		$myHandler->busse = $busse;
 		$myHandler->uptodate = $uptodate;
 		$myHandler->anzahlVelos = $anzahlVelos;
+		$myHandler->standgebuehr = $standgebuehr;
 		$myHandler->save();
 		
 	

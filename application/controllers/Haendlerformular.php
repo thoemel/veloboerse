@@ -70,6 +70,7 @@ class Haendlerformular extends MY_Controller {
 		$bankverb = strval($this->input->post('input_Bankverb'));
 		$iban = strval($this->input->post('input_Iban'));
 		$kommentar = strval($this->input->post('input_Kommentar'));
+		$anzahlVelos = strval($this->input->post('input_velos'));
 		
 		// Neue Instanz von Haendler
 		$myHandler  = new Haendler();
@@ -85,6 +86,7 @@ class Haendlerformular extends MY_Controller {
 		$myHandler->iban = $iban;
 		$myHandler->kommentar = $kommentar;
 		$myHandler->uptodate = 1;
+		$myHandler->anzahlVelos = $anzahlVelos;
 		$myHandler->save();
 		
 	

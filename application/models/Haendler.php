@@ -13,6 +13,7 @@ class Haendler extends CI_Model {
 	public $provisionFactor = 0.15;
 	public $standgebuehr = 0;
 	public $uptodate = 0;
+	public $telefon = '';
 	
 	/**
 	 * Entspricht einem Eintrag des Enum-Felds der Tabelle haendler.status

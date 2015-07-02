@@ -10,15 +10,15 @@ echo '
 	<form class="form-horizontal" role="form" action="' . site_url('haendlerformular/haendlerconfigSpeichern') . '" method="post">
 	<input type="hidden" name="haendler_id" value="' . $haendler->id . '">
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">Firma</label>
+		<label for="firma_input" class="col-sm-2 control-label">Firma</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_Firma', 'value' => $haendler->firma, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'firma_input', 'name' => 'input_Firma', 'value' => $haendler->firma, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">Person</label>
+		<label for="person_input" class="col-sm-2 control-label">Person</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_Person', 'value' => $haendler->person, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'person_input', 'name' => 'input_Person', 'value' => $haendler->person, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
@@ -30,33 +30,33 @@ echo '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">E-Mail</label>
+		<label for="email_input" class="col-sm-2 control-label">E-Mail</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_Email', 'value' => $haendler->email, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'email_input', 'name' => 'input_Email', 'value' => $haendler->email, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">Telefon</label>
+		<label for="telefon_input" class="col-sm-2 control-label">Telefon</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_Telefon', 'value' => $haendler->telefon, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'telefon_input', 'name' => 'input_Telefon', 'value' => $haendler->telefon, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">Bankverbindung</label>
+		<label for="bankverb_input" class="col-sm-2 control-label">Bankverbindung</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_Bankverb', 'value' => $haendler->bankverbindung, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'bankverb_input', 'name' => 'input_Bankverb', 'value' => $haendler->bankverbindung, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">IBAN</label>
+		<label for="iban_input" class="col-sm-2 control-label">IBAN</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_Iban', 'value' => $haendler->iban, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'iban_input', 'name' => 'input_Iban', 'value' => $haendler->iban, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="typ_input" class="col-sm-2 control-label">Anzahl Vélos</label>
+		<label for="velos_input" class="col-sm-2 control-label">Anzahl Vélos</label>
 		<div class="col-sm-4">
-			' . form_input(array('id' => 'typ_input', 'name' => 'input_velos', 'value' => $haendler->anzahlVelos, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'velos_input', 'name' => 'input_velos', 'value' => $haendler->anzahlVelos, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	<div class="form-group">

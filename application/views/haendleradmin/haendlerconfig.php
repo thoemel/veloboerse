@@ -94,6 +94,15 @@ echo '
 			. '</textarea>
 		</div>
 	</div>
+	<div class="form-group">
+		<label for="typ_input" class="col-sm-2 control-label">Aktualisiert?</label>
+		<div class="col-sm-4">
+			' . form_input(array('id' => 'typ_input', 'name' => 'input_uptodate', 'value' => $haendler->uptodate, 'class' => 'form-control')) . '
+		</div>
+		<span id="uptodateExpl" class="help-block">
+			Falls ein Händler zu früh gespeichert hat und noch Angaben ändern will, hier wieder auf 0 (null) setzen.
+		</span>
+	</div>
 
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">

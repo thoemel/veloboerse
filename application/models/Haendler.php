@@ -65,6 +65,25 @@ class Haendler extends CI_Model {
 		}
 		
 		return $ret;
+	} // End of function anzahlNochDrinnen
+	
+	
+	/**
+	 * Händler löschen
+	 * 
+	 * @return true, falls alles erfolgreich.
+	 */
+	public function delete()
+	{
+		$ret = true;
+		
+		// Zuerst alle Velos des Händlers löschen
+		$this->db->query('DELETE FROM velos WHERE haendler_id = ?', $this->id);
+		
+		// Jetzt den DB-Eintrag aus der Händler-Tabelle löschen
+		$this->db->query('DELETE FROM haendler WHERE id = ?', $this->id);
+		
+		return $ret;
 	}
 	
 	

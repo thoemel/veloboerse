@@ -290,6 +290,27 @@ class Haendleradmin extends MY_Controller {
 	}
 	
 	
+	public function loeschen($haendler_id)
+	{
+		if (!Haendler::istRegistriert($haendler_id)) {
+			$this->session->set_flashdata('error', 'Falsche Händler-Nummer ' . intval($haendler_id) . '. Versuchs vielleicht mit neu einloggen.');
+			redirect('haendleradmin/index');
+		}
+		
+		$haendler = new Haendler();
+		$haendler->find($haendler_id);
+		
+		if ($haendler->delete()) {
+			$this->session->set_flashdata('success', 'Haendler wurde gelöscht.');
+		} else {
+			$this->session->set_flashdata('error', 'Haendler wurde nicht gelöscht.');
+		}
+		
+		redirect('haendleradmin/index');
+		return;
+	}
+	
+	
 	/**
 	 * Quittungen für einen Händler anzeigen / bearbeiten
 	 * @param string $haendler_id

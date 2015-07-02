@@ -47,7 +47,9 @@ foreach ($liste->result() as $haendler) {
 				<td>' . anchor('haendleradmin/quittungen/' . $haendler->id, 'zuweisen', 'inactive="true"') . '</td>
 				<td>' . anchor('haendlerformular/' . $haendler->code, 'kontrollieren', 'inactive="true"') . '</td>
 				<td>' . anchor('haendleradmin/abrechnung/' . $haendler->id, 'Abrechnung'). '</td>
-				<td>' . anchor('haendleradmin/haendlerconfig/' . $haendler->id, 'Bearbeiten'). '</td>		
+				<td>' . anchor('haendleradmin/haendlerconfig/' . $haendler->id, '&nbsp;', array('title' => 'bearbeiten', 'class' => 'glyphicon glyphicon-edit'))
+                      . anchor('haendleradmin/loeschen/' . $haendler->id, '&nbsp;', array('title' => 'löschen', 'class' => 'glyphicon glyphicon-trash', 'onclick' => 'return window.confirm(\'Willst Du den Händler wirklich löschen?\');'))
+				. '</td>		
 			</tr>';
 }	
 

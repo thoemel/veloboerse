@@ -87,7 +87,7 @@ class Haendleradmin extends MY_Controller {
 							- $haendler->busse
 							- $haendler->standgebuehr;
 		$iban = str_replace(' ', '', $haendler->iban);
-		$iban = substr($iban, 0, 4) . ' ' . substr($iban, 4, 1) . 'XXX XXXX XXXX ' . substr($iban, 17, 4) . ' ' . substr($iban, -1);
+		$iban = substr($iban, 0, 4) . ' ' . substr($iban, 4, 1) . 'XXX XXXX XXXX ' . substr($iban, -5, 4) . ' ' . substr($iban, -1);
 		
 		
 		$this->addData('haendler', $haendler);

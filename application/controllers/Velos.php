@@ -106,6 +106,11 @@ class Velos extends MY_Controller {
 		$this->addData('haendlerDropdown', form_dropdown('haendler_id', $arrHaendler, $myVelo->haendler_id, 'id="haendler_id" class="form-control"'));
 		
 		$this->data['myVelo'] = $myVelo;
+		
+		$provisionsliste = Velo::provisionsliste();
+		$tstest = json_encode($provisionsliste);
+		$this->data['provisionsliste'] = $provisionsliste;
+		
 		$this->load->view('velos/formular', $this->data);
 	}
 	

@@ -6,9 +6,8 @@ echo '
 	<h1>Händleradmin</h1>
 	<div class="bottom20 Direktlinks">
 		' . anchor('haendleradmin/direktlinks', 'Direktlinks') . '
-	</div>
-	<div class="bottom20 Händler hinzufügen">
-	' . anchor('haendleradmin/haendlerconfig/', 'Händler hinzufügen') . '
+	| ' . anchor('haendleradmin/versandExcel', 'Anständige Excel-Liste') . '
+	| ' . anchor('haendleradmin/haendlerconfig/', 'Händler hinzufügen') . '
 	</div>
 	
 	<h2>Händler wählen</h2>

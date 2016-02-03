@@ -532,4 +532,31 @@ class Haendleradmin extends MY_Controller {
 	
 		redirect('haendleradmin/index');
 	} // End of function quittungenSpeichern
+	
+	
+	/**
+	 * Excel file fuer Versand Einladung Haendler
+	 */
+	public function versandExcel()
+	{
+		$content = array();
+		$header = array('id','code','firma','adresse','person','email','telefon','anzahlVelos','uptodate');
+		array_push($content, $header);
+		foreach (Haendler::getAll()->result_array() as $row) {
+			$line = array();
+			foreach ($header as $column) {
+				$myVal = $row[$column];
+				if ('code' == $column) {
+					$myVal = site_url('haendlerformular') . '/' . $myVal;
+				}
+				$line[] = '"' . $myVal . '"';
+			}
+			$content[] = $line;
+		}
+		$this->data['content'] = $content;
+		
+		$this->data['filename'] = "haendlerversand_export_" . date('Ymd') . ".xls";
+		
+		$this->load->view('csv', $this->data);
+	}
 }

@@ -555,7 +555,7 @@ class Haendleradmin extends MY_Controller {
 		}
 		$this->data['content'] = $content;
 		
-		$this->data['filename'] = "haendlerversand_export_" . date('Ymd') . ".xls";
+		$this->data['filename'] = "haendlerversand_export_" . date('Ymd') . ".csv";
 		
 		$this->load->view('csv', $this->data);
 	}

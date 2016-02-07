@@ -20,12 +20,12 @@ echo heading('Velo Liste für HändlerInnen', 1) . '
 	
 	<div class="row">
 		<div class="col-md-1">Nr.</div>
+		<div class="col-md-1">Stornieren</div>
 		<div class="col-md-1">Preis</div>
 		<div class="col-md-2">Typ</div>
 		<div class="col-md-2">Farbe</div>
 		<div class="col-md-2">Marke</div>
 		<div class="col-md-2">Rahmen-Nr.</div>
-		<div class="col-md-2">Stornieren</div>
 	</div>
 			
 	<form class="form-inline" role="form" action="' . site_url('haendlerformular/speichern') . '" method="post">';
@@ -35,6 +35,9 @@ foreach ($veloquery->result() as $velo) {
 	<div class="row">
 		<div class="form-group col-md-1">
 			<input readonly value="' . $velo->id . '" name="id[]" type="text" class="form-control input-sm">
+		</div>
+		<div class="form-group col-md-1">
+			' . form_checkbox('storniert[]', $velo->id, (true == $velo->storniert)) . '
 		</div>
 		<div class="form-group col-md-1">
 			<input value="' . $velo->preis . '" name="preis[]" type="text" class="form-control input-sm">
@@ -50,9 +53,6 @@ foreach ($veloquery->result() as $velo) {
 		</div>
 		<div class="form-group col-md-2">
 			<input value="' . $velo->rahmennummer . '" name="rahmennummer[]" type="text" class="form-control input-sm">
-		</div>
-		<div class="form-group col-md-2">
-			' . form_checkbox('storniert[]', $velo->id, (true == $velo->storniert)) . '
 		</div>
 	</div>';
 }

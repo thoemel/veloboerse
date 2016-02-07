@@ -20,12 +20,18 @@ echo '
 			' . $haendlerDropdown . '
 		</div>
 	</div>
+							
 	<div class="form-group">
-		<label for="preis_input" class="col-sm-2 control-label">Preis</label>
-		<div class="col-sm-2 col-md-2 col-lg-1">
-			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'form-control')) . '
-		</div>
+		<div class="col-lg-offset-2 col-lg-2">Provision: <span class="provision">0</span></div>
+		<div class="col-lg-2">Auszahlung: <span class="auszahlungsbetrag">0</span></div>
 	</div>
+		<div class="form-group">
+		<label for="preis_input" class="col-lg-2 control-label">Preis</label>
+		<div class="col-sm-2 col-md-2 col-lg-1">
+			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
+		</div>
+	</div>	
+								
 	<div class="form-group">
 		<label for="typ_input" class="col-sm-2 control-label">Typ</label>
 		<div class="col-sm-4">
@@ -151,5 +157,11 @@ echo '
 	</div>
 </form>
 </div>';
+
+// JSON object with provisionsliste
+echo '
+<script type="text/javascript">
+	var provisionsliste = ' . json_encode($provisionsliste) . ';
+</script>';
 
 include APPPATH . 'views/footer.php';

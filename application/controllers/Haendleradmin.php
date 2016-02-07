@@ -187,11 +187,13 @@ class Haendleradmin extends MY_Controller {
 	 * Google-docs File empfangen und Import starten.
 	 * Ich erwarte, dass ein csv à la Excel kommt. Also Semikolon als Delimiter
 	 * und doppelten Anführungszeichen als Text-Wrapper.
+	 * @deprecated since version 0.42
 	 * @param	int	$haendler_id
 	 * @return	void
 	 */
 	public function import($haendler_id = NULL)
 	{
+		log_message('error', 'Haendleradmin::import wurde aufgerufen. Ist aber depricated.');
 		$success = false;
 		
 		if (!empty($haendler_id)) {
@@ -217,11 +219,13 @@ class Haendleradmin extends MY_Controller {
 	
 	/**
 	 * Importiere die Velos eines Händlers aus Google-Docs
+	 * @deprecated since version 0.42
 	 * @param array $arrUpload	Aus der upload Library
 	 * @return boolean			True falls erfolgreich
 	 */
 	private function importCSV($arrUpload)
 	{
+		log_message('error', 'Haendleradmin::importCSV aufgerufen, obschon depricated.');
 		$ret = true;
 		
 		$handle = fopen($arrUpload['full_path'], 'r');
@@ -323,6 +327,7 @@ class Haendleradmin extends MY_Controller {
 		}
 		
 		if (!$this->session->userdata('haendler_id')) {
+			// TODO Wieso Session, wenn Funktionsparameter?
 			$this->session->set_flashdata('error', 'Zuerst Händler auswählen.');
 			redirect('haendleradmin/index');
 		}
@@ -401,10 +406,12 @@ class Haendleradmin extends MY_Controller {
 	 * Google-docs File empfangen und Import starten.
 	 * Ich erwarte, dass ein csv à la Excel kommt. Also Semikolon als Delimiter
 	 * und doppelten Anführungszeichen als Text-Wrapper.
+	 * @deprecated since version 0.42
 	 * @return	boolean	$success
 	 */
 	private function upload()
 	{
+		log_message('error', 'Haendleradmin::upload() aufgerufen, obschon deprecated.');
 		$success = true;
 		
 		$config['upload_path'] = './uploads/';
@@ -440,6 +447,7 @@ class Haendleradmin extends MY_Controller {
 		}
 	
 		if (!$this->session->userdata('haendler_id')) {
+			// TODO Wieso Session, wenn Funktionsparameter?
 			$this->session->set_flashdata('error', 'Zuerst Händler auswählen.');
 			redirect('haendleradmin/index');
 		}

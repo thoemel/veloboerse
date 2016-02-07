@@ -446,12 +446,6 @@ class Haendleradmin extends MY_Controller {
 			$this->session->set_userdata('haendler_id', intval($haendler_id));
 		}
 	
-		if (!$this->session->userdata('haendler_id')) {
-			// TODO Wieso Session, wenn Funktionsparameter?
-			$this->session->set_flashdata('error', 'Zuerst Händler auswählen.');
-			redirect('haendleradmin/index');
-		}
-	
 		$haendler = new Haendler();
 		if ('' != $haendler_id) {
 			$haendler->find($haendler_id);

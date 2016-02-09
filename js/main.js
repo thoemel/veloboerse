@@ -30,6 +30,11 @@ $(document).ready(function() {
 	$('form').on('submit', function() {
 		$('#confirmation_modal').modal('show');
 	});
+	
+	$('.datepicker').datepicker({
+	    language: 'de',
+	    format: 'yyyy-mm-dd'
+	});
 });
 
 

@@ -1,16 +1,86 @@
 <?php
 /**
- * Administrative tasks for IDB Kantone project
+ * Administrative Aufgaben
  *
- * @author web@meteotest.ch
+ * @author thoemel@thoemel.ch
  */
 class Admin extends MY_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
+		
+		// Logged-in user must be superadmin.
+		$this->requireRole('superadmin');
 
 		$this->load->model('M_user');
+	}
+	
+	
+	/**
+	 * Schliesst eine Börse ab.
+	 */
+	public function boerseAbschliessen($id)
+	{
+		$boerse = new Boerse();
+		try {
+			$boerse->find($id);
+		} catch (Exception $e) {
+			$this->session->set_flashdata('error', $e->getMessage());
+			redirect('admin/index');
+			return;
+		}
+		$boerse->status = 'geschlossen';
+		if (!$boerse->save()) {
+			$this->session->set_flashdata('error', 'Börse konnte nicht abgeschlossen werden.');
+			redirect('admin/index');
+		} else {
+			// Datenbank backup zum Download anbieten und als gzip speichern
+			$this->load->dbutil();
+			$backup = $this->dbutil->backup();
+			
+			$this->load->helper('file');
+			$myName = 'backups/bkup_boerse_' . date('Ymd', strtotime($boerse->datum)) . '.sql.gz';
+			write_file($myName, $backup);
+			
+			$this->load->helper('download');
+			force_download($myName, $backup, true);
+		}
+		
+		return;
+	} // End of boerseAbschliessen()
+	
+	
+	/**
+	 * Speichert Börsendaten aus einem Formular
+	 */
+	public function boerseSpeichern()
+	{
+		// Form validation
+		if ($this->form_validation->run('boerseSpeichern') === false) {
+			$this->session->set_flashdata('error', 'Unmögliches Datum');
+			redirect('admin/index');
+			return;
+		}
+		
+		$boerse = new Boerse();
+		try {
+			$boerse->find($this->input->post('id'));
+		} catch(Exception $e) {
+			// Neue Börse --> DB bereit machen
+			Boerse::eroeffne();
+		}
+		
+		$boerse->datum = $this->input->post('boerseDatum');
+		if ($boerse->save()) {
+			$this->session->set_flashdata('success', 'Börse gespeichert.');
+		} else {
+			$this->session->set_flashdata('error', 'Börse konnte nicht gespeichert werden.');
+		}
+		
+		
+		redirect('admin/index');
+		return;
 	}
 
 	/**
@@ -19,12 +89,6 @@ class Admin extends MY_Controller
 	 */
 	public function deleteUser($id)
 	{
-		// User must be superadmin
-		if (!in_array($this->session->userdata('user_role'), array('superadmin'))) {
-			$this->show_403();
-			return ;
-		}
-		
 		if ($this->simpleloginsecure->delete($id)) {
 			$this->session->set_flashdata('success', "Benutzer gelöscht");
 		} else {
@@ -40,11 +104,6 @@ class Admin extends MY_Controller
 	 */
 	public function editUser()
 	{
-		// User must be superadmin
-		if (!in_array($this->session->userdata('user_role'), array('superadmin'))) {
-			$this->show_403();
-			return ;
-		}
 		
 		if ($this->form_validation->run('editUser') === false) {
 			// Not registered because of wrong input
@@ -75,15 +134,27 @@ class Admin extends MY_Controller
 
 	public function index()
 	{
-		// User must be superadmin
-		if (!in_array($this->session->userdata('user_role'), array('superadmin'))) {
-			$this->show_403();
-			return ;
-		}
-		
 		// Get List of users
 		$this->addData('registeredUsers', $this->M_user->all());
-
+		
+		// Letzte Börse abschliessen oder neue eröffnen
+		$letzteOffene = Boerse::letzteOffene();
+		if (!is_null($letzteOffene)) {
+			$this->data['letzteBoerse'] = $letzteOffene;
+			$boerseContent = $this->load->view('boerse/abschluss', $this->data, true);
+		} else {
+			$naechsteOffene = Boerse::naechsteOffene();
+			if (is_null($naechsteOffene)) {
+				$naechsteOffene = new Boerse();
+			}
+			$this->data['naechsteBoerse'] = $naechsteOffene;
+			$boerseContent = $this->load->view('boerse/formular', $this->data, true);
+			
+			if (date('Y-m-d') == $naechsteOffene->datum) {
+				$boerseContent = $this->load->view('boerse/heuteistboerse', $this->data, true);
+			}
+		}
+		$this->data['boerseContent'] = $boerseContent;
 
 		$this->load->view('admin/index', $this->data);
 		
@@ -97,12 +168,6 @@ class Admin extends MY_Controller
 	 */
 	public function registerUser()
 	{
-		// User must be superadmin
-		if (!in_array($this->session->userdata('user_role'), array('superadmin'))) {
-			$this->show_403();
-			return ;
-		}
-		
 		if ($this->form_validation->run('createUser') === false) {
 			$this->session->set_flashdata('error', validation_errors());
 			redirect('admin');
@@ -131,12 +196,6 @@ class Admin extends MY_Controller
 	 */
 	public function switchToUser($user_id)
 	{
-		// User must be superadmin
-		if (!in_array($this->session->userdata('user_role'), array('superadmin'))) {
-			$this->show_403();
-			return ;
-		}
-		
 		$newUser = new M_user();
 		if (!$newUser->fetch($user_id)) {
 			throw new Exception('No user found with this id');
@@ -161,12 +220,6 @@ class Admin extends MY_Controller
 	 */
 	public function userForm($userId = '')
 	{
-		// User must be superadmin
-		if (!in_array($this->session->userdata('user_role'), array('superadmin'))) {
-			$this->show_403();
-			return ;
-		}
-		
 		$userId = intval($userId);
 		
 		// Get Types

@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller {
 
 		// Profiling infos für die Entwicklung einschalten
 		if ($_SERVER['SERVER_NAME'] == 'dev.provelobern.ch') {
-// 	           $this->output->enable_profiler(TRUE);
+	           $this->output->enable_profiler(TRUE);
 		}
 
 
@@ -77,6 +77,16 @@ class MY_Controller extends CI_Controller {
 	
 	
 	/**
+	 * Checks if a string can be parsed as a future date
+	 * Callback for form validation.
+	 */
+	public function future_date($str)
+	{
+		return (time() < strtotime($str));
+	}
+	
+	
+	/**
 	 * Check if user is logged in. Set flashdata and redirect if not
 	 */
 	protected function requireLoggedIn()
@@ -86,7 +96,28 @@ class MY_Controller extends CI_Controller {
 			Redirect();
 		}
 		
+		if (empty(Boerse::naechsteOffene()) 
+			&& 'superadmin' != $this->session->userdata('user_role')) {
+			
+			$this->session->set_flashdata('error', 'Keine Börse offen. Nur Superadmins haben Zugriff.');
+			Redirect();
+		}
 	}
+	
+	
+	/**
+	 * Prüfe, ob der User eine bestimmte Rolle hat. Prüft keine Hierarchie, nur Rollennamen.
+	 * Falls nicht, wird mit Fehlermeldung auf die Startseite umgeleitet.
+	 * @param string $user_role
+	 */
+	protected function requireRole($user_role)
+	{
+		if (!($user_role == $this->session->userdata('user_role'))) {
+			$this->session->set_flashdata('error', 'Benutzer ist nicht '.$user_role.'.');
+			Redirect();
+		}
+		return;
+	} // End of requireRole()
 	
 	
 	/**

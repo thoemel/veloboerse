@@ -56,6 +56,10 @@ class Login extends MY_Controller {
 				$this->session->set_userdata('user_ressort', 'auswertung');
 				redirect('auswertung/index');
 				break;
+			case 'admin':
+				$this->session->set_userdata('user_ressort', 'admin');
+				redirect('admin/index');
+				break;
 			default:
 				redirect();
 		}

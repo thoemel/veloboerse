@@ -90,3 +90,11 @@ $config['veloFormular'] = array(
 			'rules' => 'trim'
 		),
 );
+
+$config ['boerseSpeichern'] = array (
+		array (
+				'field' => 'boerseDatum',
+				'label' => 'Datum',
+				'rules' => 'trim|required|callback_future_date'
+		),
+);

@@ -35,20 +35,83 @@ class Admin extends MY_Controller
 			$this->session->set_flashdata('error', 'Börse konnte nicht abgeschlossen werden.');
 			redirect('admin/index');
 		} else {
-			// Datenbank backup zum Download anbieten und als gzip speichern
 			$this->load->dbutil();
-			$backup = $this->dbutil->backup();
-			
 			$this->load->helper('file');
-			$myName = 'backups/bkup_boerse_' . date('Ymd', strtotime($boerse->datum)) . '.sql.gz';
-			write_file($myName, $backup);
 			
-			$this->load->helper('download');
-			force_download($myName, $backup, true);
-		}
+			// Statistik-CSV generieren und ablegen
+			$this->load->model('statistik');
+			$data['verkaufteVelos'] = Statistik::verkaufteVelos();
+			$data['veloStatistik'] = Statistik::velos();
+			$data['haendlerStatistik'] = Statistik::haendler();
+			$data['modalSplit'] = Statistik::modalsplit();
+			$data['noHeaders'] = true;
+			$statistik = $this->load->view('auswertung/statistik_csv', $data, true);
+			$statsFileName = 'backups/bkup_boerse_statistik_' . date('Ymd', strtotime($boerse->datum)) . '.csv';
+			write_file($statsFileName, utf8_decode($statistik));
+			
+			// CSV der DB-Tabelle "haendler" generieren und ablegen
+			$query = $this->db->get("haendler");
+			$haendlerCsv = $this->dbutil->csv_from_result($query, ';');
+			$haendlerFileName = 'backups/bkup_boerse_haendler_' . date('Ymd', strtotime($boerse->datum)) . '.csv';
+			write_file($haendlerFileName, utf8_decode($haendlerCsv));
+			
+			// CSV der DB-Tabelle "velos" generieren und ablegen
+			$query = $this->db->get("velos");
+			$velosCsv = $this->dbutil->csv_from_result($query, ';');
+			$velosFileName = 'backups/bkup_boerse_velos_' . date('Ymd', strtotime($boerse->datum)) . '.csv';
+			write_file($velosFileName, utf8_decode($velosCsv));
+			
+			// Datenbank backup als gzip ablegen
+			$backup = $this->dbutil->backup();
+			$dbFileName = 'backups/bkup_boerse_db_' . date('Ymd', strtotime($boerse->datum)) . '.sql.gz';
+			write_file($dbFileName, $backup);
+			
+			$this->index();
+		} 
 		
 		return;
 	} // End of boerseAbschliessen()
+	
+	
+	/**
+	 * Erstelle ein ZIP mit allen Backup-Dateien zu dieser Börse und sende es
+	 * an den Browser.
+	 * @param int $id
+	 * @return void
+	 */
+	public function boerseDownload($id)
+	{
+		$this->load->helper('download');
+		$boerse = new Boerse();
+		try {
+			$boerse->find($id);
+		} catch (Exception $e) {
+			log_message('error', 'Admin::downloadBoerse(): ' . $e->getMessage());
+			$this->session->set_flashdata('error', $e->getMessage());
+			redirect('admin/index');
+			return;
+		}
+		$datumsTeil = date('Ymd', strtotime($boerse->datum));
+
+		// Create a ZIP and send it to the browser
+		$zip = new ZipArchive();
+		$filename = sys_get_temp_dir() . "/boerse_" . $datumsTeil . ".zip";
+			
+		if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+			log_message('error', 'Admin::downloadBoerse(): kann ' . $filename . ' nicht erstellen');
+			redirect('admin/index');
+		}
+
+		$zip->addFile("backups/bkup_boerse_statistik_".$datumsTeil.".csv");
+		$zip->addFile("backups/bkup_boerse_haendler_".$datumsTeil.".csv");
+		$zip->addFile("backups/bkup_boerse_velos_".$datumsTeil.".csv");
+		$zip->addFile("backups/bkup_boerse_db_".$datumsTeil.".sql.gz");
+		$zip->close();
+		force_download($filename, NULL, true);
+		unlink($filename);
+		
+		return;
+	}
 	
 	
 	/**
@@ -246,5 +309,14 @@ class Admin extends MY_Controller
 		$this->load->view('admin/user_form', $this->data);
 		
 		return;
+	}
+	
+	
+	
+	public function vergangeneBoersen()
+	{
+		$alleBoersen = Boerse::all('geschlossen');
+		$this->data['alleBoersen'] = $alleBoersen;
+		$this->load->view('admin/vergangeneBoersen', $this->data);
 	}
 }

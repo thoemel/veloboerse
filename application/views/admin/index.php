@@ -3,7 +3,7 @@ include APPPATH . 'views/header.php';
 
 echo '
 	' . heading('Administration', 1) . '
-	' . heading('Auswertung', 2) . '
+	' . heading('Aktuelle Börse', 2) . '
 <div class="row">
 	<p>
 		Hier ein paar nette Links für die Auswertung der Börse:
@@ -13,12 +13,18 @@ echo '
 		<li>' . anchor('auswertung/statistik', 'Statistik') . '</li>
 		<li>' . anchor('auswertung/afrika', 'Velos für Afrika') . '</li>
 	</ul>
-</div>';
-echo '
+</div>
 	' . heading('Nächste Börse einrichten', 2) . '
 <div class="row">
 	<p>
 		' . $boerseContent . '
+	</p>
+</div>
+
+	' . heading('Vergangene Börsen', 2) . '
+<div class="row">
+	<p>
+		' . anchor('admin/vergangeneBoersen', 'Zu den Downloads') . '
 	</p>
 </div>
 				

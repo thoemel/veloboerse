@@ -16,6 +16,25 @@ class Boerse extends CI_Model {
 	
 	
 	/**
+	 * Holt alle Börsen-instanzen aus der DB
+	 * @param string $status
+	 * @return array of stdClass (aus query->result)
+	 */
+	public static function all($status = '')
+	{
+		$arrOut = array();
+		$CI = get_instance();
+		
+		if (!empty($status) and in_array($status, array('offen','geschlossen'))) {
+			$CI->db->where('status', $status);
+		}
+		$CI->db->order_by('datum', 'desc');
+		$query = $CI->db->get('boersen');
+		return $query->result();
+	}
+	
+	
+	/**
 	 * Boerse löschen
 	 * 
 	 * @return true, falls alles erfolgreich.

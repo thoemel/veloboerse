@@ -18,7 +18,14 @@ echo '
 		<label for="haendler_id" class="col-sm-2 control-label">Händler</label>
 		<div class="col-sm-6 col-md-4 col-lg-4">
 			' . $haendlerDropdown . '
-		</div>
+		</div>';
+if (isset($haendler)) {
+	echo '
+		<div class="col-sm-4 col-md-3 col-lg-3">
+			' . anchor('haendlerformular/'.$haendler->code, '-> zum Händlerformular') . '
+		</div>';
+}
+echo '
 	</div>
 							
 	<div class="form-group">

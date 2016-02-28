@@ -161,6 +161,8 @@ class Statistik extends CI_Model {
 			$myHaendler['einstellgebuehr'] = 0;
 			$myHaendler['betragAusbezahlt'] = 0;
 			
+			$myHaendler['betragAusbezahlt'] -= $myHaendler['busse'];
+			
 			foreach ($query->result() as $velo) {
 				if (0== $velo->storniert) {
 					$myHaendler['velosAufPlatz'] ++;

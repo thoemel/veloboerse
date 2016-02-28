@@ -85,13 +85,18 @@ class Auszahlung extends MY_Controller {
 			return;
 		}
 		
-		if ('yes' == $myVelo->ausbezahlt || 'no' == $myVelo->verkauft) {
+		// Heading
+		$this->addData('divAround', '<div>');
+		$this->addData('h1', 'Auszahlung bestätigen');
+		if ('yes' == $myVelo->ausbezahlt) {
+			$this->addData('divAround', '<div class="alert-error">');
+			$this->addData('h1', 'Schon ausbezahlt');
+		} 
+		if ('no' == $myVelo->verkauft) {
 			$this->addData('divAround', '<div class="alert-error">');
 			$this->addData('h1', 'Noch nicht verkauft');
-		} else {
-			$this->addData('divAround', '<div>');
-			$this->addData('h1', 'Auszahlung bestätigen');
 		}
+		
 		$this->addData('velo', $myVelo);
 		$this->addData('auszahlung_betrag', ($myVelo->preis - Velo::getProvision($myVelo->preis)));
 		$this->addData('hideNavi', true);

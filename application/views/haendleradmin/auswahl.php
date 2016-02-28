@@ -55,6 +55,12 @@ foreach ($liste->result() as $haendler) {
 echo '
 		</tbody>
 	</table>
+		
+	<h2>Alle Händler auf angenommen setzen</h2>
+	Am Börsenvormittag müssen alle Händler den Status "angenommen" haben.
+	Sonst funktioniert das mit der Abholung und Abrechnung nicht richtig.
+	Mit diesem Link kannst du den Status sämtlicher Händler auf "angenommen" setzen:
+	' . anchor('haendleradmin/alleAngenommen', 'Alle Händler angenommen') . '
 </div>';
 
 

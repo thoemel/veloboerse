@@ -40,6 +40,19 @@ class Haendler extends CI_Model {
 	
 	
 	/**
+	 * Setzt den Status aller Händler auf "angenommen".
+	 * @return bool
+	 */
+	public static function alleAngenommen()
+	{
+		$CI =& get_instance();
+		$sql = 'UPDATE haendler SET status = "angenommen"';
+		
+		return $CI->db->query($sql);
+	}
+	
+	
+	/**
 	 * Prüft, wie viele Velos des Händlers noch in der Halle sind.
 	 * Diese Funktion wird z.B. bei der Händlerabholung verwendet.
 	 * @return	int	Anzahl Velos in Halle

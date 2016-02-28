@@ -151,6 +151,21 @@ class Haendleradmin extends MY_Controller {
 	
 	
 	/**
+	 * Setzt den Status aller Händler auf "angenommen".
+	 */
+	public function alleAngenommen()
+	{
+		if (Haendler::alleAngenommen()) {
+			$this->session->set_flashdata('success', 'Status erfolgreich gesetzt.');
+		} else {
+			$this->session->set_flashdata('error', 'Status setzen fehlgeschlagen.');
+		}
+		redirect('haendleradmin/index');
+		return;
+	}
+	
+	
+	/**
 	 * Liste mit allen Direktlinks für die Händler.
 	 */
 	public function direktlinks()
@@ -458,17 +473,6 @@ class Haendleradmin extends MY_Controller {
 		}
 		$this->data['anzeigename'] = $anzeigename;
 	
-/*		$myIds = array();
-		$this->load->model('velo');
-		$myVelos = Velo::getAll($haendler_id);
-		if (0 < $myVelos->num_rows()) {
-			foreach ($myVelos->result() as $row) {
-				$myIds[] = $row->id;
-			}
-			sort($myIds);
-		}
-		$this->data['ids'] = $myIds;
-	*/
 		$this->load->view('haendleradmin/haendlerconfig', $this->data);
 		return;
 	} // End of function haendlerconfig()
@@ -502,6 +506,7 @@ class Haendleradmin extends MY_Controller {
 		$uptodate = strval($this->input->post('input_uptodate'));
 		$anzahlVelos = strval($this->input->post('input_velos'));
 		$standgebuehr = strval($this->input->post('input_standgebuehr'));
+		$status = strval($this->input->post('input_status'));
 		
 		// Neue Instanz von Haendler
 		$myHandler  = new Haendler();
@@ -523,6 +528,7 @@ class Haendleradmin extends MY_Controller {
 		$myHandler->uptodate = $uptodate;
 		$myHandler->anzahlVelos = $anzahlVelos;
 		$myHandler->standgebuehr = $standgebuehr;
+		$myHandler->setStatus($status);
 		$myHandler->save();
 		
 	

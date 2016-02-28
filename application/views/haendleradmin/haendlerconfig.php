@@ -101,7 +101,20 @@ echo '
 			Falls ein Händler zu früh gespeichert hat und noch Angaben ändern will, hier wieder von 1 auf 0 setzen.
 		</span>
 	</div>
-
+	<div class="form-group">
+		<label for="status_input" class="col-sm-2 control-label">Status</label>
+		<div class="col-sm-4">
+			' . form_dropdown(
+					'input_status', 
+					array('offen'=>'offen','angenommen'=>'angenommen','abgeholt'=>'abgeholt','ausbezahlt'=>'ausbezahlt'), 
+					$haendler->getStatus(), 
+					'id="status_input" class="form-control"') . '
+		</div>
+		<span class="help-block">
+			Damit die Abrechnung gemacht werden kann, muss der Status auf "abgeholt" sein.
+		</span>
+	</div>
+	
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-default">Speichern</button>

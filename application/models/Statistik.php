@@ -100,6 +100,7 @@ class Statistik extends CI_Model {
 		$query = $CI->db->query($sql);
 		$sumVerkaufte = 0;
 		foreach ($query->result() as $row) {
+			$sumBar = 0;
 			$sumVerkaufte += $row->anz;
 			if ($row->zahlungsart == 'bar') {
 				$sumBar = $row->anz;

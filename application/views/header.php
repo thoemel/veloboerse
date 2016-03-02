@@ -15,6 +15,7 @@
 <?php 
 $min = ('dev' == substr($_SERVER['SERVER_NAME'], 0, 3)) ? '' : '.min';
 echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap' . $min . '.css">';
+echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap-datepicker' . $min . '.css">';
 ?>
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/main.css">
@@ -67,6 +68,10 @@ if (!isset($hideNavi) || false == $hideNavi) {
 		echo '
 						</ul>
 			        </li>';
+		if ('superadmin' == $this->session->userdata('user_role')) {
+			echo '
+					<li>' . anchor('login/dispatch/admin', 'Administration') . '</li>';
+		}
 		echo '
 					<li>' . anchor('login/logout', 'Logout') . '</li>';
 	} else {

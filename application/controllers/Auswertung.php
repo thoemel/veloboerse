@@ -54,7 +54,8 @@ class Auswertung extends MY_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('auswertung/uebersicht', $this->data);
+		// Die Übersicht steht neuerdings unter dem Navipunkt "Administration".
+		redirect('admin/index');
 	}
 	
 	

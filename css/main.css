@@ -81,6 +81,10 @@ footer {
 	border: none;
 }
 
+.navbar-form.navbar-right:last-child {
+    margin-right: 0;
+}
+
 
 @media print {
     .noprint {

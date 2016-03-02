@@ -1,7 +1,10 @@
 <?php
-header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-header("Content-Disposition: attachment; filename=veloboerse_statistik_" . date('Ymd') . ".xls");
+if (!isset($noHeaders) || false === $noHeaders) {
+	header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+	header("Content-Disposition: attachment; filename=veloboerse_statistik_" . date('Ymd') . ".csv");
+}
 
+$ichwill = 'debuggen';
 echo 'Statistik ' . date('d.m.Y') . "\n";
 echo 'Verkaufte Velos' . "\n";
 echo "Händler;Private;Total\n";

@@ -9,8 +9,26 @@ $(document).ready(function() {
 	// Auszahlung: Provision berechnen
 	$('input[name=no_provision]').change(calcProvision);
 	
+	// Auszahlung: Bemerkungsfeld für Helferlein Namen ein- oder ausblenden
+	$('input[name=no_provision]').change(function() {
+		if ($('#no_provision').attr('checked')) {
+			$('#velo_bemerkungen').removeClass('hidden');
+		} else {
+			$('#velo_bemerkungen').addClass('hidden');
+		}
+	});
+	
 	// Kasse: Provision berechnen 
 	$('input[name=helfer_kauft]').change(calcProvisionAtCashier);
+	
+	// Kasse: Bemerkungsfeld für Helferlein Namen ein- oder ausblenden
+	$('input[name=helfer_kauft]').change(function() {
+		if ($('#helfer_kauft').attr('checked')) {
+			$('#velo_bemerkungen').removeClass('hidden');
+		} else {
+			$('#velo_bemerkungen').addClass('hidden');
+		}
+	});
 	
 	// Annahme: Warnung bei fünfstelligem Preis
 	$('#erfassungsformular').submit(function() {

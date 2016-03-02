@@ -60,6 +60,12 @@ echo '
 			' . form_radio('zahlungsart', 'kredit', false) . '
 			Kreditkarte
 		</label>
+	</div>
+	<div id="velo_bemerkungen" class="hidden form-group">
+		<label class="col-sm-2 control-label">Bitte Namen ins Bemerkungsfeld!</label>
+		<div class="col-sm-10">
+			<textarea rows="3" class="form-control" name="bemerkungen">' . $velo->bemerkungen . '</textarea>
+		</div>
 	</div>';
 if (0 == $velo->gestohlen) {
 	echo '

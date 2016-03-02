@@ -47,6 +47,12 @@ echo '
 			' . form_checkbox('no_provision', 'yes', false, 'id="no_provision"') . '
 			Keine Provision (von HelferIn verkauft)
 		</label>
+	</div>
+	<div id="velo_bemerkungen" class="hidden form-group">
+		<label class="col-sm-2 control-label">Bitte Namen ins Bemerkungsfeld!</label>
+		<div class="col-sm-10">
+			<textarea rows="3" class="form-control" name="bemerkungen">' . $velo->bemerkungen . '</textarea>
+		</div>
 	</div>';
 
 if ('no' == $velo->ausbezahlt && 'yes' == $velo->verkauft && 0 == $velo->gestohlen) {

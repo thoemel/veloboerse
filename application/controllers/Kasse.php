@@ -79,6 +79,10 @@ class Kasse extends MY_Controller {
 			$this->session->set_flashdata('error', 'Das Velo wurde schon früher verkauft. Verkauf fehlgeschlagen.');
 			redirect();
 		}
+		
+		if (false !== $this->input->post('bemerkungen')) {
+			$myVelo->bemerkungen = $this->input->post('bemerkungen');
+		}
 
 		$myVelo->verkauft = 'yes';
 		$myVelo->zahlungsart = $this->input->post('zahlungsart');

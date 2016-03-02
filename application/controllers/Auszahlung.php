@@ -129,6 +129,10 @@ class Auszahlung extends MY_Controller {
 			redirect('auszahlung/formular_private');
 			return;
 		}
+		
+		if (false !== $this->input->post('bemerkungen')) {
+			$myVelo->bemerkungen = $this->input->post('bemerkungen');
+		}
 	
 		$myVelo->ausbezahlt = 'yes';
 		$myVelo->keine_provision = $noProvision;

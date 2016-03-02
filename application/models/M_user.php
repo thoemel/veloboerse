@@ -5,7 +5,6 @@
  * This model is used for user administration.
  * @see library Simplelogin for CRUD actions and authentification.
  *
- * TODO auf boerse anpassen
  * @author
  */
 class M_user extends CI_Model {
@@ -108,7 +107,8 @@ class M_user extends CI_Model {
 
 	/**
 	 * Save class attributes to database
-	 * To create a user the SimpleLoginSecure library is used.
+	 * To create a user and for changing the password 
+	 * the SimpleLoginSecure library is used.
 	 *
 	 * @see SimpleLoginSecure
 	 * @return	boolean							True on success
@@ -139,7 +139,7 @@ class M_user extends CI_Model {
 		$this->db->where('user_id', $this->id);
 		$this->db->set('user_email', $this->email);
 		$this->db->set('user_role', $this->role);
-
+		
 		return $this->db->update('users');
 	}
 	

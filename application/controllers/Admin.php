@@ -183,6 +183,10 @@ class Admin extends MY_Controller
 		$myUser->email = $this->input->post('email');
 		$myUser->role = $this->input->post('role');
 		
+		if (!empty($this->input->post('pw'))) {
+			$this->simpleloginsecure->edit_password($this->input->post('email'), $this->input->post('pw'));
+		}
+		
 		if($myUser->save()) {
 			$this->session->set_flashdata('success', 'Benutzer speichern erfolgreich.');
 		} else {

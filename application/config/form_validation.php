@@ -17,7 +17,7 @@ $config ['createUser'] = array (
 		array (
 				'field' => 'email',
 				'label' => 'E-Mail',
-				'rules' => 'trim|required|valid_email' 
+				'rules' => 'trim|required' 
 		),
 		array (
 				'field' => 'pw',

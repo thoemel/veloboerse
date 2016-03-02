@@ -229,7 +229,7 @@ class SimpleLoginSecure
 	* @param  string
 	* @return  bool
 	*/
-	function edit_password($user_email = '', $old_pass = '', $new_pass = '')
+	function edit_password($user_email = '', $new_pass = '')
 	{
 		$this->CI =& get_instance();
 		// Check if the password is the same as the old one
@@ -238,9 +238,6 @@ class SimpleLoginSecure
 		$user_data = $query->row_array();
 
 		$hasher = new PasswordHash(PHPASS_HASH_STRENGTH, PHPASS_HASH_PORTABLE);	
-		if (!$hasher->CheckPassword($old_pass, $user_data['user_pass'])){ //old_pass is the same
-			return FALSE;
-		}
 		
 		// Hash new_pass using phpass
 		$user_pass_hashed = $hasher->HashPassword($new_pass);

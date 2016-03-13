@@ -60,17 +60,28 @@ $(document).ready(function() {
  * Bei Auszahlung auszuzahlenden Betrag ändern, wenn "keine Provision" angewählt ist.
  */
 function calcProvision() {
-	myProvision = $('#preis').text() - $('#auszahlung_betrag').text();
+	myProvision = $('#preis').text() - $('.auszahlungsbetrag').first().text();
 	if (myProvision > 0) {
 		provision = myProvision;
 	}
-	var auszahlung_betrag = $('#auszahlung_betrag').text();
+	var auszahlung_betrag = $('.auszahlungsbetrag').first().text();
 	if ($('#no_provision').attr('checked')) {
 		auszahlung_betrag = $('#preis').text();
 	} else {
 		auszahlung_betrag = ($('#preis').text() - provision);
 	}
-	$('#auszahlung_betrag').text(auszahlung_betrag);
+	$('.auszahlungsbetrag').text(auszahlung_betrag);
+	
+	if ($('#summierte_auszahlung').length == 1) {
+		var total = parseInt($('#auszahlung_total').text());
+		if ($('#no_provision').attr('checked')) {
+			total = total + provision;
+			$('#auszahlung_total').text(total);
+		} else {
+			total = total - provision;
+			$('#auszahlung_total').text(total);
+		}
+	}
 }
 
 

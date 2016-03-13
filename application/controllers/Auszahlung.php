@@ -145,6 +145,26 @@ class Auszahlung extends MY_Controller {
 			$this->session->set_flashdata('success', 'Auszahlung wurde gespeichert.');
 			$this->session->set_flashdata('gespeichertesVelo', $myVelo->id);
 		}
+		
+		$ichwill = 'debuggen';
+		if ('yes' === $this->input->post('auszahlung_summieren')) {
+			if (false !== $this->session->userdata('summierte_auszahlung')) {
+				$diese_auszahlung = $myVelo->preis;
+				if ($myVelo->keine_provision == 'no') {
+					$diese_auszahlung -= Velo::getProvision($myVelo->preis);
+				}
+				$summierte_auszahlung = $this->session->userdata('summierte_auszahlung');
+				$summierte_auszahlung[] = array(
+						'quittungsNr'=>$myVelo->id,
+						'auszuzahlen'=>$diese_auszahlung
+				);
+			}
+			$this->session->set_userdata('summierte_auszahlung', $summierte_auszahlung);
+		} else {
+			if (false !== $this->session->userdata('summierte_auszahlung')) {
+				$this->session->unset_userdata('summierte_auszahlung');
+			}
+		}
 	
 		redirect('auszahlung/formular_private');
 		return;

@@ -66,6 +66,10 @@ class Admin extends MY_Controller
 			$dbFileName = 'backups/bkup_boerse_db_' . date('Ymd', strtotime($boerse->datum)) . '.sql.gz';
 			write_file($dbFileName, $backup);
 			
+			// Haendler  zurücksetzen
+			$this->load->model('haendler');
+			Haendler::alleZuruecksetzen(); 
+			
 			$this->index();
 		} 
 		

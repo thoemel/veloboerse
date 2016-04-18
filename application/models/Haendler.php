@@ -53,6 +53,26 @@ class Haendler extends CI_Model {
 	
 	
 	/**
+	 * Setzt alle Händler zurück für neue Börse
+	 */
+	public static function alleZuruecksetzen()
+	{
+		$CI =& get_instance();
+		$sql = 'UPDATE haendler SET 
+				status = "angenommen",
+				code = UUID(),
+				kommentar = "",
+				status = "offen",
+				standgebuehr = 0,
+				busse = 0,
+				uptodate = 0,
+				anzahlVelos = 0';
+		
+		return $CI->db->query($sql);
+	}
+	
+	
+	/**
 	 * Prüft, wie viele Velos des Händlers noch in der Halle sind.
 	 * Diese Funktion wird z.B. bei der Händlerabholung verwendet.
 	 * @return	int	Anzahl Velos in Halle

@@ -38,6 +38,8 @@ $(document).ready(function() {
 		}
 	});
 	
+	// Generell Anzeige von Provision und Auszahlung aus Preis berechnen
+	calcProvisionDynamic();
 	$('#preis_input').keyup(calcProvisionDynamic);
 	
 	/*

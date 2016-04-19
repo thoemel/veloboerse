@@ -10,7 +10,7 @@ echo '
 	</ol>
 		
 	<h1>Quittungen zuweisen</h1>
-	<h2>Händler: ' . $anzeigename . '</h2>
+	<h2>Händler Nr. ' . $haendler->id . ', ' . $anzeigename . '</h2>
 			
 	<h3>Zugewiesene Quittungsnummern</h3>
 	<ul>';

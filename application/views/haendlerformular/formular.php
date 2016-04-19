@@ -11,7 +11,7 @@ if ($this->session->userdata('logged_in')) {
 	</ol>';
 }
 echo heading('Velo Liste für HändlerInnen', 1) . '
-	' . heading('Name: ' . $haendler->person, 2) . '
+	' . heading('Händler Nr. ' . $haendler->id . ', ' . $haendler->person, 2) . '
 	<div>' . anchor('haendlerformular/pdf/' . $haendler->code, 'Druckversion', 'class="btn btn-info"') . '</div>
 	<div>&nbsp;</div>
 	<div class="alert alert-danger hidden-print">

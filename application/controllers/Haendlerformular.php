@@ -265,12 +265,15 @@ class Haendlerformular extends MY_Controller {
 		
 		if ($ret) {
 			$this->session->set_flashdata('success', 'Velos wurden gespeichert.');
-			redirect('haendlerformular/index');
 		} else {
 			$this->session->set_flashdata('error', 'Beim Speichern ist etwas fehlgeschlagen. Bitte kontrollieren Sie die Angaben zu Ihren Velos noch einmal!');
 		}
 		
-		redirect('haendlerformular/index');
+		if (1 == $this->session->userdata('logged_in')) {
+			redirect('haendleradmin/index');
+		} else {
+			redirect('haendlerformular/index');
+		}
 	}
 	
 	

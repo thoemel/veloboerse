@@ -35,6 +35,20 @@ class Statistik extends CI_Model {
 		$q2 = $CI->db->query($sql);
 		return array('verkauft_nicht_ausbezahlt' => $query->result(),
 					'afrika_registriert' => $q2->result());
+	} // End of function afrika()
+	
+	
+	public static function anzahlVelosAufPlatz()
+	{
+		$CI = & get_instance ();
+		$sql = 'SELECT count(id) as anzahl
+				FROM velos
+				WHERE verkauft = "no"
+				AND abgeholt = "no"
+				AND gestohlen = 0
+				AND storniert = 0';
+		$query = $CI->db->query($sql);
+		return $query->row()->anzahl;
 	}
 	
 	
@@ -99,8 +113,8 @@ class Statistik extends CI_Model {
 				GROUP BY zahlungsart';
 		$query = $CI->db->query($sql);
 		$sumVerkaufte = 0;
+		$sumBar = 0;
 		foreach ($query->result() as $row) {
-			$sumBar = 0;
 			$sumVerkaufte += $row->anz;
 			if ($row->zahlungsart == 'bar') {
 				$sumBar = $row->anz;

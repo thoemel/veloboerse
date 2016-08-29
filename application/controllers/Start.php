@@ -14,6 +14,11 @@ class Start extends MY_Controller {
 	 */
 	public function index()
 	{
+		$this->load->model('statistik');
+		$this->load->model('boerse');
+		$boerse = Boerse::naechsteOffene();
+		$this->addData('naechsteBoerse', $boerse);
+		$this->addData('anzahl', Statistik::anzahlVelosAufPlatz());
 		$this->load->view('start', $this->data);
 	}
 }

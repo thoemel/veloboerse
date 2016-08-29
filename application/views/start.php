@@ -14,7 +14,16 @@ echo '
 		</div>
 		<button type="submit" class="btn btn-success">' . $formSubmitText . '</button>
 	</div>
-	' . form_close() . '
+	' . form_close();
+
+if (!empty($naechsteBoerse)) {
+	echo '
+	<p>
+		<div class="verybig">Anzahl Velos auf Platz: ' . $anzahl . '</div>
+	</p>';
+}
+
+echo '
 </div>
 
 ';

@@ -86,9 +86,6 @@ class Haendleradmin extends MY_Controller {
 							- $einstellbebuehr
 							- $haendler->busse
 							- $haendler->standgebuehr;
-		$iban = str_replace(' ', '', $haendler->iban);
-		$iban = substr($iban, 0, 4) . ' ' . substr($iban, 4, 1) . 'XXX XXXX XXXX ' . substr($iban, -5, 4) . ' ' . substr($iban, -1);
-		
 		
 		$this->addData('haendler', $haendler);
 		$this->addData('preisVerkaufte', (number_format($preisVerkaufte, 2)));
@@ -98,7 +95,7 @@ class Haendleradmin extends MY_Controller {
 		$this->addData('arrVelos', $arrVelos);
 		$this->addData('countNichtVerkauft', $countNichtVerkauft);
 		$this->addData('countVerkauft', $countVerkauft);
-		$this->addData('iban', $iban);
+		$this->addData('iban', $haendler->iban);
 		
 	
 		$this->load->view('haendleradmin/abrechnung', $this->data);

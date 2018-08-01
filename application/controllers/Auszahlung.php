@@ -93,8 +93,12 @@ class Auszahlung extends MY_Controller {
 			$this->addData('h1', 'Schon ausbezahlt');
 		} 
 		if ('no' == $myVelo->verkauft) {
-			$this->addData('divAround', '<div class="alert-error">');
+			$this->addData('divAround', '<div class="alert-warning">');
 			$this->addData('h1', 'Noch nicht verkauft');
+		}
+		if (1 == $myVelo->gestohlen) {
+			$this->addData('divAround', '<div class="alert-error">');
+			$this->addData('h1', 'Gestohlen');
 		}
 		
 		$this->addData('velo', $myVelo);

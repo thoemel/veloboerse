@@ -28,7 +28,7 @@ if (!empty($velo->bemerkungen)) {
 	echo '
 	<div class="row">
 		<div class="col-sm-2">Bemerkungen: </div>
-		<div class="col-sm-10 alert alert-warning">' . $velo->bemerkungen . '</div>
+		<div class="col-sm-10 alert alert-info">' . $velo->bemerkungen . '</div>
 	</div>';
 }
 

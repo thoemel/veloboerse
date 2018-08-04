@@ -73,17 +73,6 @@ function calcProvision() {
 		auszahlung_betrag = ($('#preis').text() - provision);
 	}
 	$('.auszahlungsbetrag').text(auszahlung_betrag);
-	
-	if ($('#summierte_auszahlung').length == 1) {
-		var total = parseInt($('#auszahlung_total').text());
-		if ($('#no_provision').attr('checked')) {
-			total = total + provision;
-			$('#auszahlung_total').text(total);
-		} else {
-			total = total - provision;
-			$('#auszahlung_total').text(total);
-		}
-	}
 }
 
 

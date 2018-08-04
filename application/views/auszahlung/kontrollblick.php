@@ -48,12 +48,6 @@ echo '
 			Keine Provision (von HelferIn verkauft)
 		</label>
 	</div>
-	<div class="checkbox">
-		<label>
-			' . form_checkbox('auszahlung_summieren', 'yes', false, 'id="auszahlung_summieren"') . '
-			Weiteres Velo vom gleichen Verkäufer dazunehmen
-		</label>
-	</div>
 	<div id="velo_bemerkungen" class="hidden form-group">
 		<label class="col-sm-2 control-label">Bitte Namen ins Bemerkungsfeld!</label>
 		<div class="col-sm-10">
@@ -84,31 +78,6 @@ echo form_close();
 
 echo '
 </div>';
-
-if ($this->session->userdata('summierte_auszahlung')) {
-	echo '
-	<div class="row">
-		<p class="alert alert-info">
-			Weitere Velos dieses Verkäufers:
-			<p id="summierte_auszahlung">';
-	$total = $auszahlung_betrag;
-	foreach ($this->session->userdata('summierte_auszahlung') as $summierte) {
-		$total += $summierte['auszuzahlen'];
-		echo '
-				<span class="col-sm-2">'.$summierte['quittungsNr'].':</span> 
-				'.$summierte['auszuzahlen'].'<br>';
-	}
-	echo '
-				<span class="col-sm-2">'.$velo->id.': </span>
-				<span class="auszahlungsbetrag">'.$auszahlung_betrag.'</span><br>
-				
-				<span class="col-sm-2">Total: </span>
-				<span class="badge" id="auszahlung_total">'.$total.'</span>
-			</p>
-		</p>
-	</div>';
-	
-}
 
 echo '
 <div>

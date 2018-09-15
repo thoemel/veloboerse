@@ -30,7 +30,11 @@ echo heading('Velo Liste für HändlerInnen', 1) . '
 			
 	<form class="form-inline" role="form" action="' . site_url('haendlerformular/speichern') . '" method="post">';
 
+$tabindex = 0;
 foreach ($veloquery->result() as $velo) {
+	$tabindex++;
+	$tabindexAttr = $useTabindex === true ? ' tabindex="'.$tabindex.'"' : '';
+	$focusClass = $tabindex === 1 ? ' focusPlease' : '';
 	echo '
 	<div class="row">
 		<div class="form-group col-md-1">
@@ -40,7 +44,7 @@ foreach ($veloquery->result() as $velo) {
 			' . form_checkbox('storniert[]', $velo->id, (true == $velo->storniert)) . '
 		</div>
 		<div class="form-group col-md-1">
-			<input value="' . $velo->preis . '" name="preis[]" type="text" class="form-control input-sm">
+			<input value="' . $velo->preis . '" name="preis[]" type="text" class="form-control input-sm'.$focusClass.'"'.$tabindexAttr.'>
 		</div>
 		<div class="form-group col-md-2">
 			<input value="' . $velo->typ . '" name="typ[]" type="text" class="form-control input-sm">

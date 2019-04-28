@@ -130,8 +130,8 @@ class Velo extends CI_Model {
 		if (1 == $query->num_rows()) {
 			$provision = $query->row()->provision;
 		} else {
-			// ueber 3000 immer 10%
-			$provision = $preis / 10;
+			// bei mehr als Maximum der Liste immer 15%
+			$provision = round($preis * 0.15 / 10) * 10;
 		}
 		return $provision;
 	}

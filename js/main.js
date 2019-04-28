@@ -111,8 +111,8 @@ function calcProvisionDynamic() {
 	});
 	
 	// Falls wir über der obersten Provisionsgrenze sind, werden 10% verrechnet.
-	if (preis > 3000) { 
-		provision = preis * 0.1;
+	if (preis > 1000) { 
+		provision = Math.round(preis * 0.15 / 10) * 10;
 	}
 	
 	$('.provision').text(provision);

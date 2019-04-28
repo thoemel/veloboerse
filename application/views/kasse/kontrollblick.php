@@ -90,7 +90,7 @@ echo '
 			
 <div>
 	<p><br><br><br><br><br><br>
-		' . anchor('kasse/', 'Dieses Velo nicht verkaufen.') . '</p>
+		' . anchor('kasse/', 'Verkauf abbrechen') . '</p>
 </div>';
 				
 echo '

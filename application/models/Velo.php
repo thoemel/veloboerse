@@ -34,6 +34,23 @@ class Velo extends CI_Model {
 	
 	
 	/**
+	 * Löscht ein Velo aus der DB
+	 * @return boolean True on success
+	 */
+	public function delete()
+	{
+		$success = false;
+		if (self::istRegistriert($this->id)) {
+			$this->db->where('id', $this->id);
+			$success = $this->db->delete('velos'); 
+		} else {
+			$success = false;
+		}
+		return $success;
+	}
+	
+	
+	/**
 	 * Sucht in der DB nach dem Velo mit der entsprechenden ID.
 	 * 
 	 * @throws	Exception, falls kein Velo gefunden.

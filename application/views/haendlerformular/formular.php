@@ -25,7 +25,12 @@ echo heading('Velo Liste für HändlerInnen', 1) . '
 		<div class="col-md-2">Typ</div>
 		<div class="col-md-2">Farbe</div>
 		<div class="col-md-2">Marke</div>
-		<div class="col-md-2">Rahmen-Nr.</div>
+		<div class="col-md-2">Rahmen-Nr.</div>'; 
+if ($mayDelete) {
+	echo '
+		<div class="col-md-1">Del.</div>';
+}
+echo '
 	</div>
 			
 	<form class="form-inline" role="form" action="' . site_url('haendlerformular/speichern') . '" method="post">';
@@ -57,8 +62,15 @@ foreach ($veloquery->result() as $velo) {
 		</div>
 		<div class="form-group col-md-2">
 			<input value="' . $velo->rahmennummer . '" name="rahmennummer[]" type="text" class="form-control input-sm">
-		</div>
-	</div>';
+		</div>';
+	if ($mayDelete) {
+		echo '
+		<div class="form-group col-md-1">
+			' . form_checkbox('zuLoeschen[]', $velo->id, false) . '
+		</div>';
+	}
+	echo '
+		</div>';
 }
 
 echo '

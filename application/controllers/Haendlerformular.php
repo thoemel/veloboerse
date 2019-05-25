@@ -131,8 +131,10 @@ class Haendlerformular extends MY_Controller {
 			if (isset($this->session->userdata['user_role']) 
 				&& in_array($this->session->userdata['user_role'], array('superadmin','provelo'))) {
 				$this->data['useTabindex'] = true;
+				$this->data['mayDelete'] = true;
 			} else {
 				$this->data['useTabindex'] = false;
+				$this->data['mayDelete'] = false;
 			}
 			$this->data['haendler'] = $this->haendler;
 			$this->data['veloquery'] = Velo::getAll($this->haendler->id);
@@ -247,6 +249,7 @@ class Haendlerformular extends MY_Controller {
 		$rahmennummern = $this->input->post('rahmennummer');
 		$vignettennummern = $this->input->post('vignettennummer');
 		$stornierte = NULL === $this->input->post('storniert') ? array() : $this->input->post('storniert');
+		$zu_loeschende = NULL === $this->input->post('zuLoeschen') ? array() : $this->input->post('zuLoeschen');
 		$countVelos = count($ids);
 		for ($i = 0; $i < $countVelos; $i++) {
 			$myVelo = new Velo();
@@ -256,6 +259,12 @@ class Haendlerformular extends MY_Controller {
 				log_message('error', $e->getMessage());
 				show_error('Ungültige Quittungsnummer.');
 			}
+			
+			if (in_array($myVelo->id, $zu_loeschende)) {
+				$myVelo->delete($myVelo->id);
+				continue;
+			}
+			
 			$myVelo->preis = $preise[$i];
 			$myVelo->typ = $typen[$i];
 			$myVelo->farbe = $farben[$i];

@@ -76,12 +76,12 @@ echo '
 if (in_array($haendler->getStatus(), array('abgeholt', 'ausbezahlt'))) {
 	echo	'
 	<h2>Überweisung Betrag: Fr. ' . $auszahlungBetrag . '</h2>
-		<p class="hidden-print">
 		' . form_open('haendleradmin/abschluss/'.$haendler->id) . '
+		<p class="hidden-print">
 		<button type="button" onClick="window.print()">drucken</button>
 		<button type="submit">abschliessen</button>
-		' . form_close() . '
 	</p>
+		' . form_close() . '
 	
 	<p class="hidden-print">
 			'.anchor('auszahlung/einstieg_haendler', 'zur Händlerauswahl').'

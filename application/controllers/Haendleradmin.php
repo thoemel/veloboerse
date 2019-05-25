@@ -489,6 +489,11 @@ class Haendleradmin extends MY_Controller {
 				redirect('haendleradmin/index');
 			}
 		}
+		if ($this->form_validation->run('haendlerConfigSpeichern') === false) {
+			$this->session->set_flashdata('error', 'Fehlerhafte Angaben ' . validation_errors('<p>', '</p>'));
+			redirect('haendleradmin/haendlerconfig/'.$haendler_id);
+			return;
+		}
 	
 		// Daten aus Formular lesen
 		$firma = strval($this->input->post('input_Firma'));
@@ -512,7 +517,6 @@ class Haendleradmin extends MY_Controller {
 		}
 		
 		// Überschreiben der Datenbank- mit den Formular-Werten
-		// mToDo: Werte prüfen, z.B. auf nicht leer o.ä.??
 		$myHandler->firma = $firma;
 		$myHandler->person = $person;
 		$myHandler->adresse = $adresse;

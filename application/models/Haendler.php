@@ -295,6 +295,18 @@ class Haendler extends CI_Model {
 	
 	
 	/**
+	 * Gibt ein Array mit allen möglichen Status zurück.
+	 * Keys und Values sind identisch. Das ist bequem für Formular-Views.
+	 * Die Keys entsprechen den Enum-Werten aus der DB.
+	 * 
+	 * @return array
+	 */
+	public static function statusArray() {
+		return array('offen'=>'offen','angenommen'=>'angenommen','abgeholt'=>'abgeholt','ausbezahlt'=>'ausbezahlt');
+	}
+	
+	
+	/**
 	 * Liefert den Verkaufpreis aller verkauften Velos dieses Händlers
 	 * @return	int
 	 */

@@ -95,6 +95,7 @@ echo '
 	<div class="form-group">
 		<label for="uptodate_input" class="col-sm-2 control-label">Aktualisiert?</label>
 		<div class="col-sm-4">
+			' . form_error('input_uptodate') . '
 			' . form_input(array('id' => 'uptodate_input', 'name' => 'input_uptodate', 'value' => $haendler->uptodate, 'class' => 'form-control')) . '
 		</div>
 		<span id="uptodateExpl" class="help-block">

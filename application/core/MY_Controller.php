@@ -215,6 +215,12 @@ class MY_Controller extends CI_Controller {
 		$this->load->view('v_403', $this->data);
 		return;
 	}
+	
+	
+	public function valid_haendler_status($status)
+	{
+		return array_key_exists($status, Haendler::statusArray());
+	}
 
 
 }

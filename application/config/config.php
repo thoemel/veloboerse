@@ -17,12 +17,12 @@
 switch ($_SERVER['SERVER_NAME']) {
 	case 'localhost':
 	case 'dev.provelobern.ch':
-		$config['base_url']	= 'http://' . $_SERVER['HTTP_HOST'] . '/veloboerse';
+		$config['base_url']	= '//' . $_SERVER['HTTP_HOST'] . '/veloboerse';
 		break;
 	case 'www.provelobern.ch':
 	case 'provelobern.ch':
 	default:
-		$config['base_url']	= 'http://' . $_SERVER['HTTP_HOST'] . '/boerse';
+		$config['base_url']	= '//' . $_SERVER['HTTP_HOST'] . '/boerse';
 }
 
 

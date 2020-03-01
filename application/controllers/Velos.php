@@ -34,7 +34,7 @@ class Velos extends MY_Controller {
 		// form validation
 		if ($this->form_validation->run('veloFormular') === false) {
 			$this->session->set_flashdata('error', validation_errors());
-			redirect('velos/formular');
+			redirect('velos/formular/'.$this->input->post('id'));
 			return;
 		}
 		

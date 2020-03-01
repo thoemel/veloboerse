@@ -1,4 +1,4 @@
-<?php 
+<?php
 include APPPATH . 'views/header.php';
 
 echo '
@@ -8,7 +8,7 @@ echo '
 
 	<div class="row">
 		<div class="col-sm-2">
-			Quittung Nr. 
+			Quittung Nr.
 		</div>
 		<div class="badge col-sm-2">
 			' . $velo->id . '
@@ -16,10 +16,10 @@ echo '
 	</div>
 	<div class="verybig row">
 		<div class="col-sm-2">
-			Preis: 
+			Preis:
 		</div>
 		<div id="preis" class="col-sm-4">
-			' . $velo->preis . ' 
+			' . $velo->preis . '
 			Fr.
 		</div>
 	</div>';
@@ -53,7 +53,7 @@ echo '
 			Bar
 		</label>
 		<label class="radio-inline">
-			' . form_radio('zahlungsart', 'debit', true) . '
+			' . form_radio('zahlungsart', 'debit', false) . '
 			Post- oder EC-Karte
 		</label>
 		<label class="radio-inline">
@@ -87,19 +87,19 @@ echo form_close();
 
 echo '
 </div>
-			
+
 <div>
 	<p><br><br><br><br><br><br>
 		' . anchor('kasse/', 'Verkauf abbrechen') . '</p>
 </div>';
-				
+
 echo '
 <div class="verklickt_form">
 	<form action="'.site_url('kasse/verklickt').'" method="post" role="form">';
 echo form_hidden('id', $velo->id);
 echo form_submit('verklickt_submit', 'verklickt_submit', 'class="focusPlease"');
 echo form_close();
-echo '		
+echo '
 </div>';
 
 include APPPATH . 'views/footer.php';

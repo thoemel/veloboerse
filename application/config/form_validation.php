@@ -4,38 +4,38 @@ $config ['login'] = array (
 		array (
 				'field' => 'username',
 				'label' => 'E-Mail',
-				'rules' => 'trim|required' 
+				'rules' => 'trim|required'
 		),
 		array (
 				'field' => 'password',
 				'label' => 'Passwort',
-				'rules' => 'trim|required' 
-		) 
+				'rules' => 'trim|required'
+		)
 );
 
 $config ['createUser'] = array (
 		array (
 				'field' => 'email',
 				'label' => 'E-Mail',
-				'rules' => 'trim|required' 
+				'rules' => 'trim|required'
 		),
 		array (
 				'field' => 'pw',
 				'label' => 'Passwort',
-				'rules' => 'trim' 
+				'rules' => 'trim'
 		),
 		array (
 				'field' => 'role',
 				'label' => 'Rolle',
-				'rules' => 'trim|required' 
-		) 
+				'rules' => 'trim|required'
+		)
 );
 
 $config ['editUser'] = $config ['createUser'];
 $config ['editUser'] [] = array (
 		'field' => 'id',
 		'label' => 'user_id',
-		'rules' => 'trim|required|is_natural_no_zero' 
+		'rules' => 'trim|required|is_natural_no_zero'
 );
 
 $config['veloFormular'] = array(
@@ -59,11 +59,11 @@ $config['veloFormular'] = array(
 			'label' => 'Abgeholt',
 			'rules' => 'trim|required'
 		),
-// 		array(
-// 			'field' => 'zahlungsart',
-// 			'label' => 'Zahlungsart',
-// 			'rules' => 'trim|required'
-// 		),
+		array(
+			'field' => 'zahlungsart',
+			'label' => 'Zahlungsart',
+			'rules' => 'trim|required'
+		),
 		array(
 			'field' => 'ausbezahlt',
 			'label' => 'Ausbezahlt',
@@ -163,4 +163,15 @@ $config ['haendlerConfigSpeichern'] = array (
 				'label' => 'Status',
 				'rules' => 'trim|callback_valid_haendler_status'
 		),
+);
+
+$config ['kasse'] = array (
+    array (
+        'field' => 'zahlungsart',
+        'label' => 'Zahlungsart',
+        'rules' => 'trim|required',
+        'errors' => array(
+            'required' => 'Wie wurde behahlt - bar oder mit Karte?',
+        )
+    ),
 );

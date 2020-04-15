@@ -43,5 +43,8 @@ $route['404_override'] = '';
 
 $route['(:num)'] = "velos/suche/$1";
 
+// From community-auth
+$route[LOGIN_PAGE] = 'login/logMeIn';
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

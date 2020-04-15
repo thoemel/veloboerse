@@ -1,6 +1,8 @@
 <?php
-class MY_Controller extends CI_Controller {
+require_once APPPATH . 'third_party/community_auth/core/Auth_Controller.php';
 
+class MY_Controller extends Auth_Controller
+{
 	/**
 	 * Array zum weiterleiten von Variablen an den View
 	 *
@@ -14,7 +16,7 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 
 		date_default_timezone_set('Europe/Zurich');
-		
+
 		//Transactions für die Entwicklung ausschalten.
 		$this->db->trans_off();
 
@@ -27,12 +29,12 @@ class MY_Controller extends CI_Controller {
 		// Statistik
 		$this->load->model('Statistik');
 		Statistik::registriere();
-		
+
 		// Ressort Navi
 		$this->ressortNavi();
-		
+
 		$this->searchFormHandling();
-		
+
 		// Standardmässig hat der Body Tag keine Klasse. Kann auch z. B. ' class="alert alert-error"' sein.
 		if ($this->session->userdata('user_ressort')) {
 			$this->addData('bodyClass', ' class="'.$this->session->userdata('user_ressort').'"');
@@ -44,9 +46,11 @@ class MY_Controller extends CI_Controller {
 			$this->addData('bodyClass', '');
 		}
 
+		$this->addData('loggedIn', $this->is_logged_in());
+
 	} // End of function __construct
 
-	
+
 	/**
 	 * Fügt dem $data array ein neues Element hinzu. Diese Methode dient nur der
 	 * bequemeren Eingabe in den Kontrollern.
@@ -59,9 +63,9 @@ class MY_Controller extends CI_Controller {
 		$this->data[$key] = $value;
 	}
 
-	
+
 	/**
-	 * Fügt einem Element des $data array weiteren Text hinzu. 
+	 * Fügt einem Element des $data array weiteren Text hinzu.
 	 *
 	 * @param string $key
 	 * @param mixed $value
@@ -74,8 +78,8 @@ class MY_Controller extends CI_Controller {
 		}
 		$this->data[$key] = $oldData . $value;
 	}
-	
-	
+
+
 	/**
 	 * Checks if a string can be parsed as a future date
 	 * Callback for form validation.
@@ -84,55 +88,60 @@ class MY_Controller extends CI_Controller {
 	{
 		return (time() < strtotime($str));
 	}
-	
-	
+
+
 	/**
 	 * Check if user is logged in. Set flashdata and redirect if not
 	 */
 	protected function requireLoggedIn()
 	{
-		if (!$this->session->userdata('logged_in')) {
+	    $darf = $this->require_min_level(1);
+		if (!$darf) {
 			$this->session->set_flashdata('error', 'Benutzer ist nicht eingeloggt.');
 			Redirect();
 		}
-		
-		if (empty(Boerse::naechsteOffene()) 
-			&& 'superadmin' != $this->session->userdata('user_role')) {
-			
-			$this->session->set_flashdata('error', 'Keine Börse offen. Nur Superadmins haben Zugriff.');
+
+		// Falls keine Börse offen ist, dürfen nur admins (Login Level 9) rein.
+		if (empty(Boerse::naechsteOffene())
+		    && !$this->verify_min_level(9)) {
+
+			$this->session->set_flashdata('error', 'Keine Börse offen. Nur admins haben Zugriff.');
 			Redirect();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Prüfe, ob der User eine bestimmte Rolle hat. Prüft keine Hierarchie, nur Rollennamen.
 	 * Falls nicht, wird mit Fehlermeldung auf die Startseite umgeleitet.
 	 * @param string $user_role
+	 * @uses $this->require_role() from community-auth
 	 */
 	protected function requireRole($user_role)
 	{
-		if (!($user_role == $this->session->userdata('user_role'))) {
-			$this->session->set_flashdata('error', 'Benutzer ist nicht '.$user_role.'.');
-			Redirect();
-		}
-		return;
+	    if ($this->require_role($user_role)) {
+	        return TRUE;
+	    } else {
+	        $this->session->set_flashdata('error', 'Benutzer ist nicht '.$user_role.'.');
+	        Redirect();
+	        return FALSE;
+	    }
 	} // End of requireRole()
-	
-	
+
+
 	/**
 	 * Gibt ein Array mit den Ressorts, für die der User Berechtigt ist.
 	 * Schreibt dieses Array auch in $this->data, damit es in den Controllern
 	 * und Views verfügbar ist.
-	 * 
+	 *
 	 * @return array($href => $name)
 	 */
 	public function ressortNavi() {
 		// Default navi for not logged-in user
 		$arrOut = array('login/form'	=> 'Login');
-		
-		// Normal users
-		if ($this->session->userdata('logged_in')) {
+
+		// Pro Velo staff
+		if ($this->verify_min_level(8)) {
 			$arrOut = array(
 				'login/dispatch/privatannahme'	=> 'Annahme Private',
 				'login/dispatch/privatauszahlung'	=> 'Auszahlung Private',
@@ -144,22 +153,24 @@ class MY_Controller extends CI_Controller {
 				'login/dispatch/polizei'			=> 'Polizei',
 			);
 		}
-		
-		// Superadmins
-		if ('superadmin' == $this->session->userdata('user_role')) {
-			$arrOut['login/dispatch/auswertung'] = 'Auswertung';
+
+		// admins
+		if ($this->verify_role('admin')) {
+		    $arrOut['login/dispatch/auswertung'] = 'Auswertung';
+		    $arrOut['login/dispatch/benutzeradmin'] = 'Benutzeradmin';
+		    $arrOut['login/dispatch/admin'] = 'Administration';
 		}
-		
+
 		$this->data['ressortNavi'] = $arrOut;
-		
+
 		return $arrOut;
 	}
-	
-	
+
+
 	private function searchFormHandling()
 	{
 		/*
-		 * Action und Button-Text für das Formular oben rechts entsprechend 
+		 * Action und Button-Text für das Formular oben rechts entsprechend
 		 * des Ressorts
 		 */
 		$this->addData('formSubmitText', 'suchen');
@@ -185,12 +196,12 @@ class MY_Controller extends CI_Controller {
 				break;
 			default:
 				$this->addData('formAction', 'velos/suche');
-				
+
 		}
-		
+
 		/*
 		 * Auf gewissen Seiten das Suchformular ausblenden, weil es zu Problemen
-		 * führen kann. Wenn es da ist und den Fokus hat, kann man nicht mit 
+		 * führen kann. Wenn es da ist und den Fokus hat, kann man nicht mit
 		 * Enter das Formular abschicken, sondern setzt einfach eine leere
 		 * Suche ab. Um das zu verhindern, zeigen wir das Formular gar nicht an.
 		 */
@@ -204,7 +215,7 @@ class MY_Controller extends CI_Controller {
 				$this->addData('showSearchForm', true);
 		}
 	}
-	
+
 
 	/**
 	 * Displays a 403 Forbidden page
@@ -215,8 +226,8 @@ class MY_Controller extends CI_Controller {
 		$this->load->view('v_403', $this->data);
 		return;
 	}
-	
-	
+
+
 	public function valid_haendler_status($status)
 	{
 		return array_key_exists($status, Haendler::statusArray());

@@ -1,11 +1,11 @@
-<?php 
+<?php
 include APPPATH . 'views/header.php';
 
 echo '
 
 <div>
 	<h1>Arbeitsbereich wählen</h1>
-	
+
 	<div class="bottom20 privatannahme">
 		'.anchor('login/dispatch/privatannahme', 'Annahme Private').'
 	</div>
@@ -31,10 +31,17 @@ echo '
 		'.anchor('login/dispatch/polizei', 'Polizei').'
 	</div>';
 
-if ('superadmin' == $this->session->userdata('user_role')) {
+// Nur Admins
+if ($showAuswertung) {
 	echo '
 	<div class="bottom20">
 		'.anchor('login/dispatch/auswertung', 'Auswertung').'
+	</div>
+	<div class="bottom20">
+		'.anchor('login/dispatch/admin', 'Börsen-Admin').'
+	</div>
+	<div class="bottom20">
+		'.anchor('login/dispatch/benutzeradmin', 'Benutzeradmin').'
 	</div>';
 }
 

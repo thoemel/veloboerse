@@ -129,7 +129,7 @@ class Haendlerformular extends MY_Controller {
 		elseif (1 == $this->haendler->uptodate AND 0 < $myVelos->num_rows())
 		{
 			if (isset($this->session->userdata['user_role']) 
-				&& in_array($this->session->userdata['user_role'], array('superadmin','provelo'))) {
+				&& in_array($this->session->userdata['user_role'], array('admin','provelo'))) {
 				$this->data['useTabindex'] = true;
 				$this->data['mayDelete'] = true;
 			} else {

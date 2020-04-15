@@ -1,42 +1,112 @@
 <?php
+// CI not normally available in config files
+$CI =& get_instance();
+
+// Load the external model for validation of passwords
+$CI->load->model('validation_callables');
+
+
 $config = array ();
-$config ['login'] = array (
+$config ['login_rules'] = array (
 		array (
-				'field' => 'username',
+				'field' => 'login_string',
 				'label' => 'E-Mail',
 				'rules' => 'trim|required'
 		),
 		array (
-				'field' => 'password',
+				'field' => 'login_pass',
 				'label' => 'Passwort',
 				'rules' => 'trim|required'
 		)
 );
 
 $config ['createUser'] = array (
-		array (
-				'field' => 'email',
-				'label' => 'E-Mail',
-				'rules' => 'trim|required'
-		),
-		array (
-				'field' => 'pw',
-				'label' => 'Passwort',
-				'rules' => 'trim'
-		),
-		array (
-				'field' => 'role',
-				'label' => 'Rolle',
-				'rules' => 'trim|required'
-		)
+	array (
+		'field' => 'email',
+		'label' => 'E-Mail',
+	    'rules' => ['trim','required','valid_email']
+	),
+    array (
+        'field' => 'username',
+        'label' => 'Benutzername',
+        'rules' => [
+            'trim', [
+                'check_unique_username', [ $CI->validation_callables, 'check_unique_username']
+            ]
+        ]
+    ),
+	array (
+		'field' => 'password',
+		'label' => 'Passwort',
+	    'rules' => [
+	        'trim',
+	        'required',
+	        [
+	            'check_password_strength', [ $CI->validation_callables, 'check_password_strength' ]
+	        ]
+	    ]
+	),
+    array (
+        'field' => 'vorname',
+        'label' => 'Vorname',
+        'rules' => ['trim','required']
+    ),
+    array (
+        'field' => 'nachname',
+        'label' => 'Nachname',
+        'rules' => ['trim','required']
+    ),
+    array (
+        'field' => 'adresse',
+        'label' => 'Adresse',
+        'rules' => ['trim','required']
+    ),
+    array (
+        'field' => 'iban',
+        'label' => 'IBAN',
+        'rules' => ['trim','required']
+    )
 );
 
-$config ['editUser'] = $config ['createUser'];
-$config ['editUser'] [] = array (
-		'field' => 'id',
+/*
+ * E-Mail und Username können nicht mit diesen Mitteln auf Einmaligkeit geprüft werden.
+ * Das braucht eine extra Prüfung im Controller.
+ */
+$config ['editUser'] = [
+    [
+		'field' => 'user_id',
 		'label' => 'user_id',
 		'rules' => 'trim|required|is_natural_no_zero'
-);
+    ], [
+        'field' => 'email',
+        'label' => 'E-Mail',
+        'rules' => ['trim','required','valid_email']
+    ], [
+        'field' => 'vorname',
+        'label' => 'Vorname',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'nachname',
+        'label' => 'Nachname',
+        'rules' => ['trim','required']
+     ], [
+        'field' => 'adresse',
+        'label' => 'Adresse',
+        'rules' => ['trim','required']
+     ], [
+        'field' => 'iban',
+        'label' => 'IBAN',
+        'rules' => ['trim','required']
+     ], [
+         'field' => 'password',
+         'label' => 'Passwort',
+         'rules' => 'trim'
+     ], [
+         'field' => 'username',
+         'label' => 'Benutzername',
+         'rules' => 'trim'
+     ]
+];
 
 $config['veloFormular'] = array(
 		array(

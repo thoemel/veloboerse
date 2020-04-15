@@ -1,6 +1,6 @@
 <?php
 /**
- * Erledigt das registrieren von Benutzerzugriffen 
+ * Erledigt das registrieren von Benutzerzugriffen
  * und die Statistik über die vergangene Börse.
  */
 class Statistik extends CI_Model {
@@ -12,22 +12,22 @@ class Statistik extends CI_Model {
 	/**
 	 * Statistische Angaben für Velos für Afrika
 	 * Liefert alle Velos, die verkauft aber nicht ausbezahlt worden sind.
-	 * 
-	 * @return CI query Objekt
+	 *
+	 * @return CI_DB_result Objekt
 	 */
 	public static function afrika()
 	{
 		$CI = & get_instance ();
 		$arrOut = array();
-		
+
 		$sql = 'SELECT *
-				FROM velos 
-				WHERE verkauft = "yes" 
-				AND ausbezahlt = "no" 
-				AND (haendler_id = 0) 
+				FROM velos
+				WHERE verkauft = "yes"
+				AND ausbezahlt = "no"
+				AND (haendler_id = 0)
 				ORDER BY id asc';
 		$query = $CI->db->query($sql);
-		
+
 		$sql = 'SELECT *
 				FROM velos
 				WHERE afrika = 1
@@ -36,8 +36,8 @@ class Statistik extends CI_Model {
 		return array('verkauft_nicht_ausbezahlt' => $query->result(),
 					'afrika_registriert' => $q2->result());
 	} // End of function afrika()
-	
-	
+
+
 	public static function anzahlVelosAufPlatz()
 	{
 		$CI = & get_instance ();
@@ -50,22 +50,22 @@ class Statistik extends CI_Model {
 		$query = $CI->db->query($sql);
 		return $query->row()->anzahl;
 	}
-	
-	
+
+
 	/**
 	 * Statistische Zahlen für die Abschätzung, wie viel Bargeld wir auf Platz brauchen.
-	 * 
+	 *
 	 * @return array	Keys: maxAuszahlung, probAuszahlung, einnahmenBisher, einnahmenPrognoseAbJetzt, statAnteilVerkauftePrivat, statAnteilVerkaufteHaendler, statAnteilVerkaufteTotal, countPrivateAufPlatz
 	 */
 	public static function cashMgmt()
 	{
 		$CI = & get_instance ();
-		
+
 		// Annahmen: statistischer Anteil verkauft/angeboten Privat (2014h)
 		$statAnteilVerkauftePrivat = 0.56;
 		$statAnteilVerkaufteHaendler = 0.49;
 		$statAnteilVerkaufteTotal = 0.53;
-		
+
 		// Maximaler auszuzahlender Betrag Privatvelos
 		$maxAuszahlung = 0;
 		$sql = 'SELECT	preis
@@ -80,7 +80,7 @@ class Statistik extends CI_Model {
 			$maxAuszahlung += $row->preis;
 			$maxAuszahlung -= Velo::getProvision($row->preis);
 		}
-		
+
 		// Heute eingenommenes Bargeld
 		$sql = 'SELECT	SUM(preis) as einnahmen
 				FROM	velos
@@ -88,7 +88,7 @@ class Statistik extends CI_Model {
 				AND		zahlungsart = "bar"';
 		$query = $CI->db->query($sql);
 		$einnahmenBisher = $query->row()->einnahmen;
-		
+
 		// Schon ausbezahlt
 		$ausbezahlt = 0;
 		$sql = 'SELECT	preis
@@ -100,7 +100,7 @@ class Statistik extends CI_Model {
 			$ausbezahlt += $row->preis;
 			$ausbezahlt -= Velo::getProvision($row->preis);
 		}
-		
+
 		/*
 		 * Erwartete Bargeld-Einnahmen ab jetzt
 		 */
@@ -123,7 +123,7 @@ class Statistik extends CI_Model {
 		if (0 != $sumVerkaufte) {
 			$statAnteilBarHeute = $sumBar / $sumVerkaufte;
 		}
-		
+
 		// Geschätzte Anzahl Verkäufe (-> Preis)
 		$sql = 'SELECT sum(preis) as preisAufPlatz
 				FROM `velos`
@@ -133,11 +133,11 @@ class Statistik extends CI_Model {
 		$preisAufPlatz = $query->row()->preisAufPlatz;
 		$prognoseVerkaufHeute = $preisAufPlatz * $statAnteilVerkaufteTotal;
 		$prognoseEinnahmenHeute = $prognoseVerkaufHeute * $statAnteilBarHeute;
-		
+
 		$arrOut = array(
-				'maxAuszahlung'					=> $maxAuszahlung, 
+				'maxAuszahlung'					=> $maxAuszahlung,
 				'probAuszahlung'				=> ($maxAuszahlung * $statAnteilVerkauftePrivat),
-				'einnahmenBisher'				=> $einnahmenBisher, 
+				'einnahmenBisher'				=> $einnahmenBisher,
 				'ausbezahlt'					=> $ausbezahlt,
 				'einnahmenPrognoseAbJetzt'		=> $prognoseEinnahmenHeute,
 				'statAnteilVerkauftePrivat'		=> $statAnteilVerkauftePrivat,
@@ -148,8 +148,8 @@ class Statistik extends CI_Model {
 		);
 		return $arrOut;
 	}
-	
-	
+
+
 	/**
 	 * Statistische Angaben pro Händler
 	 */
@@ -157,7 +157,7 @@ class Statistik extends CI_Model {
 	{
 		$CI = & get_instance ();
 		$arrOut = array();
-		
+
 		foreach (Haendler::getAll()->result_array() as $haendlerRow) {
 			$myHaendler = $haendlerRow;
 			$CI->db->where('haendler_id', $haendlerRow['id']);
@@ -174,9 +174,9 @@ class Statistik extends CI_Model {
 			$myHaendler['summeProvision'] = 0;
 			$myHaendler['einstellgebuehr'] = 0;
 			$myHaendler['betragAusbezahlt'] = 0;
-			
+
 			$myHaendler['betragAusbezahlt'] -= $myHaendler['busse'];
-			
+
 			foreach ($query->result() as $velo) {
 				if (0== $velo->storniert) {
 					$myHaendler['velosAufPlatz'] ++;
@@ -194,16 +194,16 @@ class Statistik extends CI_Model {
 			$myHaendler['anteilVerkauft'] = $myHaendler['velosVerkauft'] / $myHaendler['velosAufPlatz'];
 			$myHaendler['velosZurück'] = $myHaendler['velosAufPlatz'] - $myHaendler['velosVerkauft'];
 			$myHaendler['betragAusbezahlt'] = $myHaendler['betragAusbezahlt'] - $myHaendler['einstellgebuehr'] - $myHaendler['standgebuehr'];
-			
+
 			$arrOut[] = $myHaendler;
 		}
-		
+
 		return $arrOut;
 	}
-	
-	
+
+
 	/**
-	 * Verkaufte Velos nach 
+	 * Verkaufte Velos nach
 	 * 		Händler/Private
 	 * 			Provisionsstufe
 	 * 				Verkauft/nicht
@@ -256,11 +256,11 @@ class Statistik extends CI_Model {
 				}
 			}
 		}
-		
+
 		return $arrOut;
 	}
-	
-	
+
+
 	/**
 	 * Erledigt das registrieren von Benutzerzugriffen.
 	 * Ursprünglicher Zweck ist, dass bei der Fehlersuche nach Errormails die
@@ -268,7 +268,7 @@ class Statistik extends CI_Model {
 	 */
 	public static function registriere() {
 		$CI = & get_instance ();
-		
+
 		$CI->db->set ( 'zeitpunkt', date ( 'Y-m-d H:i:s' ) );
 		$CI->db->set ( 'url', current_url () );
 		if (! empty ( $_POST )) {
@@ -279,11 +279,11 @@ class Statistik extends CI_Model {
 		$user_agent = NULL === $CI->session->userdata ( 'user_agent' ) ? '' : $CI->session->userdata ( 'user_agent' );
 		$CI->db->set ( 'user_agent', $user_agent );
 		$CI->db->insert ( 'statistik' );
-		
+
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Statistische Angaben über die velos Tabelle
 	 * @return array
@@ -308,15 +308,15 @@ class Statistik extends CI_Model {
 		$arrOut['haendler'] = $arrFields;
 		$arrOut['private'] = $arrFields;
 		$arrOut['total'] = $arrFields;
-		
+
 		// Array mit Haendler-Infos array($id => $row)
 		$arrHaendler = array();
 		$haendlerQuery = Haendler::getAll();
 		foreach ($haendlerQuery->result() as $row) {
 			$arrHaendler[$row->id] = $row;
 		}
-		
-		
+
+
 		$veloQuery = Velo::getAll();
 		foreach ($veloQuery->result() as $velo) {
 			if ($velo->haendler_id > 0) {
@@ -326,7 +326,7 @@ class Statistik extends CI_Model {
 				$key = 'private';
 				$provision = Velo::getProvision($velo->preis);
 			}
-			
+
 			/*
 			 * Stornierte Velos nicht beachten
 			 */
@@ -334,7 +334,7 @@ class Statistik extends CI_Model {
 				$arrOut[$key]['sumStorniert'] ++;
 				continue;
 			}
-			
+
 			/*
 			 * Gestohlene Velos nicht beachten
 			 */
@@ -342,21 +342,21 @@ class Statistik extends CI_Model {
 				$arrOut[$key]['sumGestohlen'] ++;
 				continue;
 			}
-			
+
 			/*
 			 * Velos auf Platz
 			 */
 			$arrOut[$key]['velosAufPlatz'] ++;
-			
+
 			/*
 			 * Anzal verkaufte Velos
 			 */
 			if ('yes' == $velo->verkauft) {
 				$arrOut[$key]['sumVerkauft'] ++;
 			}
-			
+
 			/*
-			 * Eingenommene Provision: 
+			 * Eingenommene Provision:
 			 * Nur von Velos, die wirklich verkauft wurden
 			 * und bei welchen kein Helfer vom Provisionserlass
 			 * profitiert hat.
@@ -366,7 +366,7 @@ class Statistik extends CI_Model {
 				&&	'yes' == $velo->verkauft) {
 				$arrOut[$key]['sumProvision'] += $provision;
 			}
-			
+
 			/*
 			 * Provisions-Proviteure zählen
 			 */
@@ -376,14 +376,14 @@ class Statistik extends CI_Model {
 			if ('yes' == $velo->helfer_kauft) {
 				$arrOut[$key]['sumHelferKauft'] += $provision;
 			}
-			
+
 			/*
 			 * Zahlungsart
 			 */
 			if ($velo->zahlungsart) {
 				$arrOut[$key]['zahlungsart'][$velo->zahlungsart] ++;
 			}
-			
+
 			/*
 			 * Für Aggregatsberechnungen
 			 */
@@ -403,8 +403,8 @@ class Statistik extends CI_Model {
 				$arrOut[$key]['anteilVerkauftGruppeVonVerkauftTotal'] = $arrOut[$key]['sumVerkauft'] / ($arrOut['haendler']['sumVerkauft'] + $arrOut['private']['sumVerkauft']);
 			}
 		}
-		
-		
+
+
 		/*
 		 * Total
 		 */
@@ -414,25 +414,25 @@ class Statistik extends CI_Model {
 		$arrOut['total']['sumProvision'] = $arrOut['haendler']['sumProvision'] + $arrOut['private']['sumProvision'];
 		$arrOut['total']['sumGestohlen'] = $arrOut['haendler']['sumGestohlen'] + $arrOut['haendler']['sumGestohlen'];
 		$arrOut['total']['sumStorniert'] = $arrOut['haendler']['sumStorniert'] + $arrOut['haendler']['sumStorniert'];
-		$arrOut['total']['zahlungsart'] = array ( 
+		$arrOut['total']['zahlungsart'] = array (
 				'bar' => $arrOut['haendler']['zahlungsart']['bar'] + $arrOut['private']['zahlungsart']['bar'],
 				'kredit' => $arrOut['haendler']['zahlungsart']['kredit'] + $arrOut['private']['zahlungsart']['kredit'],
-				'debit' => $arrOut['haendler']['zahlungsart']['debit'] + $arrOut['private']['zahlungsart']['debit'],); 
+				'debit' => $arrOut['haendler']['zahlungsart']['debit'] + $arrOut['private']['zahlungsart']['debit'],);
 		$arrOut['total']['sumVerkauft'] = $arrOut['haendler']['sumVerkauft'] + $arrOut['private']['sumVerkauft'];
 		$arrOut['total']['sumKeineProvision'] = $arrOut['haendler']['sumKeineProvision'] + $arrOut['private']['sumKeineProvision'];
 		$arrOut['total']['sumHelferKauft'] = $arrOut['haendler']['sumHelferKauft'] + $arrOut['private']['sumHelferKauft'];
 		$arrOut['total']['anteilVerkauftGruppeVonVerkauftTotal'] = $arrOut['haendler']['anteilVerkauftGruppeVonVerkauftTotal'] + $arrOut['private']['anteilVerkauftGruppeVonVerkauftTotal'];
 		$arrOut['total']['anteilVerkauftGruppeVonAnzahlGruppe'] = ($arrOut['haendler']['anteilVerkauftGruppeVonAnzahlGruppe'] + $arrOut['private']['anteilVerkauftGruppeVonAnzahlGruppe']) / 2;
-		
+
 		return $arrOut;
 	} // End of function velos
-	
-	
+
+
 	/**
 	 * Statistik über die verkauften Velos
-	 * 
-	 * @return array('haendler' => array('anzahl', 'preis', 'anzahlAnteil', 'preisAnteil'), 
-	 * 				'private' => array('anzahl', 'preis', 'anzahlAnteil', 'preisAnteil'), 
+	 *
+	 * @return array('haendler' => array('anzahl', 'preis', 'anzahlAnteil', 'preisAnteil'),
+	 * 				'private' => array('anzahl', 'preis', 'anzahlAnteil', 'preisAnteil'),
 	 * 				'total' => array('anzahl', 'preis'))
 	 */
 	public static  function verkaufteVelos() {
@@ -442,27 +442,27 @@ class Statistik extends CI_Model {
 						'anzahl' => NULL,
 						'preis' => NULL,
 						'anzahlAnteil' => NULL,
-						'preisAnteil'	=> NULL 
+						'preisAnteil'	=> NULL
 				),
 				'private' => array (
 						'anzahl' => NULL,
 						'preis' => NULL,
 						'anzahlAnteil' => NULL,
-						'preisAnteil'	=> NULL 
+						'preisAnteil'	=> NULL
 				),
 				'total' => array (
 						'anzahl' => NULL,
 						'preis' => NULL,
 				),
 		);
-		
-		$sql = 'SELECT count(preis) as anzahl, sum(preis) as preis, 
-    			(haendler_id > 0) as istHaendler 
-				FROM `velos` 
-				WHERE verkauft = ? 
+
+		$sql = 'SELECT count(preis) as anzahl, sum(preis) as preis,
+    			(haendler_id > 0) as istHaendler
+				FROM `velos`
+				WHERE verkauft = ?
 				group by istHaendler';
 		$query = $CI->db->query ( $sql, array('yes') );
-		
+
 		foreach ($query->result() as $row) {
 			if (0 == $row->istHaendler) {
 				$arrOut['private']['anzahl'] = $row->anzahl;
@@ -487,7 +487,7 @@ class Statistik extends CI_Model {
 		if (0 != $arrOut['private']['preis']) {
 			$arrOut['private']['preisAnteil'] = $arrOut['private']['preis'] / $arrOut['total']['preis'];
 		}
-		
+
 		return $arrOut;
 	}
 }

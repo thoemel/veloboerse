@@ -9,14 +9,15 @@ class Admin extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		
-		// Logged-in user must be superadmin.
-		$this->requireRole('superadmin');
+
+		// Logged-in user must be admin.
+
+		$this->requireRole('admin');
 
 		$this->load->model('M_user');
 	}
-	
-	
+
+
 	/**
 	 * Schliesst eine Börse ab.
 	 */
@@ -37,7 +38,7 @@ class Admin extends MY_Controller
 		} else {
 			$this->load->dbutil();
 			$this->load->helper('file');
-			
+
 			// Statistik-CSV generieren und ablegen
 			$this->load->model('statistik');
 			$data['verkaufteVelos'] = Statistik::verkaufteVelos();
@@ -48,35 +49,35 @@ class Admin extends MY_Controller
 			$statistik = $this->load->view('auswertung/statistik_csv', $data, true);
 			$statsFileName = 'backups/bkup_boerse_statistik_' . date('Ymd', strtotime($boerse->datum)) . '.csv';
 			write_file($statsFileName, utf8_decode($statistik));
-			
+
 			// CSV der DB-Tabelle "haendler" generieren und ablegen
 			$query = $this->db->get("haendler");
 			$haendlerCsv = $this->dbutil->csv_from_result($query, ';');
 			$haendlerFileName = 'backups/bkup_boerse_haendler_' . date('Ymd', strtotime($boerse->datum)) . '.csv';
 			write_file($haendlerFileName, utf8_decode($haendlerCsv));
-			
+
 			// CSV der DB-Tabelle "velos" generieren und ablegen
 			$query = $this->db->get("velos");
 			$velosCsv = $this->dbutil->csv_from_result($query, ';');
 			$velosFileName = 'backups/bkup_boerse_velos_' . date('Ymd', strtotime($boerse->datum)) . '.csv';
 			write_file($velosFileName, utf8_decode($velosCsv));
-			
+
 			// Datenbank backup als gzip ablegen
 			$backup = $this->dbutil->backup();
 			$dbFileName = 'backups/bkup_boerse_db_' . date('Ymd', strtotime($boerse->datum)) . '.sql.gz';
 			write_file($dbFileName, $backup);
-			
+
 			// Haendler  zurücksetzen
 			$this->load->model('haendler');
-			Haendler::alleZuruecksetzen(); 
-			
+			Haendler::alleZuruecksetzen();
+
 			$this->index();
-		} 
-		
+		}
+
 		return;
 	} // End of boerseAbschliessen()
-	
-	
+
+
 	/**
 	 * Erstelle ein ZIP mit allen Backup-Dateien zu dieser Börse und sende es
 	 * an den Browser.
@@ -100,7 +101,7 @@ class Admin extends MY_Controller
 		// Create a ZIP and send it to the browser
 		$zip = new ZipArchive();
 		$filename = sys_get_temp_dir() . "/boerse_" . $datumsTeil . ".zip";
-			
+
 		if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
 			log_message('error', 'Admin::downloadBoerse(): kann ' . $filename . ' nicht erstellen');
 			redirect('admin/index');
@@ -113,11 +114,11 @@ class Admin extends MY_Controller
 		$zip->close();
 		force_download($filename, NULL, true);
 		unlink($filename);
-		
+
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Speichert Börsendaten aus einem Formular
 	 */
@@ -129,7 +130,7 @@ class Admin extends MY_Controller
 			redirect('admin/index');
 			return;
 		}
-		
+
 		$boerse = new Boerse();
 		try {
 			$boerse->find($this->input->post('id'));
@@ -137,15 +138,15 @@ class Admin extends MY_Controller
 			// Neue Börse --> DB bereit machen
 			Boerse::eroeffne();
 		}
-		
+
 		$boerse->datum = $this->input->post('boerseDatum');
 		if ($boerse->save()) {
 			$this->session->set_flashdata('success', 'Börse gespeichert.');
 		} else {
 			$this->session->set_flashdata('error', 'Börse konnte nicht gespeichert werden.');
 		}
-		
-		
+
+
 		redirect('admin/index');
 		return;
 	}
@@ -153,6 +154,7 @@ class Admin extends MY_Controller
 	/**
 	 * Deletes an existing user
 	 * @param int $id
+	 * @deprecated
 	 */
 	public function deleteUser($id)
 	{
@@ -168,10 +170,11 @@ class Admin extends MY_Controller
 
 	/**
 	 * Edits credentials of an existing user
+	 * @deprecated
 	 */
 	public function editUser()
 	{
-		
+
 		if ($this->form_validation->run('editUser') === false) {
 			// Not registered because of wrong input
 			$formValues = array();
@@ -181,23 +184,23 @@ class Admin extends MY_Controller
 			$this->userForm($this->input->post('id'));
 			return;
 		}
-		
+
 		$myUser = new M_user();
 		$myUser->fetch($this->input->post('id'));
 		$myUser->email = $this->input->post('email');
 		$myUser->role = $this->input->post('role');
-		
+
 		if (!empty($this->input->post('pw'))) {
 			$this->simpleloginsecure->edit_password($this->input->post('email'), $this->input->post('pw'));
 		}
-		
+
 		if($myUser->save()) {
 			$this->session->set_flashdata('success', 'Benutzer speichern erfolgreich.');
 		} else {
 			// Not registered because of technical reason
 			$this->session->set_flashdata('error', 'Benutzer speichern fehlgeschlagen.');
 		}
-			
+
 		redirect('admin');
 
 	} // End of function editUser()
@@ -205,9 +208,6 @@ class Admin extends MY_Controller
 
 	public function index()
 	{
-		// Get List of users
-		$this->addData('registeredUsers', $this->M_user->all());
-		
 		// Letzte Börse abschliessen oder neue eröffnen
 		$letzteOffene = Boerse::letzteOffene();
 		if (!is_null($letzteOffene)) {
@@ -220,7 +220,7 @@ class Admin extends MY_Controller
 			}
 			$this->data['naechsteBoerse'] = $naechsteOffene;
 			$boerseContent = $this->load->view('boerse/formular', $this->data, true);
-			
+
 			if (date('Y-m-d') == $naechsteOffene->datum) {
 				$boerseContent = $this->load->view('boerse/heuteistboerse', $this->data, true);
 			}
@@ -228,13 +228,14 @@ class Admin extends MY_Controller
 		$this->data['boerseContent'] = $boerseContent;
 
 		$this->load->view('admin/index', $this->data);
-		
+
 		return;
 	}
 
 
 	/**
 	 * Creates a user in the database
+	 * @deprecated
 	 *
 	 */
 	public function registerUser()
@@ -256,12 +257,12 @@ class Admin extends MY_Controller
 
 		redirect('admin');
 	}
-	
-	
+
+
 	/**
-	 * With this method a superadmin user can see the application as if he were 
+	 * With this method a admin user can see the application as if he were
 	 * another user.
-	 * 
+	 *
 	 * @param	int	$user_id
 	 * @return	void
 	 */
@@ -276,7 +277,7 @@ class Admin extends MY_Controller
 		$this->session->set_userdata('user_role', $newUser->type);
 		$this->session->set_userdata('user_email', $newUser->email);
 		$this->session->set_userdata(array('logged_in' => true));
-		
+
 		$this->session->set_flashdata('success', 'Eingeloggt als ' . $newUser->email);
 		redirect('');
 		return;
@@ -286,17 +287,18 @@ class Admin extends MY_Controller
 	/**
 	 * Shows the edit form for a user.
 	 * Used for create and edit
-	 * 
-	 * @param	String	$userId	
+	 *
+	 * @param	String	$userId
+	 * @deprecated
 	 */
 	public function userForm($userId = '')
 	{
 		$userId = intval($userId);
-		
+
 		// Get Types
 		$roles = $this->M_user->roles();
 		$this->addData('roles', $roles);
-		
+
 		// If form_validation failed formValues are already populated
 		if (!isset($this->data['formValues'])) {
 			$formValues = array();
@@ -309,18 +311,18 @@ class Admin extends MY_Controller
 			$formValues['pw'] = '';
 			$formValues['role'] = $user->role;
 			$this->addData('formValues', $formValues);
-		} 
-		
+		}
+
 		$formAction = $userId ? 'admin/editUser' : 'admin/registerUser';
 		$this->addData('formAction', $formAction);
-			
+
 		$this->load->view('admin/user_form', $this->data);
-		
+
 		return;
 	}
-	
-	
-	
+
+
+
 	public function vergangeneBoersen()
 	{
 		$alleBoersen = Boerse::all('geschlossen');

@@ -1,5 +1,9 @@
 <?php
 
+$lang['form_validation_required']				= "Das Feld %s ist ein Pflichtfeld.";
+$lang['form_validation_check_password_strength'] = "Passwort zu einfach.";
+$lang['form_validation_error_message_not_set'] = "Keine Fehlermeldung für diesen Fehler";
+
 $lang['required']				= "Das Feld %s ist ein Pflichtfeld.";
 $lang['isset']					= "Das Feld %s muss einen Wert enthalten.";
 $lang['valid_email']			= "Das Feld %s muss eine g&uuml;ltige E-Mail-Adresse enthalten.";

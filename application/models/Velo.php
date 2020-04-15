@@ -22,7 +22,7 @@ class Velo extends CI_Model {
 	public $verkauft = 'no';
 	public $vignettennummer = '';
 	public $zahlungsart = NULL;
-	
+
 	/**
 	 * Konstruktor.
 	 */
@@ -31,8 +31,8 @@ class Velo extends CI_Model {
 		// Do nothing
 		parent::__construct();
 	}
-	
-	
+
+
 	/**
 	 * Löscht ein Velo aus der DB
 	 * @return boolean True on success
@@ -42,17 +42,17 @@ class Velo extends CI_Model {
 		$success = false;
 		if (self::istRegistriert($this->id)) {
 			$this->db->where('id', $this->id);
-			$success = $this->db->delete('velos'); 
+			$success = $this->db->delete('velos');
 		} else {
 			$success = false;
 		}
 		return $success;
 	}
-	
-	
+
+
 	/**
 	 * Sucht in der DB nach dem Velo mit der entsprechenden ID.
-	 * 
+	 *
 	 * @throws	Exception, falls kein Velo gefunden.
 	 * @param int $id
 	 * @return	stdClass	Klasse mit allen DB-Feldern als Attributen
@@ -87,60 +87,60 @@ class Velo extends CI_Model {
 		$this->verkauft = $query->row()->verkauft;
 		$this->vignettennummer = $query->row()->vignettennummer;
 		$this->zahlungsart = $query->row()->zahlungsart;
-				
+
 		return $query->row();
 	}
-	
-	
+
+
 	/**
 	 * Liefere alle Velos aus der DB
 	 * @param	int	$haendler_id	[optional]
-	 * @return Query Objekt
+	 * @return CI_DB_result Objekt
 	 */
 	public static function getAll($haendler_id = NULL)
 	{
 		$CI =& get_instance();
-		
+
 		if ($haendler_id) {
 			$CI->db->where('haendler_id', $haendler_id);
 		}
 
 		$CI->db->order_by('id', 'asc');
 		$query = $CI->db->get('velos');
-		
+
 		return $query;
 	} // End of function find()
-	
-	
+
+
 	/**
 	 * Liefere alle Velos aus der DB
 	 * @param	int	$haendler_id	[optional]
-	 * @return Query Objekt
+	 * @return CI_DB_result Objekt
 	 */
 	public static function gestohlene()
 	{
 		$CI =& get_instance();
-		
+
 		$CI->db->where('gestohlen', 1);
 		$CI->db->order_by('id', 'asc');
 		$query = $CI->db->get('velos');
-		
+
 		return $query;
 	} // End of function find()
-	
-	
-	
+
+
+
 	/**
 	 * Gibt die Provision für ein Velo. Benutzt die Provisions Tabelle aus der DB.
-	 * 
+	 *
 	 * @throws Exception	Wenn keine Provision gefunden wurde.
-	 * @param	$preis		Der Verkaufspreis des Velos
+	 * @param	$preis		int  Der Verkaufspreis des Velos
 	 * @return	int			Die Provision
 	 */
 	public static function getProvision($preis)
 	{
 		$CI =& get_instance();
-		
+
 		$CI->db->where('preis >=', $preis);
 		$CI->db->order_by('preis', 'asc');
 		$query = $CI->db->get('provision', 1);
@@ -152,8 +152,8 @@ class Velo extends CI_Model {
 		}
 		return $provision;
 	}
-	
-	
+
+
 	/**
 	 * Prüft, ob eine Quttung im System registriert ist.
 	 * @param int	$quittungNr
@@ -162,13 +162,13 @@ class Velo extends CI_Model {
 	public static function istRegistriert($quittungNr)
 	{
 		$CI =& get_instance();
-		
+
 		$CI->db->where('id', $quittungNr);
 		$query = $CI->db->get('velos', 1);
 		return ( 1 == $query->num_rows() );
 	}
-	
-	
+
+
 	/**
 	 * Liefert die ganze Provisionsliste als Array.
 	 * @return array($obergrenze => $provision)	Sortiert nach aufsteigender Obergrenze
@@ -177,17 +177,17 @@ class Velo extends CI_Model {
 	{
 		$arrOut = array();
 		$CI =& get_instance();
-		
+
 		$CI->db->order_by('preis', 'asc');
 		$query = $CI->db->get('provision');
 		foreach ($query->result() as $row) {
 			$arrOut[$row->preis] = (int)($row->provision);
 		}
-		
+
 		return $arrOut;
 	}
-	
-	
+
+
 	/**
 	 * Schreibt die Werte der aktuellen Instanz in die DB
 	 * @return boolean
@@ -214,7 +214,7 @@ class Velo extends CI_Model {
 		$this->db->set('verkauft', $this->verkauft);
 		$this->db->set('vignettennummer', $this->vignettennummer);
 		$this->db->set('zahlungsart', $this->zahlungsart);
-		
+
 		if (!self::istRegistriert($this->id)) {
 			$this->db->set('id', $this->id);
 			$success = $this->db->insert('velos');
@@ -222,7 +222,7 @@ class Velo extends CI_Model {
 			$this->db->where('id', $this->id);
 			$success = $this->db->update('velos');
 		}
-		
+
 		// Check haendler Status
 		if ($this->haendler_id > 0) {
 			$haendler = new Haendler();
@@ -238,9 +238,9 @@ class Velo extends CI_Model {
 				$success = $success && $haendler->save();
 			}
 		}
-		
+
 		return $success;
 	} // End of function save()
-	
-	
+
+
 }

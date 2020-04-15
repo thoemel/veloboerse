@@ -2,18 +2,18 @@
 
 class Annahme extends MY_Controller {
 
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// All methods require user to be logged in.
-		$this->requireLoggedIn();
+		$this->require_min_level(8);
 	}
-	
-	
+
+
 	/**
-	 * Der Einstieg zur Privatannahme. Hier wird nur ein Default-Text angezeigt und 
+	 * Der Einstieg zur Privatannahme. Hier wird nur ein Default-Text angezeigt und
 	 * die Action fürs Formular im Header bestimmt.
 	 */
 	public function einstieg_private()
@@ -21,14 +21,14 @@ class Annahme extends MY_Controller {
 		$this->load->view('annahme/einstieg_private', $this->data);
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Zeigt das Erfassungsformular an.
-	 * 
+	 *
 	 * @param int	$id		Quittungsnummer. Falls eine angegeben, wird das Formular vorausgefüllt.
 	 */
-	public function formular_private($id = '') 
+	public function formular_private($id = '')
 	{
 		$id = intval($id);
 		if ($this->input->post('id')) {
@@ -49,7 +49,7 @@ class Annahme extends MY_Controller {
 			redirect('annahme/einstieg_private');
 			return;
 		}
-		
+
 		$myVelo = new Velo();
 		$myVelo->id = $id;
 		$this->data['myVelo'] = $myVelo;
@@ -58,8 +58,8 @@ class Annahme extends MY_Controller {
 		$this->data['provisionsliste'] = $provisionsliste;
 		$this->load->view('annahme/formular_private', $this->data);
 	} // End of function formular_private
-	
-	
+
+
 	/**
 	 * Falls nicht anders in der URL gewünscht, wird die index-Methode aufgerufen.
 	 */
@@ -67,7 +67,7 @@ class Annahme extends MY_Controller {
 	{
 		/*
 		 * Um sicher zu gehen, dass wir im richtigen Ressort gemeldet sind,
-		 * wird hier das Ressort gewechselt. Der eigentliche Einstieg in das 
+		 * wird hier das Ressort gewechselt. Der eigentliche Einstieg in das
 		 * Ressort ist "einstieg_private".
 		 */
 		if ('privatannahme' != $this->session->userdata('user_ressort')) {
@@ -77,8 +77,8 @@ class Annahme extends MY_Controller {
 		}
 		return ;
 	}
-	
-	
+
+
 	/**
 	 * Formulardaten entgegennehmen und verarbeiten
 	 * Nur Private
@@ -103,8 +103,8 @@ class Annahme extends MY_Controller {
 			$this->session->set_flashdata('error', validation_errors());
 			redirect('annahme/formular_private/' . $this->input->post('id'));
 		}
-	
-		
+
+
 		$myVelo = new Velo();
 		if (Velo::istRegistriert($this->input->post('id'))) {
 			$this->session->set_flashdata('error', 'Diese Quittungs-Nummer ist schon registriert.');
@@ -118,16 +118,16 @@ class Annahme extends MY_Controller {
 		if ('yes' == $this->input->post('keine_provision')) {
 			$myVelo->keine_provision = 'yes';
 		}
-	
+
 		// Bild Upload
 		// 		$config['upload_path'] = './img/velos/';
 		// 		$config['allowed_types'] = 'gif|jpg|png';
 		// 		$config['max_size']	= '1024';
 		// 		$config['max_width']  = '1024';
 		// 		$config['max_height']  = '768';
-	
+
 		// 		$this->load->library('upload', $config);
-	
+
 		// 		if ( ! $this->upload->do_upload('img')) {
 		// 			$this->data['error'] = 'Bild konnte nicht gespeichert werden.';
 		// 			log_message('error', $this->upload->display_errors());
@@ -135,7 +135,7 @@ class Annahme extends MY_Controller {
 		// 			$upload_data = $this->upload->data();
 		// 			$myVelo->img = $upload_data['file_name'];
 		// 		}
-	
+
 		$success = $myVelo->save();
 		if (!$success) {
 			$this->session->set_flashdata('error', 'Velo Annahme ging schief.');
@@ -150,9 +150,9 @@ class Annahme extends MY_Controller {
 			$this->addData('velafrika', $velafrika);
 			$this->load->view('annahme/einstieg_private', $this->data);
 		}
-	
+
 		return;
 		} // End of function speichern_private
-	
-	
+
+
 }

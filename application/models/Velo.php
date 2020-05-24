@@ -3,6 +3,7 @@ class Velo extends CI_Model {
 
 	public $abgeholt = 'no';
 	public $afrika = FALSE;
+	public $angenommen = 'no';
 	public $ausbezahlt = 'no';
 	public $bemerkungen = '';
 	public $farbe = '';
@@ -19,6 +20,7 @@ class Velo extends CI_Model {
 	public $rahmennummer = '';
 	public $storniert = FALSE;
 	public $typ = '';
+	public $verkaeufer_id = 0;
 	public $verkauft = 'no';
 	public $vignettennummer = '';
 	public $zahlungsart = NULL;
@@ -84,12 +86,29 @@ class Velo extends CI_Model {
 		$this->rahmennummer = $query->row()->rahmennummer;
 		$this->storniert = $query->row()->storniert;
 		$this->typ = $query->row()->typ;
+		$this->verkaeufer_id= $query->row()->verkaeufer_id;
 		$this->verkauft = $query->row()->verkauft;
 		$this->vignettennummer = $query->row()->vignettennummer;
 		$this->zahlungsart = $query->row()->zahlungsart;
 
 		return $query->row();
 	}
+
+
+	/**
+	 * Liefere alle Velos aus der DB
+	 * @param	int	$verkaeufer_id
+	 * @return CI_DB_result Objekt
+	 */
+	public static function fuerVerkaeufer($verkaeufer_id)
+	{
+	    $CI =& get_instance();
+	    $CI->db->where('verkaeufer_id', $verkaeufer_id);
+	    $CI->db->order_by('id', 'asc');
+	    $query = $CI->db->get('velos');
+
+	    return $query;
+	} // End of function fuerVerkaeufer()
 
 
 	/**
@@ -109,7 +128,7 @@ class Velo extends CI_Model {
 		$query = $CI->db->get('velos');
 
 		return $query;
-	} // End of function find()
+	} // End of function getAll()
 
 
 	/**
@@ -196,6 +215,7 @@ class Velo extends CI_Model {
 	{
 		$this->db->set('abgeholt', $this->abgeholt);
 		$this->db->set('afrika', $this->afrika);
+		$this->db->set('angenommen', $this->angenommen);
 		$this->db->set('ausbezahlt', $this->ausbezahlt);
 		$this->db->set('bemerkungen', $this->bemerkungen);
 		$this->db->set('farbe', $this->farbe);
@@ -211,14 +231,36 @@ class Velo extends CI_Model {
 		$this->db->set('rahmennummer', $this->rahmennummer);
 		$this->db->set('storniert', $this->storniert);
 		$this->db->set('typ', $this->typ);
+		$this->db->set('verkaeufer_id', $this->verkaeufer_id);
 		$this->db->set('verkauft', $this->verkauft);
 		$this->db->set('vignettennummer', $this->vignettennummer);
 		$this->db->set('zahlungsart', $this->zahlungsart);
 
-		if (!self::istRegistriert($this->id)) {
-			$this->db->set('id', $this->id);
-			$success = $this->db->insert('velos');
+		if (0 === $this->id) {
+		    // Velo neu online erfasst
+
+		    // Nicht sehr ausgefeilter Versuch, die nächste nicht vergebene zu finden
+		    for ($i = 0; $i < 10; $i++) {
+		        $q = $this->db->query("SELECT MAX(id)+1 as new_id FROM `velos`");
+		        $new_id = $q->row()->new_id;
+		        if ($new_id < 100000) {
+		            $new_id += 100000;
+		        }
+		        $this->id = $new_id;
+		        $this->db->set('id', $this->id);
+		        try {
+		            $success = $this->db->insert('velos');
+		            break;
+		        } catch (Exception $e) {
+		            continue;
+		        }
+		    }
+		} elseif (!self::istRegistriert($this->id)) {
+		    // Velo mit vorgedruckter Quittung erfasst
+		    $this->db->set('id', $this->id);
+		    $success = $this->db->insert('velos');
 		} else {
+		    // Änderung eines bestehenden Velos
 			$this->db->where('id', $this->id);
 			$success = $this->db->update('velos');
 		}

@@ -7,7 +7,7 @@ class Annahme extends MY_Controller {
 	{
 		parent::__construct();
 
-		// All methods require user to be logged in.
+		// All methods require user to be logged in as Pro Velo staff.
 		$this->require_min_level(8);
 	}
 
@@ -81,7 +81,7 @@ class Annahme extends MY_Controller {
 
 	/**
 	 * Formulardaten entgegennehmen und verarbeiten
-	 * Nur Private
+	 * Nur Private mit von ProVelo vorgedruckten Quittungen (angenommen = 'yes')
 	 */
 	public function speichern_private()
 	{
@@ -112,6 +112,7 @@ class Annahme extends MY_Controller {
 		}
 		$myVelo->id = $this->input->post('id');
 		$myVelo->preis = $this->input->post('preis');
+		$myVelo->angenommen = 'yes';
 		$myVelo->kein_ausweis = (1 == $this->input->post('kein_ausweis')) ? 'yes' : 'no';
 		$myVelo->afrika = (1 == $this->input->post('velafrika')) ? 1 : 0;
 		$myVelo->bemerkungen = $this->input->post('bemerkungen');

@@ -161,6 +161,30 @@ $config['veloFormular'] = array(
 		),
 );
 
+$config['veloErfassenVerkaeufer'] = array(
+    array(
+        'field' => 'id',
+        'label' => 'Quittungsnummer',
+        'rules' => 'trim|required|is_natural'
+    ),
+    array(
+        'field' => 'preis',
+        'label' => 'Preis',
+        'rules' => 'trim|required|is_natural'
+    ),
+    array(
+        'field' => 'rahmennummer',
+        'label' => 'Rahmennummer',
+        'rules' => 'trim|required'
+    ),
+    array(
+        'field' => 'userfile',
+        'label' => 'Foto',
+        'rules' => 'trim'
+    ),
+);
+
+
 $config ['boerseSpeichern'] = array (
 		array (
 				'field' => 'boerseDatum',

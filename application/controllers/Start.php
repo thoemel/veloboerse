@@ -6,8 +6,8 @@ class Start extends MY_Controller {
 	{
 		parent::__construct();
 	}
-	
-	
+
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -19,6 +19,7 @@ class Start extends MY_Controller {
 		$boerse = Boerse::naechsteOffene();
 		$this->addData('naechsteBoerse', $boerse);
 		$this->addData('anzahl', Statistik::anzahlVelosAufPlatz());
+
 		$this->load->view('start', $this->data);
 	}
 }

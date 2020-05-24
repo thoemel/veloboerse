@@ -2,14 +2,14 @@
 
 class Velos extends MY_Controller {
 
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Der Einstieg zum Veloformular. Hier wird nur ein Default-Text angezeigt.
 	 */
@@ -17,12 +17,12 @@ class Velos extends MY_Controller {
 	{
 		// Require user to be logged in.
 		$this->requireLoggedIn();
-		
+
 		$this->load->view('velos/einstieg', $this->data);
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Formulardaten entgegennehmen und verarbeiten
 	 */
@@ -30,14 +30,14 @@ class Velos extends MY_Controller {
 	{
 		// Require user to be logged in.
 		$this->requireLoggedIn();
-		
+
 		// form validation
 		if ($this->form_validation->run('veloFormular') === false) {
 			$this->session->set_flashdata('error', validation_errors());
 			redirect('velos/formular/'.$this->input->post('id'));
 			return;
 		}
-		
+
 		$myVelo = new Velo();
 		try {
 			$myVelo->find($this->input->post('id'));
@@ -46,6 +46,7 @@ class Velos extends MY_Controller {
 		}
 		$myVelo->abgeholt			= $this->input->post('abgeholt');
 		$myVelo->afrika				= $this->input->post('velafrika');
+		$myVelo->angenommen			= $this->input->post('angenommen');
 		$myVelo->ausbezahlt			= $this->input->post('ausbezahlt');
 		$myVelo->bemerkungen		= $this->input->post('bemerkungen');
 		$myVelo->gestohlen			= $this->input->post('gestohlen');
@@ -63,26 +64,26 @@ class Velos extends MY_Controller {
 		$myVelo->vignettennummer	= $this->input->post('vignettennummer');
 		$myVelo->verkauft			= $this->input->post('verkauft');
 		$myVelo->zahlungsart		= false === $this->input->post('zahlungsart') ? 'no': $this->input->post('zahlungsart');
-		
+
 		$myVelo->save();
-		
+
 		$this->addData('myVelo', $myVelo);
 		$this->load->view('velos/single', $this->data);
-		
+
 		return;
 	} // End of function erfasse
-	
-	
+
+
 	/**
 	 * Zeigt das Erfassungsformular an.
-	 * 
+	 *
 	 * @param int	$id		Quittungsnummer. Falls eine angegeben, wird das Formular vorausgefüllt. Kann auch über Post-Variable kommen.
 	 */
-	public function formular($id = '') 
+	public function formular($id = '')
 	{
 		// Require user to be logged in.
 		$this->requireLoggedIn();
-		
+
 		$id = intval($id);
 		if ($this->input->post('id')) {
 			$id = $this->input->post('id');
@@ -96,7 +97,7 @@ class Velos extends MY_Controller {
 			$this->einstieg();
 			return ;
 		}
-		
+
 		// Händler Dropdown
 		$haendlerQuery = Haendler::getAll();
 		$arrHaendler = array(0 => 'privat');
@@ -104,23 +105,23 @@ class Velos extends MY_Controller {
 			$arrHaendler[$row->id] = $row->id . ' - ' . $row->firma . ' | ' . $row->person;
 		}
 		$this->addData('haendlerDropdown', form_dropdown('haendler_id', $arrHaendler, $myVelo->haendler_id, 'id="haendler_id" class="form-control"'));
-		
+
 		$this->data['myVelo'] = $myVelo;
-		
+
 		if ($myVelo->haendler_id > 0) {
 			$haendler = new Haendler();
 			$haendler->find($myVelo->haendler_id);
 			$this->addData('haendler', $haendler);;
 		}
-		
+
 		$provisionsliste = Velo::provisionsliste();
 		$tstest = json_encode($provisionsliste);
 		$this->data['provisionsliste'] = $provisionsliste;
-		
+
 		$this->load->view('velos/formular', $this->data);
 	}
-	
-	
+
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -129,11 +130,11 @@ class Velos extends MY_Controller {
 	{
 		// Require user to be logged in.
 		$this->requireLoggedIn();
-		
+
 		$this->listing();
 	}
-	
-	
+
+
 	/**
 	 * Liste aller Velos
 	 * @deprecated
@@ -142,15 +143,15 @@ class Velos extends MY_Controller {
 	{
 		// Require user to be logged in.
 		$this->requireLoggedIn();
-		
+
 		$this->data['liste'] = Velo::getAll();
 		$this->load->view('velos/liste', $this->data);
 	}
-	
-	
+
+
 	/**
 	 * Sucht nach einem Velo in der DB.
-	 * 
+	 *
 	 * @param	int	$id	Quittungsnummer
 	 */
 	public function suche($id = '')
@@ -160,14 +161,14 @@ class Velos extends MY_Controller {
 		} else {
 			$searchId = intval($id);
 		}
-		
+
 		try {
 			$this->data['myVelo'] = $this->velo->find($searchId);
 			$this->load->view('velos/forClient', $this->data);
 		} catch (Exception $e) {
 			$this->load->view('velos/notFound', $this->data);
 		}
-		
-		
+
+
 	}
 }

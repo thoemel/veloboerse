@@ -13,7 +13,13 @@ class MY_Controller extends Auth_Controller
 
 	public function __construct()
 	{
-		parent::__construct();
+	    parent::__construct();
+
+	    /*
+	     * Eingeloggt? Der Aufruf von $this->verify_min_level(1) ist wichtig, damit der User grundsätzlich als
+	     * eingeloggt angesehen wird.
+	     */
+	    $this->verify_min_level(1);
 
 		date_default_timezone_set('Europe/Zurich');
 
@@ -141,7 +147,7 @@ class MY_Controller extends Auth_Controller
 		$arrOut = array('login/form'	=> 'Login');
 
 		// Pro Velo staff
-		if ($this->verify_min_level(8)) {
+		if ($this->hasMinLevel(8)) {
 			$arrOut = array(
 				'login/dispatch/privatannahme'	=> 'Annahme Private',
 				'login/dispatch/privatauszahlung'	=> 'Auszahlung Private',
@@ -155,7 +161,7 @@ class MY_Controller extends Auth_Controller
 		}
 
 		// admins
-		if ($this->verify_role('admin')) {
+		if ($this->hasMinLevel(9)) {
 		    $arrOut['login/dispatch/auswertung'] = 'Auswertung';
 		    $arrOut['login/dispatch/benutzeradmin'] = 'Benutzeradmin';
 		    $arrOut['login/dispatch/admin'] = 'Administration';
@@ -228,10 +234,30 @@ class MY_Controller extends Auth_Controller
 	}
 
 
+	/**
+	 * Für die Formularvalidierung
+	 * @param String $status
+	 * @return boolean
+	 */
 	public function valid_haendler_status($status)
 	{
 		return array_key_exists($status, Haendler::statusArray());
 	}
 
+
+	/**
+	 * Prüft, ob der User mindestens dieses Auth_level hat.
+	 * Anstelle des Authentication::verify_min_level(), welches ausloggt, wenn des Users Level unter
+	 * dem verlangten ist.
+	 * @param int $level
+	 * @return boolean
+	 */
+	protected function hasMinLevel($level) {
+
+	    if (isset($this->auth_data->auth_level) && $this->auth_data->auth_level >= $level) {
+	        return TRUE;
+	    }
+	    return FALSE;
+	}
 
 }

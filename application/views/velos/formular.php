@@ -1,4 +1,4 @@
-<?php 
+<?php
 include APPPATH . 'views/header.php';
 
 echo '
@@ -7,7 +7,7 @@ echo '
 	<h1>Velo bearbeiten</h1>
 ';
 
-echo form_open_multipart('velos/erfasse', 
+echo form_open_multipart('velos/erfasse',
 		array('id' => 'erfassungsformular', 'role' => 'form', 'class' => 'form-horizontal'));
 
 echo heading('Quittung Nummer <span class="badge">' . $myVelo->id . '</span>', 3);
@@ -27,7 +27,7 @@ if (isset($haendler)) {
 }
 echo '
 	</div>
-							
+
 	<div class="form-group">
 		<div class="col-lg-offset-2 col-lg-2">Provision: <span class="provision">0</span></div>
 		<div class="col-lg-2">Auszahlung: <span class="auszahlungsbetrag">0</span></div>
@@ -37,8 +37,8 @@ echo '
 		<div class="col-sm-2 col-md-2 col-lg-1">
 			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
 		</div>
-	</div>	
-								
+	</div>
+
 	<div class="form-group">
 		<label for="typ_input" class="col-sm-2 control-label">Typ</label>
 		<div class="col-sm-4">
@@ -89,6 +89,13 @@ echo '
 			<label class="radio-inline">' . form_radio('zahlungsart', 'bar', ('bar' == $myVelo->zahlungsart)) . ' bar</label>
 			<label class="radio-inline">' . form_radio('zahlungsart', 'karte', ('debit' == $myVelo->zahlungsart)) . ' Post- oder EC-Karte</label>
 			<label class="radio-inline">' . form_radio('zahlungsart', 'kredit', ('kredit' == $myVelo->zahlungsart)) . ' Kreditkarte</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Angenommen</label>
+		<div class="col-sm-10">
+			<label class="radio-inline">' . form_radio('angenommen', 'yes', ('yes' == $myVelo->angenommen)) . ' ja</label>
+			<label class="radio-inline">' . form_radio('angenommen', 'no', ('no' == $myVelo->angenommen)) . ' nein</label>
 		</div>
 	</div>
 	<div class="form-group">
@@ -147,16 +154,16 @@ echo '
 			<label class="radio-inline">' . form_radio('velafrika', 0, (false == $myVelo->afrika)) . ' nein</label>
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Bemerkungen</label>
 		<div class="col-sm-10">
-			<textarea name="bemerkungen" class="form-control" rows="3">' 
-			. $myVelo->bemerkungen 
+			<textarea name="bemerkungen" class="form-control" rows="3">'
+			. $myVelo->bemerkungen
 			. '</textarea>
 		</div>
 	</div>
-						
+
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-default">Speichern</button>

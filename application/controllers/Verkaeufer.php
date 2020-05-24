@@ -108,6 +108,9 @@ class Verkaeufer extends MY_Controller
             return;
         }
 
+        // Preis in ganzen Zehnern
+        $preis = round($this->input->post('preis')/10) * 10;
+
         $myVelo = new Velo();
         try {
             $myVelo->find($this->input->post('id'));
@@ -119,7 +122,7 @@ class Verkaeufer extends MY_Controller
         $myVelo->afrika				= $this->input->post('velafrika');
         $myVelo->farbe				= $this->input->post('farbe');
         $myVelo->marke				= $this->input->post('marke');
-        $myVelo->preis				= $this->input->post('preis');
+        $myVelo->preis				= $preis;
         $myVelo->rahmennummer		= $this->input->post('rahmennummer');
         $myVelo->typ				= $this->input->post('typ');
 

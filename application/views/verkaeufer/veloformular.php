@@ -29,9 +29,12 @@ echo '
 		<label for="preis_input" class="col-lg-2 control-label">Preis</label>
 		<div class="col-sm-2 col-md-2 col-lg-1">
 			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
-		</div>
+        </div>
+		<div>
+			Bitte in ganzen Zehnerbeträgen. Sonst wird auf den nächsten Zehner gerundet.
+        </div>
 	</div>
-    </div>
+    </div>Sobald der auf "yes" ist,
 
     <div class="row">
     <div class="form-group">

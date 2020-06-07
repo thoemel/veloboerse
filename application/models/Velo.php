@@ -285,4 +285,24 @@ class Velo extends CI_Model {
 	} // End of function save()
 
 
+	/**
+	 * Gib ein Array mit Infos über den Verkäufer
+	 * @return NULL[]
+	 */
+	public function verkaeuferInfo()
+	{
+	    $ret = [];
+	    $this->db->where('user_id', $this->verkaeufer_id);
+	    $q = $this->db->get('private', 1);
+	    if ($q->num_rows() == 1) {
+	        $ret['nachname'] = $q->row()->nachname;
+	        $ret['vorname'] = $q->row()->vorname;
+	        $ret['adresse'] = $q->row()->adresse;
+	        $ret['iban'] = $q->row()->iban;
+	    }
+
+	    return $ret;
+	}
+
+
 }

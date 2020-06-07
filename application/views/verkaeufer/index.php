@@ -21,7 +21,7 @@ if ($meineVelos->num_rows() > 0) {
         if (1 == $row->storniert) {
             continue;
         }
-        echo '<div class="row">';
+        echo '<div class="col-lg-4 col-md-6">';
         if (!empty($row->img)) {
             $imgAttrs = ['src'=>'uploads/'.$row->img, 'style'=>'width:100%;max-width:150px', 'class'=>'img-responsive'];
             $myImg = img($imgAttrs);
@@ -72,6 +72,8 @@ if ($meineVelos->num_rows() > 0) {
             echo anchor('verkaeufer/veloformular/' . $row->id, 'Angebot ändern');
             echo '<br>';
             echo anchor('verkaeufer/stornieren/' . $row->id, 'Angebot zurückziehen');
+            echo '<br>';
+            echo anchor('verkaeufer/pdf/' . $row->id, 'Zettel für ans Velo drucken');
         }
         echo '
         </div>';

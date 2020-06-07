@@ -17,6 +17,31 @@ class Verkaeufer extends MY_Controller
 
 
     /**
+     * Zeigt die Druckansicht für ein Velo
+     * @param int $id
+     */
+    public function drucken($id) {
+        // Prüfen, ob das Velo dem eingeloggten User gehört.
+        $myVelo = new Velo();
+        $myVelo->find($id);
+        if ($myVelo->verkaeufer_id != $this->auth_user_id) {
+            $this->session->set_flashdata('error', 'Du darfst nur für deine eigenen Velos drucken.');
+            redirect('verkaeufer');
+        }
+
+        // Prüfen, ob das Velo den richtigen Status hat
+        if ('yes' == $myVelo->angenommen) {
+            $this->session->set_flashdata('error', 'Du darfst nicht mehr drucken, wenn das Velo schon drin ist.');
+            redirect('verkaeufer');
+        }
+
+        $this->addData('myVelo', $myVelo);
+        $this->load->view('verkaeufer/single', $this->data);
+        return;
+    }
+
+
+    /**
      * Ändert die Daten eines Benutzers.
      */
     public function editUser()
@@ -170,6 +195,154 @@ class Verkaeufer extends MY_Controller
         $this->addData('provisionsliste', Velo::provisionsliste());
         $this->load->view('verkaeufer/veloformular', $this->data);
     }
+
+
+    /**
+     * Stellt eine Quittung in einem PDF zum Ausdrucken zusammen.
+     * @param int $id   ID des Velos
+     */
+    public function pdf($id)
+    {
+        $myVelo = new Velo();
+        try {
+            $myVelo->find($id);
+        } catch (Exception $e) {
+           // Kein Velo mit dieser ID
+            $this->session->set_flashdata('error', 'Kein Velo mit dieser ID registriert.');
+            redirect('verkaeufer');
+            return;
+        }
+
+        if ($this->auth_user_id != $myVelo->verkaeufer_id) {
+            // Velo muss dem eingeloggten User gehören
+            $this->session->set_flashdata('error', 'Dieses Velo gehört nicht dir.');
+            redirect('verkaeufer');
+            return;
+        }
+
+
+        $this->load->library('pv_tcpdf');
+        $pdf = new Pv_tcpdf('P');
+        $pdf->SetMargins(PDF_MARGIN_LEFT, 20, 20);
+        $pdf->AddPage();
+
+        /*
+         * Barcode
+         */
+        // define barcode style
+        $style = array(
+            'position' => '',
+            'align' => 'R',
+            'stretch' => false,
+            'fitwidth' => true,
+            'cellfitalign' => '',
+            'border' => true,
+            'hpadding' => 'auto',
+            'vpadding' => 'auto',
+            'fgcolor' => array(0,0,0),
+            'bgcolor' => false, //array(255,255,255),
+            'text' => true,
+            'font' => 'helvetica',
+            'fontsize' => 8,
+            'stretchtext' => 4
+        );
+        $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', '', 18, 0.4, $style);
+
+        // Logo
+        $pdf->Image(
+            FCPATH . '/img/logo.png',
+            $pdf->GetX(),
+            $pdf->GetY(),
+            0,
+            10.0,
+            'png',
+            '',
+            'M',
+            true,
+            300,
+            'R');
+
+        // Horizontale Linie
+        $pdf->Ln();
+        $pdf->SetLineWidth(0.2);
+        $pdf->SetDrawColor(0,0,0);
+        $pdf->Cell(0,1,'','B',1);
+        $pdf->Ln(6);
+
+        // Titel
+        $title = 'Velo Nr: ' . $id;
+        $pdf->SetFont('', 'B', 16);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, $title, '', false, 'C', true);
+        $pdf->Ln(3);
+
+        // Bild
+        if (!empty($myVelo->img)) {
+            $pdf->Image(
+                FCPATH . 'uploads/' . $myVelo->img,
+                $pdf->GetX(),
+                $pdf->GetY(),
+                0,
+                100,
+                substr($myVelo->img, (strrpos($myVelo->img, '.')+1)),
+                '',
+                'B',
+                true,
+                300,
+                'C');
+        }
+        $pdf->Ln(3);
+
+        // Preis
+        $pdf->SetFont('', 'B', 64);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, 'Fr. ' . $myVelo->preis, '', false, 'C', true);
+        $pdf->Ln(3);
+
+        // Marke
+        $pdf->SetFont('', 'B', 12);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'C', true);
+        $pdf->Ln(3);
+
+        // Marke
+        $pdf->SetFont('', 'B', 12);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, 'Rahmennummer: ' . $myVelo->rahmennummer, '', false, 'C', true);
+        $pdf->Ln(3);
+
+        // Verkäufer
+        $pdf->SetFont('', 'B', 8);
+        $pdf->write(0, 'Verkäufer:', '', false, 'R');
+        $pdf->SetFont('', '', 8);
+        $vi = $myVelo->verkaeuferInfo();
+        $pdf->Ln(4);
+        $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R');
+        $pdf->Ln(3);
+        $pdf->write(0, $vi['adresse'], '', false, 'R');
+
+
+        $pdf->Ln(17);
+
+        // Horizontale Linie
+        $pdf->SetLineWidth(0.2);
+        $pdf->SetDrawColor(0,0,0);
+        $pdf->Cell(0,1,'','B',1);
+        $pdf->Ln(3);
+
+        // Börseninfo
+        $pdf->SetFont('', '', 10);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'L', true);
+
+        // Noch einmal den Barcode
+        $pdf->write1DBarcode($myVelo->id, 'C128A', '150', '', '', 18, 0.4, $style);
+
+        $filename = 'Preisschild_' . $myVelo->id;
+        $pdf->Output($filename, 'D');
+
+        return ;
+    } // End of function pdf()
 
 
     /**

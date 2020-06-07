@@ -10,8 +10,7 @@ echo '
     <h1>Benutzer registrieren</h1>
 </div>';
 
-
-echo form_open('Benutzeradmin/registerUser', array('id' => 'registrierFormular'));
+echo form_open($formAction, array('id' => 'registrierFormular'));
 
 echo '
     <div class="row">

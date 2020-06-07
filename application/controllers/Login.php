@@ -276,6 +276,7 @@ class Login extends MY_Controller {
 	public function registrationForm()
 	{
 	    $this->addData('myUser', new M_user());
+	    $this->addData('formAction', 'Benutzeradmin/registerUser');
 	    $this->load->view('login/createUser', $this->data);
 	}
 

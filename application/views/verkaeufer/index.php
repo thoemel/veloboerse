@@ -7,7 +7,7 @@ echo '
 <div>
 	<ul>
 		<li>' . anchor('verkaeufer/veloformular', 'Velo erfassen') . '
-		<li>Adresse ändern
+		<li>' . anchor('verkaeufer/userForm', 'Adresse ändern ') . '
 	</ul>
 </div>
 

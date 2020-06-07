@@ -74,9 +74,9 @@ $config ['createUser'] = array (
  */
 $config ['editUser'] = [
     [
-		'field' => 'user_id',
-		'label' => 'user_id',
-		'rules' => 'trim|required|is_natural_no_zero'
+        'field' => 'user_id',
+        'label' => 'user_id',
+        'rules' => 'trim|required|is_natural_no_zero'
     ], [
         'field' => 'email',
         'label' => 'E-Mail',
@@ -89,23 +89,59 @@ $config ['editUser'] = [
         'field' => 'nachname',
         'label' => 'Nachname',
         'rules' => ['trim','required']
-     ], [
+    ], [
         'field' => 'adresse',
         'label' => 'Adresse',
         'rules' => ['trim','required']
-     ], [
+    ], [
         'field' => 'iban',
         'label' => 'IBAN',
         'rules' => ['trim','required']
-     ], [
-         'field' => 'password',
-         'label' => 'Passwort',
-         'rules' => 'trim'
-     ], [
-         'field' => 'username',
-         'label' => 'Benutzername',
-         'rules' => 'trim'
-     ]
+    ], [
+        'field' => 'password',
+        'label' => 'Passwort',
+        'rules' => 'trim'
+    ], [
+        'field' => 'username',
+        'label' => 'Benutzername',
+        'rules' => 'trim'
+    ]
+];
+
+/*
+ * E-Mail und Username können nicht mit diesen Mitteln auf Einmaligkeit geprüft werden.
+ * Das braucht eine extra Prüfung im Controller.
+ */
+$config ['editVerkaeufer'] = [
+    [
+        'field' => 'email',
+        'label' => 'E-Mail',
+        'rules' => ['trim','required','valid_email']
+    ], [
+        'field' => 'vorname',
+        'label' => 'Vorname',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'nachname',
+        'label' => 'Nachname',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'adresse',
+        'label' => 'Adresse',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'iban',
+        'label' => 'IBAN',
+        'rules' => ['trim']
+    ], [
+        'field' => 'password',
+        'label' => 'Passwort',
+        'rules' => 'trim'
+    ], [
+        'field' => 'username',
+        'label' => 'Benutzername',
+        'rules' => 'trim'
+    ]
 ];
 
 $config['veloFormular'] = array(

@@ -9,14 +9,6 @@ $(document).ready(function() {
 	// Auszahlung: Provision berechnen
 	$('input[name=no_provision]').change(calcProvision);
 	
-	// Auszahlung: Bemerkungsfeld für Helferlein Namen ein- oder ausblenden
-	$('input[name=no_provision]').change(function() {
-		if ($('#no_provision').attr('checked')) {
-			$('#velo_bemerkungen').removeClass('hidden');
-		} else {
-			$('#velo_bemerkungen').addClass('hidden');
-		}
-	});
 	
 	// Kasse: Provision berechnen 
 	$('input[name=helfer_kauft]').change(calcProvisionAtCashier);
@@ -61,15 +53,17 @@ $(document).ready(function() {
  * Bei Auszahlung auszuzahlenden Betrag ändern, wenn "keine Provision" angewählt ist.
  */
 function calcProvision() {
-	myProvision = $('#preis').text() - $('.auszahlungsbetrag').first().text();
+	myProvision = $('#maxProvision').text();
 	if (myProvision > 0) {
 		provision = myProvision;
 	}
 	var auszahlung_betrag = $('.auszahlungsbetrag').first().text();
+	var verkaufssumme = $('.verkaufssumme').first().text();
+	var provision_total = $('.provision_total').first().text();
 	if ($('#no_provision').attr('checked')) {
-		auszahlung_betrag = $('#preis').text();
+		auszahlung_betrag = (verkaufssumme - provision_total + parseInt(provision));
 	} else {
-		auszahlung_betrag = ($('#preis').text() - provision);
+		auszahlung_betrag = verkaufssumme - provision_total;
 	}
 	$('.auszahlungsbetrag').text(auszahlung_betrag);
 }

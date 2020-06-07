@@ -7,7 +7,7 @@
  */
 class Auszahlung extends MY_Controller {
 
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -15,8 +15,8 @@ class Auszahlung extends MY_Controller {
 		// All methods require user to be logged in.
 		$this->requireLoggedIn();
 	}
-	
-	
+
+
 	/**
 	 * Zeigt eine Einstiegsseite mit Introtext
 	 *
@@ -38,13 +38,13 @@ class Auszahlung extends MY_Controller {
 			$keineProvision = ('yes' == $myVelo->keine_provision) ? 'Ja' : 'Nein';
 			$this->addData('keineProvision', $keineProvision);
 		}
-		
+
 		$this->addData('newStatistics', Statistik::cashMgmt());
-		
+
 		$this->load->view('auszahlung/einstieg_private', $this->data);
 	}
-	
-	
+
+
 	/**
 	 * Per Default auf formular_index umleiten.
 	 */
@@ -56,10 +56,10 @@ class Auszahlung extends MY_Controller {
 
 
 	/**
-	 * Zeigt gewisse für die Auszahlung relevante Details an, damit wir 
-	 * kontrollieren können, ob das Velo mit der Quittung übereinstimmt. 
+	 * Zeigt gewisse für die Auszahlung relevante Details an, damit wir
+	 * kontrollieren können, ob das Velo mit der Quittung übereinstimmt.
 	 * Namentlich Preis und (falls irgendwann implementiert) Foto werden angezeigt.
-	 * Zudem wird die Provision und der auszuzahlende Betrag berechnet und 
+	 * Zudem wird die Provision und der auszuzahlende Betrag berechnet und
 	 * angezeigt.
 	 */
 	public function kontrollblick()
@@ -74,7 +74,7 @@ class Auszahlung extends MY_Controller {
 			redirect('auszahlung/formular_private');
 			return;
 		}
-		
+
 		$myVelo = new Velo();
 		try {
 			$myVelo->find($quittungNr);
@@ -84,40 +84,84 @@ class Auszahlung extends MY_Controller {
 			redirect('auszahlung/formular_private');
 			return;
 		}
-		
+
 		// Heading
-		$this->addData('divAround', '<div>');
 		$this->addData('h1', 'Auszahlung bestätigen');
-		if ('yes' == $myVelo->ausbezahlt) {
-			$this->addData('divAround', '<div class="alert-error">');
-			$this->addData('h1', 'Schon ausbezahlt');
-		} 
-		if ('no' == $myVelo->verkauft) {
-			$this->addData('divAround', '<div class="alert-warning">');
-			$this->addData('h1', 'Noch nicht verkauft');
-		}
-		if (1 == $myVelo->gestohlen) {
-			$this->addData('divAround', '<div class="alert-error">');
-			$this->addData('h1', 'Gestohlen');
-		}
-		
-		$this->addData('velo', $myVelo);
-		$this->addData('auszahlung_betrag', ($myVelo->preis - Velo::getProvision($myVelo->preis)));
+
+		$alleMeine = Velo::fuerVerkaeufer($myVelo->verkaeufer_id);
+		$meineVelos = [];
+		$verkaufssumme = 0;
+		$provision_total = 0;
+		$auszahlung_betrag = 0;
+		$keinAusweis = false;
+		$maxPreis = 0;
+
+		foreach ($alleMeine->result() as $row) {
+		    $diesesVelo = [];
+		    $diesesVelo['divAround'] = '<div>';
+		    $diesesVelo['h2'] = 'Verkauft';
+		    if ('yes' == $row->ausbezahlt) {
+		        $diesesVelo['divAround'] = '<div class="alert-error">';
+		        $diesesVelo['h2'] = 'Schon ausbezahlt';
+		    }
+		    if ('no' == $row->verkauft) {
+		        $diesesVelo['divAround'] = '<div class="alert-warning">';
+		        $diesesVelo['h2'] = 'Noch nicht verkauft';
+		    }
+		    if (1 == $row->gestohlen) {
+		        $diesesVelo['divAround'] = '<div class="alert-error">';
+		        $diesesVelo['h2'] = 'Gestohlen';
+		    }
+
+		    $diesesVelo['img'] = $row->img;
+		    $diesesVelo['id'] = $row->id;
+		    $diesesVelo['preis'] = $row->preis;
+		    $diesesVelo['marke'] = $row->marke;
+		    $diesesVelo['bemerkungen'] = $row->bemerkungen;
+		    $diesesVelo['verkauft'] = $row->verkauft;
+		    $diesesVelo['angenommen'] = $row->angenommen;
+		    $diesesVelo['gestohlen'] = $row->gestohlen;
+		    $diesesVelo['ausbezahlt'] = $row->ausbezahlt;
+
+		    $meineVelos[] = $diesesVelo;
+
+		    if ('yes' == $row->verkauft && 'yes' == $row->angenommen && 0 == $row->gestohlen && 'no' == $row->ausbezahlt) {
+		        $verkaufssumme += $row->preis;
+		        $provision_total += Velo::getProvision($row->preis);
+		        $auszahlung_betrag += ($row->preis - Velo::getProvision($row->preis));
+		        // Provisionserlass für Helferlein
+		        $maxPreis = max([$diesesVelo['preis'], $maxPreis]);
+		    }
+
+		    if ('yes' == $row->kein_ausweis) {
+		        $keinAusweis = TRUE;
+		    }
+		} // End foreach $alleMeine
+
+
+		$this->addData('meineVelos', $meineVelos);
+		$this->addData('verkaufssumme', $verkaufssumme);
+		$this->addData('auszahlung_betrag', $auszahlung_betrag);
+		$this->addData('provision_total', $provision_total);
+		$this->addData('auszahlung_maxProvision', Velo::getProvision($maxPreis));
+		$this->addData('keinAusweis', $keinAusweis);
 		$this->addData('hideNavi', true);
-		
+
 		$this->load->view('auszahlung/kontrollblick', $this->data);
 	}
-	
-	
+
+
 	/**
 	 * Auszahlung für Private registrieren
 	 * @uses	post data
 	 */
 	public function speichern_private()
 	{
+	    // TODO Alle Velos dieses Verkäufers updaten
+	    // TODO Provisionserlass beim teuersten eintragen
 		$quittungNr = (int)($this->input->post('id'));
 		$noProvision = ($this->input->post('no_provision') == 'yes') ? 'yes' : 'no';
-	
+
 		$myVelo = new Velo();
 		try {
 			$myVelo->find($quittungNr);
@@ -127,20 +171,20 @@ class Auszahlung extends MY_Controller {
 			redirect('auszahlung/formular_private');
 			return;
 		}
-	
+
 		if ('yes' == $myVelo->ausbezahlt) {
 			$this->session->set_flashdata('error', 'Auszahlung ist bereits erfolgt. Kein zweites Mal möglich.');
 			redirect('auszahlung/formular_private');
 			return;
 		}
-		
+
 		if (false !== $this->input->post('bemerkungen')) {
 			$myVelo->bemerkungen = $this->input->post('bemerkungen');
 		}
-	
+
 		$myVelo->ausbezahlt = 'yes';
 		$myVelo->keine_provision = $noProvision;
-	
+
 		$success = $myVelo->save();
 		if (!$success) {
 			log_message('error', 'Auszahlung speichern fuer Quittung Nr. '.$myVelo->id.' ging schief.');
@@ -149,12 +193,12 @@ class Auszahlung extends MY_Controller {
 			$this->session->set_flashdata('success', 'Auszahlung wurde gespeichert.');
 			$this->session->set_flashdata('gespeichertesVelo', $myVelo->id);
 		}
-		
+
 		redirect('auszahlung/formular_private');
 		return;
 	} // End of function speichern_private
-	
-	
+
+
 } // End of class Auszahlung
 
 // EOF

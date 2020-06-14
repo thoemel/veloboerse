@@ -260,31 +260,6 @@ class Admin extends MY_Controller
 
 
 	/**
-	 * With this method a admin user can see the application as if he were
-	 * another user.
-	 *
-	 * @param	int	$user_id
-	 * @return	void
-	 */
-	public function switchToUser($user_id)
-	{
-		$newUser = new M_user();
-		if (!$newUser->fetch($user_id)) {
-			throw new Exception('No user found with this id');
-			return;
-		}
-		$this->session->set_userdata('user_id', $newUser->id);
-		$this->session->set_userdata('user_role', $newUser->type);
-		$this->session->set_userdata('user_email', $newUser->email);
-		$this->session->set_userdata(array('logged_in' => true));
-
-		$this->session->set_flashdata('success', 'Eingeloggt als ' . $newUser->email);
-		redirect('');
-		return;
-	}
-
-
-	/**
 	 * Shows the edit form for a user.
 	 * Used for create and edit
 	 *

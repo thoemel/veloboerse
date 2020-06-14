@@ -35,16 +35,12 @@ foreach ($allUsers as $u) {
     echo '
         <tr>
             <td>' . $u->username . '</td>
-            <td>tbd</td>
-            <td>tbd</td>
+            <td>' . $u->vorname . '</td>
+            <td>' . $u->nachname . '</td>
             <td>' . $u->email . '</td>
-            <td>tbd</td>
+            <td>' . str_replace("\n", "<br>", $u->adresse) . '</td>
             <td>' . $levels_and_roles[$u->auth_level] . '</td>
             <td>';
-    echo anchor('admin/switchToUser/' . $u->id,
-                    '&nbsp;',
-					array('title' => 'als '.$u->email.' einloggen', 'class' => 'glyphicon glyphicon-share-alt'));
-    echo '&nbsp;&nbsp;';
     echo anchor('benutzeradmin/userForm/' . $u->id,
                 '&nbsp;',
     			array('title' => 'editieren', 'class' => 'glyphicon glyphicon-edit'));

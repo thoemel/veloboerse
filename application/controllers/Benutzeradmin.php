@@ -68,7 +68,7 @@ class Benutzeradmin extends MY_Controller
          */
         $testUser = new M_user();
         $testUser->fetch4email($this->input->post('email'));
-        if ($testUser->id == $this->input->post('user_id')) {
+        if ($testUser->id !== $this->input->post('user_id')) {
             $formValues['email'] = set_value('Diese E-Mail ist schon vergeben.');
             $this->addData('formValues', $formValues);
             $this->userForm($this->input->post('id'));
@@ -80,7 +80,7 @@ class Benutzeradmin extends MY_Controller
          */
         $testUser = new M_user();
         $testUser->fetch4username($this->input->post('username'));
-        if ($testUser->id == $this->input->post('user_id')) {
+        if ($testUser->id !== $this->input->post('user_id')) {
             $formValues['username'] = set_value('Dieser Benutzername ist schon vergeben.');
             $this->addData('formValues', $formValues);
             $this->userForm($this->input->post('id'));

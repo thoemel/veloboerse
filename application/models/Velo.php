@@ -71,6 +71,7 @@ class Velo extends CI_Model {
 		$this->abgeholt = $query->row()->abgeholt;
 		$this->afrika = $query->row()->afrika;
 		$this->ausbezahlt = $query->row()->ausbezahlt;
+		$this->angenommen = $query->row()->angenommen;
 		$this->bemerkungen = $query->row()->bemerkungen;
 		$this->farbe = $query->row()->farbe;
 		$this->gestohlen = $query->row()->gestohlen;

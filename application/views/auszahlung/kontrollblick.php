@@ -17,18 +17,34 @@ echo form_open('auszahlung/speichern_private', array('class' => 'form-horizontal
 
 foreach ($meineVelos as $diesesVelo) {
 
-    echo form_hidden('id[]', $diesesVelo['id']);
+    if ('yes' == $diesesVelo['verkauft']
+        && 'yes' == $diesesVelo['angenommen']
+        && 'no' == $diesesVelo['ausbezahlt']
+        && 0 == $diesesVelo['gestohlen']) {
+        echo form_hidden('id[]', $diesesVelo['id']);
+    }
+
     echo '
-
     ' . $diesesVelo['divAround'] . '
-    	<h2>' . $diesesVelo['h2'] . '</h2>
-
+    	<h2>' . $diesesVelo['typ'] . ' | ' . $diesesVelo['marke'] . ' | ' . $diesesVelo['farbe'] . '</h2>';
+    if (!empty($diesesVelo['img'])) {
+        echo img(['src'=>'uploads/'.$diesesVelo['img'], 'height'=>'100']);
+    }
+    echo '
     	<div class="row">
     		<div class="col-sm-2">
     			Quittung Nr.
     		</div>
     		<div class="badge col-sm-1">
     			' . $diesesVelo['id'] . '
+    		</div>
+    	</div>
+    	<div class="row">
+    		<div class="col-sm-2">
+    			Status:
+    		</div>
+    		<div>
+    			' . $diesesVelo['status'] . '
     		</div>
     	</div>
     	<div class="row">
@@ -51,16 +67,16 @@ foreach ($meineVelos as $diesesVelo) {
 
 
     if ('no' == $diesesVelo['verkauft']) {
-    	echo '<p class="clearfix alert alert-error">Keine Auszahlung, weil das Velo nicht verkauft wurde.</p>';
+    	echo '<p class="clearfix">Keine Auszahlung, weil das Velo nicht verkauft wurde.</p>';
     }
     if ('yes' == $diesesVelo['ausbezahlt']) {
-        echo '<p class="clearfix alert alert-error">Keine Auszahlung, weil die Auszahlung schon erfolgte.</p>';
+        echo '<p class="clearfix">Keine Auszahlung, weil die Auszahlung schon erfolgte.</p>';
     }
     if ('no' == $diesesVelo['angenommen']) {
-        echo '<p class="clearfix alert alert-error">Keine Auszahlung, weil nicht angenommen.</p>';
+        echo '<p class="clearfix">Keine Auszahlung, weil nicht angenommen.</p>';
     }
     if (1 == $diesesVelo['gestohlen']) {
-    	echo '<p class="clearfix alert alert-error">Keine Auszahlung, weil das Velo als gestohlen gemeldet wurde.</p>';
+    	echo '<p class="clearfix">Keine Auszahlung, weil das Velo als gestohlen gemeldet wurde.</p>';
     }
 
 

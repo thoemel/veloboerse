@@ -98,25 +98,27 @@ class Auszahlung extends MY_Controller {
 
 		foreach ($alleMeine->result() as $row) {
 		    $diesesVelo = [];
-		    $diesesVelo['divAround'] = '<div>';
-		    $diesesVelo['h2'] = 'Verkauft';
+		    $diesesVelo['divAround'] = '<div class="alert-success">';
+		    $diesesVelo['status'] = 'Verkauft';
 		    if ('yes' == $row->ausbezahlt) {
-		        $diesesVelo['divAround'] = '<div class="alert-error">';
-		        $diesesVelo['h2'] = 'Schon ausbezahlt';
+		        $diesesVelo['divAround'] = '<div class="alert-warning">';
+		        $diesesVelo['status'] = 'Schon ausbezahlt';
 		    }
 		    if ('no' == $row->verkauft) {
 		        $diesesVelo['divAround'] = '<div class="alert-warning">';
-		        $diesesVelo['h2'] = 'Noch nicht verkauft';
+		        $diesesVelo['status'] = 'Noch nicht verkauft';
 		    }
 		    if (1 == $row->gestohlen) {
-		        $diesesVelo['divAround'] = '<div class="alert-error">';
-		        $diesesVelo['h2'] = 'Gestohlen';
+		        $diesesVelo['divAround'] = '<div class="alert-warning">';
+		        $diesesVelo['status'] = 'Gestohlen';
 		    }
 
 		    $diesesVelo['img'] = $row->img;
 		    $diesesVelo['id'] = $row->id;
 		    $diesesVelo['preis'] = $row->preis;
 		    $diesesVelo['marke'] = $row->marke;
+		    $diesesVelo['typ'] = $row->typ;
+		    $diesesVelo['farbe'] = $row->farbe;
 		    $diesesVelo['bemerkungen'] = $row->bemerkungen;
 		    $diesesVelo['verkauft'] = $row->verkauft;
 		    $diesesVelo['angenommen'] = $row->angenommen;
@@ -157,42 +159,45 @@ class Auszahlung extends MY_Controller {
 	 */
 	public function speichern_private()
 	{
-	    // TODO Alle Velos dieses Verkäufers updaten
-	    // TODO Provisionserlass beim teuersten eintragen
-		$quittungNr = (int)($this->input->post('id'));
+	    $meineVelos = [];
+	    $ausbezahlteIds = $this->input->post('id');
+	    $teuerstes = 0; // ID des teuersten Velos
+	    $hoechsterPreis = 0; // Preis des teuersten Velos
+
+	    foreach ($ausbezahlteIds as $myId) {
+	        $meineVelos[$myId] = new Velo();
+	        try {
+	            $meineVelos[$myId]->find($myId);
+	        } catch (Exception $e) {
+	            $this->session->set_flashdata('error', 'Für Quittung Nr. ' . $myId . ' wurde kein Velo gefunden.');
+	            redirect('auszahlung/formular_private');
+	            return;
+	        }
+	        $meineVelos[$myId]->ausbezahlt = 'yes';
+	        $success = $meineVelos[$myId]->save();
+	        if (!$success) {
+	            log_message('error', 'Auszahlung speichern fuer Quittung Nr. '.$myId.' ging schief.');
+	            $this->session->set_flashdata('error', 'Auszahlung speichern ging schief.');
+	        } else {
+	            $this->session->set_flashdata('success', 'Auszahlung wurde gespeichert.');
+	        }
+
+	        if ($meineVelos[$myId]->preis > $hoechsterPreis) {
+	            $hoechsterPreis = $meineVelos[$myId]->preis;
+	            $teuerstes = $myId;
+	        }
+	    }
+
+	    // Provisionserlass für teuerstes Velo markieren
 		$noProvision = ($this->input->post('no_provision') == 'yes') ? 'yes' : 'no';
+        if ('yes' == $noProvision) {
+            $meineVelos[$teuerstes]->keine_provision = 'yes';
+            if (!$meineVelos[$teuerstes]->save()) {
+                log_message('error', 'Provisionserlass konnte nicht gespeichert werden für ' . $teuerstes . '.');
+                $this->session->set_flashdata('error', 'Provisionserlass speichern ging schief.');
+            }
+        }
 
-		$myVelo = new Velo();
-		try {
-			$myVelo->find($quittungNr);
-		} catch (Exception $e) {
-			log_message('error', $e->getMessage());
-			$this->session->set_flashdata('error', 'Velo ist nicht registriert. Auszahlung nicht möglich.');
-			redirect('auszahlung/formular_private');
-			return;
-		}
-
-		if ('yes' == $myVelo->ausbezahlt) {
-			$this->session->set_flashdata('error', 'Auszahlung ist bereits erfolgt. Kein zweites Mal möglich.');
-			redirect('auszahlung/formular_private');
-			return;
-		}
-
-		if (false !== $this->input->post('bemerkungen')) {
-			$myVelo->bemerkungen = $this->input->post('bemerkungen');
-		}
-
-		$myVelo->ausbezahlt = 'yes';
-		$myVelo->keine_provision = $noProvision;
-
-		$success = $myVelo->save();
-		if (!$success) {
-			log_message('error', 'Auszahlung speichern fuer Quittung Nr. '.$myVelo->id.' ging schief.');
-			$this->session->set_flashdata('error', 'Auszahlung speichern ging schief.');
-		} else {
-			$this->session->set_flashdata('success', 'Auszahlung wurde gespeichert.');
-			$this->session->set_flashdata('gespeichertesVelo', $myVelo->id);
-		}
 
 		redirect('auszahlung/formular_private');
 		return;

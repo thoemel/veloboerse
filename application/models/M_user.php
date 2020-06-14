@@ -204,7 +204,7 @@ class M_user extends MY_Model {
 	    if (0 == $q->num_rows()) {
 	        return false;
 	    } else {
-	        return $this->fetch($q->row()->id);
+	        return $this->fetch($q->row()->user_id);
 	    }
 	}
 

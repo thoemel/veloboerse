@@ -165,7 +165,7 @@ class Login extends MY_Controller {
 	                        );
 
 	                    // Set the link protocol
-	                    $link_protocol = USE_SSL ? 'https' : NULL;
+	                    $link_protocol = USE_SSL ? 'https' : 'http';
 
 	                    // Set URI of link
 	                    $link_uri = 'login/recovery_verification/' . $user_data->user_id . '/' . $recovery_code;
@@ -184,9 +184,20 @@ class Login extends MY_Controller {
 	                $this->addData('noMatch', TRUE);
 	            }
 	        }
+	        $this->config->load('email');
+	        $this->load->library('email');
+
+	        $this->email->from('boerse@provelobern.ch', 'Pro Velo Bern');
+	        $this->email->to($this->input->post('email', TRUE ));
+
+	        $this->email->subject('Passwort Velobörse');
+	        $format = config_item('pw_vergessen_text');
+	        $msg = sprintf($format, str_replace('p//', 'p://', $link));
+	        $this->email->message($msg);
+
+	        $this->email->send();
 	    }
 
-	    // TODO: Recovery Link mailen
 	    $this->load->view('login/recovery_sent', $this->data);
 	    return;
 	}

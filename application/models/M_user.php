@@ -50,8 +50,23 @@ class M_user extends MY_Model {
 	{
 		$arrOut = array();
 
-		$this->db->select(array('user_id', 'username', 'email', 'auth_level', 'banned', 'passwd_recovery_code', 'passwd_recovery_date', 'passwd_modified_at', 'last_login', 'created_at', 'modified_at'));
+		$this->db->select(array(
+		    config_item('user_table').'.user_id',
+		    'username',
+		    'email',
+		    'vorname',
+		    'nachname',
+		    'adresse',
+		    'auth_level',
+		    'banned',
+		    'passwd_recovery_code',
+		    'passwd_recovery_date',
+		    'passwd_modified_at',
+		    'last_login',
+		    'created_at',
+		    'modified_at'));
 		$this->db->order_by('email', 'asc');
+		$this->db->join('private', 'private.user_id = '.config_item('user_table').'.user_id', 'left');
 		$query = $this->db->get(config_item('user_table'));
 		if ($query->num_rows() == 0) {
 			return $arrOut;
@@ -70,6 +85,9 @@ class M_user extends MY_Model {
 			$thisUser->passwd_modified_at = $row->passwd_modified_at;
 			$thisUser->passwd_recovery_code = $row->passwd_recovery_code;
 			$thisUser->passwd_recovery_date = $row->passwd_recovery_date;
+			$thisUser->vorname = $row->vorname;
+			$thisUser->nachname = $row->nachname;
+			$thisUser->adresse = $row->adresse;
 
 			$arrOut[] = $thisUser;
 		}

@@ -165,11 +165,11 @@ $config['veloFormular'] = array(
 			'label' => 'Abgeholt',
 			'rules' => 'trim|required'
 		),
-		array(
-			'field' => 'zahlungsart',
-			'label' => 'Zahlungsart',
-			'rules' => 'trim|required'
-		),
+// 		array(
+// 			'field' => 'zahlungsart',
+// 			'label' => 'Zahlungsart',
+// 			'rules' => 'trim|required'
+// 		),
 		array(
 			'field' => 'ausbezahlt',
 			'label' => 'Ausbezahlt',

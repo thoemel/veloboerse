@@ -354,9 +354,7 @@ class Verkaeufer extends MY_Controller
         $this->requireLoggedIn();
 
         // form validation
-        // TODO form validation einrichten
         if ($this->form_validation->run('veloErfassenVerkaeufer') === false) {
-            $myError = validation_errors();
             $this->session->set_flashdata('error', validation_errors());
             redirect('verkaeufer/veloformular/'.$this->input->post('id'));
             return;
@@ -380,22 +378,65 @@ class Verkaeufer extends MY_Controller
         $myVelo->rahmennummer		= $this->input->post('rahmennummer');
         $myVelo->typ				= $this->input->post('typ');
 
-        // Foto
+        /*
+         * Foto Upload
+         */
         if (0 < $_FILES['userfile']['size']) {
             $config['upload_path']          = './uploads/';
             $config['allowed_types']        = 'gif|jpg|png';
+            $config['encrypt_name']        = TRUE;
 
             $this->load->library('upload', $config);
 
-            if ( ! $this->upload->do_upload('userfile'))
-            {
+            if ( ! $this->upload->do_upload('userfile')) {
                 $this->session->set_flashdata('error', $this->upload->display_errors());
                 redirect('verkaeufer/veloformular/'.$this->input->post('id'));
                 return;
             } else {
-                $data = array('upload_data' => $this->upload->data());
                 $myVelo->img = $this->upload->data('file_name');
             }
+
+            // Rescale to save bandwidth
+            $img = NULL;
+            $imgPath = $this->upload->data('full_path');
+            $type = $this->upload->data('image_type');
+            switch ($type) {
+                case 'gif':
+                    $img = imagecreatefromgif($imgPath);
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                    $img = imagecreatefromjpeg($this->upload->data('full_path'));
+                    break;
+                case 'png':
+                    $img = imagecreatefrompng($this->upload->data('full_path'));
+                    break;
+                default:
+                    $img = imagecreate(600, 400);
+                break;
+            }
+            $scaledImg = imagescale($img, 600);
+            imagedestroy($img);
+            $saveSuccess = false;
+            switch ($type) {
+                case 'gif':
+                    $saveSuccess = imagegif($scaledImg, $imgPath);
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                    $saveSuccess = imagejpeg($scaledImg, $imgPath);
+                    break;
+                case 'png':
+                    $saveSuccess = imagepng($scaledImg, $imgPath);
+                    break;
+                default:
+            }
+            if (!$saveSuccess) {
+                $this->session->set_flashdata('error', 'Bild konnte nicht verkleinert werden.');
+                redirect('verkaeufer/veloformular/'.$this->input->post('id'));
+                return;
+            }
+
         }
 
         // TODO Foto Rahmennummer

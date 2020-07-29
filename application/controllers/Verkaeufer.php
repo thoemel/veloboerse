@@ -213,8 +213,8 @@ class Verkaeufer extends MY_Controller
             return;
         }
 
-        if ($this->auth_user_id != $myVelo->verkaeufer_id) {
-            // Velo muss dem eingeloggten User gehören
+        if ($this->auth_user_id != $myVelo->verkaeufer_id & $this->auth_level < 8) {
+            // Eingeloggter User ist entweder Helfer, Admin oder Besitzer des Velos.
             $this->session->set_flashdata('error', 'Dieses Velo gehört nicht dir.');
             redirect('verkaeufer');
             return;
@@ -223,120 +223,131 @@ class Verkaeufer extends MY_Controller
 
         $this->load->library('pv_tcpdf');
         $pdf = new Pv_tcpdf('P');
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 20, 20);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, -1, TRUE);
         $pdf->AddPage();
 
-        /*
-         * Barcode
-         */
-        // define barcode style
-        $style = array(
-            'position' => '',
-            'align' => 'R',
-            'stretch' => false,
-            'fitwidth' => true,
-            'cellfitalign' => '',
-            'border' => true,
-            'hpadding' => 'auto',
-            'vpadding' => 'auto',
-            'fgcolor' => array(0,0,0),
-            'bgcolor' => false, //array(255,255,255),
-            'text' => true,
-            'font' => 'helvetica',
-            'fontsize' => 8,
-            'stretchtext' => 4
-        );
-        $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', '', 18, 0.4, $style);
 
-        // Logo
-        $pdf->Image(
-            FCPATH . '/img/logo.png',
-            $pdf->GetX(),
-            $pdf->GetY(),
-            0,
-            10.0,
-            'png',
-            '',
-            'M',
-            true,
-            300,
-            'R');
+        // Das Ganze 2x, einmal für Verkäufer, einmal für ans Velo
+        for ($i = 0; $i < 2; $i++) {
 
-        // Horizontale Linie
-        $pdf->Ln();
-        $pdf->SetLineWidth(0.2);
-        $pdf->SetDrawColor(0,0,0);
-        $pdf->Cell(0,1,'','B',1);
-        $pdf->Ln(6);
+            $topOfReceipt = [$pdf->getX(), $pdf->GetY()];
 
-        // Titel
-        $title = 'Velo Nr: ' . $id;
-        $pdf->SetFont('', 'B', 16);
-        $pdf->SetTextColor(0,0,0);
-        $pdf->Write(0, $title, '', false, 'C', true);
-        $pdf->Ln(3);
+            // Kopie für den Verkäufer
+            if (1 == $i) {
+                $pdf->SetY($topOfReceipt[1]);
+                $pdf->SetFillColor(127, 127, 255);
+                $pdf->SetFont('', 'B', 24);
+                $pdf->SetTextColor(0,0,0);
+                $preisText = 'Kopie für Verkäufer';
+                $pdf->Write(0, $preisText, '', true, 'C', true);
+                $preisUnterkante = [$pdf->GetX(), $pdf->GetY()];
 
-        // Bild
-        if (!empty($myVelo->img)) {
+                $pdf->SetFillColor(255, 255, 255);
+            }
+
+            // Logo
             $pdf->Image(
-                FCPATH . 'uploads/' . $myVelo->img,
+                FCPATH . '/img/logo.png',
                 $pdf->GetX(),
                 $pdf->GetY(),
                 0,
-                100,
-                substr($myVelo->img, (strrpos($myVelo->img, '.')+1)),
+                10.0,
+                'png',
                 '',
-                'B',
+                'M',
                 true,
                 300,
-                'C');
-        }
-        $pdf->Ln(3);
+                'R');
 
-        // Preis
-        $pdf->SetFont('', 'B', 64);
-        $pdf->SetTextColor(0,0,0);
-        $pdf->Write(0, 'Fr. ' . $myVelo->preis, '', false, 'C', true);
-        $pdf->Ln(3);
-
-        // Marke
-        $pdf->SetFont('', 'B', 12);
-        $pdf->SetTextColor(0,0,0);
-        $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'C', true);
-        $pdf->Ln(3);
-
-        // Marke
-        $pdf->SetFont('', 'B', 12);
-        $pdf->SetTextColor(0,0,0);
-        $pdf->Write(0, 'Rahmennummer: ' . $myVelo->rahmennummer, '', false, 'C', true);
-        $pdf->Ln(3);
-
-        // Verkäufer
-        $pdf->SetFont('', 'B', 8);
-        $pdf->write(0, 'Verkäufer:', '', false, 'R');
-        $pdf->SetFont('', '', 8);
-        $vi = $myVelo->verkaeuferInfo();
-        $pdf->Ln(4);
-        $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R');
-        $pdf->Ln(3);
-        $pdf->write(0, $vi['adresse'], '', false, 'R');
+            // Barcode
+            $pdf->SetXY($topOfReceipt[0], $topOfReceipt[1]);
+            $style = array(
+                'position' => 'L',
+                'align' => 'C',
+                'stretch' => false,
+                'fitwidth' => true,
+                'cellfitalign' => '',
+                'border' => false,
+                'hpadding' => 'auto',
+                'vpadding' => 'auto',
+                'fgcolor' => array(0,0,0),
+                'bgcolor' => false, //array(255,255,255),
+                'text' => true,
+                'font' => 'helvetica',
+                'fontsize' => 8,
+                'stretchtext' => 4
+            );
+            $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', '', 16, 0.4, $style);
 
 
-        $pdf->Ln(17);
+            // Bild
+            $pdf->Ln(10);
+            $bildOberkante = [$pdf->GetX(), $pdf->GetY()];
+            if (!empty($myVelo->img)) {
+                $pdf->Image(
+                    FCPATH . 'uploads/' . $myVelo->img,
+                    $pdf->GetX(),
+                    $pdf->GetY(),
+                    0,
+                    50,
+                    substr($myVelo->img, (strrpos($myVelo->img, '.')+1)),
+                    '',
+                    'B',
+                    true,
+                    300,
+                    'L');
+            }
 
-        // Horizontale Linie
-        $pdf->SetLineWidth(0.2);
-        $pdf->SetDrawColor(0,0,0);
-        $pdf->Cell(0,1,'','B',1);
-        $pdf->Ln(3);
+            // Preis
+            $pdf->Ln();
+            $pdf->SetFont('', 'B', 64);
+            $pdf->SetTextColor(0,0,0);
+            $preisText = 'Fr. ' . $myVelo->preis . '.--';
+            $pdf->Write(0, $preisText, '', false, 'L', true);
+            $preisUnterkante = [$pdf->GetX(), $pdf->GetY()];
 
-        // Börseninfo
-        $pdf->SetFont('', '', 10);
-        $pdf->SetTextColor(0,0,0);
-        $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'L', true);
+            // Quittungs-Nr.
+            $pdf->SetXY($bildOberkante[0], $bildOberkante[1] + 5);
+            $title = 'Velo Nr: ' . $id;
+            $pdf->SetFont('', 'B', 10);
+            $pdf->SetTextColor(0,0,0);
+            $pdf->Write(0, $title, '', false, 'R', true);
 
-        // Noch einmal den Barcode
-        $pdf->write1DBarcode($myVelo->id, 'C128A', '150', '', '', 18, 0.4, $style);
+            // Marke
+            $pdf->SetFont('', '', 10);
+            $pdf->SetTextColor(0,0,0);
+            $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'R', true);
+
+            // Rahmennummer
+            $pdf->SetFont('', '', 10);
+            $pdf->SetTextColor(0,0,0);
+            $pdf->Write(0, 'Rahmennummer: ' . $myVelo->rahmennummer, '', false, 'R', true);
+
+            // Verkäufer
+            $pdf->Ln();
+            $pdf->SetFont('', 'B', 10);
+            $pdf->write(0, 'Verkäufer:', '', false, 'R', true);
+            $pdf->SetFont('', '', 10);
+            $vi = $myVelo->verkaeuferInfo();
+            $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
+            $pdf->write(0, $vi['adresse'], '', false, 'R');
+            $pdf->Ln(10);
+
+            // Börsendatum
+            $pdf->SetTextColor(0,0,0);
+            $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'R', true);
+
+            // Horizontale Linie plus Abstand
+            if (0 == $i) {
+                $tiefsterPunkt = max($preisUnterkante[1], $pdf->getY());
+                $pdf->setY($tiefsterPunkt + 10);
+                $pdf->SetLineWidth(0.2);
+                $pdf->SetDrawColor(0,0,0);
+                $pdf->Cell(0,1,'','B',1);
+                $pdf->Ln(PDF_MARGIN_TOP);
+            }
+
+        } // end of for 2x
 
         $filename = 'Preisschild_' . $myVelo->id;
         $pdf->Output($filename, 'D');

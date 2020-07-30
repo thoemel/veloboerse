@@ -170,6 +170,23 @@ echo '
 		</div>
 	</div>
 </form>
+
+
+    <div class="row">
+    	<div class="form-group">
+    		<div class="btn btn-warning col-sm-offset-8 col-sm-4 col-lg-offset-10 col-lg-2">
+    			' . anchor('annahme/pdf/'.$myVelo->id, 'Etikette') . '
+    		</div>
+    	</div>
+    </div>
+    <div class="row">
+        <br>
+    	<div class="form-group">
+    		<div class="btn btn-warning col-sm-offset-8 col-sm-4 col-lg-offset-10 col-lg-2">
+    			' . anchor('verkaeufer/pdf/'.$myVelo->id, 'Quittung A4') . '
+    		</div>
+    	</div>
+    </div>
 </div>';
 
 // JSON object with provisionsliste

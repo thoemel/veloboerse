@@ -36,7 +36,9 @@ class Verkaeufer extends MY_Controller
         }
 
         $this->addData('myVelo', $myVelo);
+        $this->load->view('header', $this->auth_data);
         $this->load->view('verkaeufer/single', $this->data);
+        $this->load->view('footer', $this->data);
         return;
     }
 
@@ -213,7 +215,7 @@ class Verkaeufer extends MY_Controller
             return;
         }
 
-        if ($this->auth_user_id != $myVelo->verkaeufer_id & $this->auth_level < 8) {
+        if ($this->auth_user_id != $myVelo->verkaeufer_id && $this->auth_level < 8) {
             // Eingeloggter User ist entweder Helfer, Admin oder Besitzer des Velos.
             $this->session->set_flashdata('error', 'Dieses Velo gehört nicht dir.');
             redirect('verkaeufer');

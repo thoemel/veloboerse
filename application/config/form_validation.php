@@ -305,3 +305,17 @@ $config ['kasse'] = array (
         )
     ),
 );
+
+$config['annahme_registriere'] = [
+    [
+        'field' => 'ausweisOK',
+        'label' => 'Ausweiskontrolle',
+        'rules' => 'trim|required',
+    ],
+    [
+        'field' => 'rahmennummerOK',
+        'label' => 'Rahmennummer',
+        'rules' => 'trim|required',
+    ],
+
+];

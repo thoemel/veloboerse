@@ -1,15 +1,9 @@
 <?php
-include APPPATH . 'views/header.php';
-
 echo '
 
 <div>
 	<h1>Detailangaben zum Velo</h1>
 ';
-
-echo '<div>PDF: ';
-echo anchor('verkaeufer/pdf/' . $myVelo->id, 'PDF');
-echo '</div>';
 
 if (!empty($myVelo->img)) {
     echo img(['src'=>'uploads/'.$myVelo->img]);
@@ -34,5 +28,3 @@ echo '
 </div>
 
 ';
-
-include APPPATH . 'views/footer.php';

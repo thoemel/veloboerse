@@ -44,19 +44,31 @@ class Annahme extends MY_Controller {
 			redirect('annahme/einstieg_private');
 			return;
 		}
-		if (Velo::istRegistriert($id)) {
-			$this->session->set_flashdata('error', 'Quittungs-Nummer schon registriert.');
+		if (!Velo::istRegistriert($id)) {
+			$this->session->set_flashdata('error', 'Es ist kein Velo mit dieser Quittungsnummer registriert.');
 			redirect('annahme/einstieg_private');
 			return;
 		}
 
+
+		// Prüfen, ob das Velo dem eingeloggten User gehört.
 		$myVelo = new Velo();
-		$myVelo->id = $id;
-		$this->data['myVelo'] = $myVelo;
-		$provisionsliste = Velo::provisionsliste();
-		$tstest = json_encode($provisionsliste);
-		$this->data['provisionsliste'] = $provisionsliste;
-		$this->load->view('annahme/formular_private', $this->data);
+		$myVelo->find($id);
+
+		// Prüfen, ob das Velo den richtigen Status hat
+		if ('yes' == $myVelo->angenommen) {
+		    $this->session->set_flashdata('error', 'Das Velo ist schon drin.');
+		    redirect('annahme/einstieg_private');
+		    return;
+		}
+
+		$this->addData('myVelo', $myVelo);
+		$this->addData('showSearchForm', FALSE);
+		$this->load->view('header', $this->data);
+		$this->load->view('verkaeufer/single', $this->data);
+		$this->load->view('annahme/part_link_to_edit_velo', $this->data);
+		$this->load->view('footer', $this->data);
+		return;
 	} // End of function formular_private
 
 
@@ -80,8 +92,127 @@ class Annahme extends MY_Controller {
 
 
 	/**
+	 * Stellt eine Quittung in einem PDF zum Ausdrucken zusammen.
+	 * Das Format des PDF ist für den Etikettendrucker konfiguriert.
+	 * Falls eine A4-Seite gedruckt werden soll, dann muss die PDF-Methode aus der Verkaeufer-Klasse verwendet werden.
+	 * @param int $id   ID des Velos
+	 */
+	public function pdf($id)
+	{
+	    $myVelo = new Velo();
+	    try {
+	        $myVelo->find($id);
+	    } catch (Exception $e) {
+	        // Kein Velo mit dieser ID
+	        $this->session->set_flashdata('error', 'Kein Velo mit dieser ID registriert.');
+	        redirect('annahme/einstieg_private');
+	        return;
+	    }
+
+	    if ($this->auth_user_id != $myVelo->verkaeufer_id && $this->auth_level < 8) {
+	        // Eingeloggter User ist entweder Helfer, Admin oder Besitzer des Velos.
+	        $this->session->set_flashdata('error', 'Nur Verkäufer oder Helfer dürfen drucken.');
+	        redirect('annahme/einstieg_private');
+	        return;
+	    }
+
+
+	    $this->load->library('pv_tcpdf');
+	    $pdf = new Pv_tcpdf('L', 'mm', 'custom', true, 'UTF-8');
+	    $pdf->SetMargins(2, 2);
+	    $pdf->AddPage('L', [29, 90]);
+	    $pdf->setPageOrientation('L', true, 2);
+
+
+	    // Barcode
+	    $barcodeStyle = array(
+	        'position' => 'L',
+	        'align' => 'L',
+	        'stretch' => false,
+	        'fitwidth' => true,
+	        'cellfitalign' => '',
+	        'border' => false,
+	        'hpadding' => 2,
+	        'vpadding' => 2,
+	        'fgcolor' => array(0,0,0),
+	        'bgcolor' => false, //array(255,255,255),
+	        'text' => true,
+	        'font' => 'helvetica',
+	        'fontsize' => 10,
+	        'stretchtext' => 4
+	    );
+	    $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', 80, 15, 0.4, $barcodeStyle, 'T');
+
+	    // Preis
+	    $pdf->SetXY(2, 15);
+	    $pdf->SetFont('', 'B', 24);
+	    $pdf->SetTextColor(0,0,0);
+	    $preisText = 'Fr. ' . $myVelo->preis . '.--';
+	    $pdf->Write(0, $preisText, '', false, 'L', false);
+
+	    // Marke
+	    $pdf->SetY(2);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->SetTextColor(0,0,0);
+	    $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'R', true);
+
+	    // Rahmennummer
+	    $pdf->SetFont('', '', 8);
+	    $pdf->SetTextColor(0,0,0);
+	    $pdf->Write(0, 'Rahmennummer: ' . $myVelo->rahmennummer, '', false, 'R', true);
+
+	    // Verkäufer
+	    $pdf->Ln();
+	    $pdf->SetFont('', 'B', 8);
+	    $pdf->write(0, 'Verkäufer:', '', false, 'R', true);
+	    $pdf->SetFont('', '', 8);
+	    $vi = $myVelo->verkaeuferInfo();
+	    $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
+	    $pdf->write(0, $vi['adresse'], '', false, 'R');
+
+
+	    $filename = 'Preisschild_' . $myVelo->id . '.pdf';
+	    $pdf->Output($filename, 'D');
+
+	    return ;
+	} // End of function pdf()
+
+
+	public function registriere()
+	{
+	    if (false === $this->form_validation->run('annahme_registriere')) {
+	        $this->session->set_flashdata('error', validation_errors());
+	        redirect('annahme/formular_private/' . $this->input->post('id'));
+	        return ;
+	    }
+	    if ('no' == $this->input->post('rahmennummerOK')) {
+	        $this->session->set_flashdata('error', 'Die Rahmennummer muss OK sein (nicht gefunden ist auch OK). Falls sie falsch ist, musst du sie korrigieren gehen.');
+	        redirect('annahme/formular_private/' . $this->input->post('id'));
+	        return ;
+	    }
+	    if (!Velo::istRegistriert($this->input->post('id'))) {
+	        $this->session->set_flashdata('error', 'ungültige Quittungsnummer');
+	        redirect('annahme/einstieg_private');
+	        return ;
+	    }
+
+	    $myVelo = new Velo();
+	    $myVelo->find($this->input->post('id'));
+	    $myVelo->kein_ausweis = $this->input->post('ausweisOK') ? 'no' : 'yes';
+	    $myVelo->angenommen = 'yes';
+	    $myVelo->save();
+
+	    $this->addData('myVelo', $myVelo);
+	    $this->addData('showSearchForm', FALSE);
+	    $this->load->view('annahme/etikette_drucken', $this->data);
+	    return;
+	}
+
+
+	/**
 	 * Formulardaten entgegennehmen und verarbeiten
 	 * Nur Private mit von ProVelo vorgedruckten Quittungen (angenommen = 'yes')
+	 * @deprecated
 	 */
 	public function speichern_private()
 	{

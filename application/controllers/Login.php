@@ -95,12 +95,19 @@ class Login extends MY_Controller {
 	public function logMeIn()
 	{
 		// Method should not be directly accessible
-		if( $this->uri->uri_string() == 'login/form' || strtolower( $_SERVER['REQUEST_METHOD'] ) !== 'post') {
+		if( $this->uri->uri_string() == 'login/logMeIn') {
 		    show_404();
 		}
 
-		// Do the login
-		$this->require_min_level(1);
+		if( strtolower( $_SERVER['REQUEST_METHOD'] ) == 'post' ) {
+		    // Do the login
+		    if (!$this->require_min_level(1)) {
+		        $this->session->set_flashdata('error', 'Login fehlgeschlagen');
+		        redirect('login/form');
+		        return;
+		    }
+		}
+
 
 		if ($this->verify_min_level(8)) {
 		    // success
@@ -110,8 +117,7 @@ class Login extends MY_Controller {
 		    redirect('verkaeufer/index');
 		} else {
 		    // failure
-		    $this->session->set_flashdata('error', 'Login fehlgeschlagen');
-		    redirect('login/form');
+		    $this->form();
 		}
 		return;
 	}

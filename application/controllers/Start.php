@@ -22,6 +22,28 @@ class Start extends MY_Controller {
 
 		$this->load->view('start', $this->data);
 	}
+
+
+	/**
+	 * Gibt ein CSV mit allen Velos. Gedacht für den Notfall.
+	 */
+	public function veloDump()
+	{
+	    $this->output->enable_profiler(FALSE);
+	    $this->load->dbutil();
+	    $query = $this->db->query(
+	        "SELECT id, preis, verkauft, abgeholt, ausbezahlt, bemerkungen,
+                keine_provision as helfy_verkauft, helfer_kauft as helfy_kauft,
+                haendler_id as haendly_id, verkaeufer_id as verkaeufy_id
+            FROM velos
+            ORDER BY id asc"
+	        );
+	    $this->output
+    	    ->set_content_type('text/csv')
+    	    ->set_output($this->dbutil->csv_from_result($query, ';', "\r\n", '"'));
+// 	    echo $this->dbutil->csv_from_result($query, ';', "\r\n", '"');
+	    return;
+	}
 }
 
 /* End of file welcome.php */

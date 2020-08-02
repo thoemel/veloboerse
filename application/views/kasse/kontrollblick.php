@@ -4,7 +4,35 @@ include APPPATH . 'views/header.php';
 echo '
 
 <div>
-	<h1>Verkauf bestätigen</h1>
+	<h1>Verkauf bestätigen</h1>';
+if (!empty($velo->img)) {
+    $imgAttrs = ['src'=>'uploads/'.$velo->img, 'style'=>'width:100%;max-width:150px', 'class'=>'img-responsive'];
+    $myImg = img($imgAttrs);
+    unset($imgAttrs['style']);
+    echo '
+
+	<div class="row">
+		<div class="col-sm-2">
+            <a data-toggle="modal" data-target="#Velobild'.$velo->id.'">'.$myImg.'</a>
+            <div id="Velobild'.$velo->id.'" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            '.img($imgAttrs).'
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>';
+}
+echo '
 
 	<div class="row">
 		<div class="col-sm-2">
@@ -28,7 +56,7 @@ if (!empty($velo->bemerkungen)) {
 	echo '
 	<div class="row">
 		<div class="col-sm-2">Bemerkungen: </div>
-		<div class="col-sm-10 alert alert-info">' . $velo->bemerkungen . '</div>
+		<div class="col-sm-10 alert alert-info">' . nl2br($velo->bemerkungen) . '</div>
 	</div>';
 }
 

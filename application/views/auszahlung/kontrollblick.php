@@ -28,7 +28,31 @@ foreach ($meineVelos as $diesesVelo) {
     ' . $diesesVelo['divAround'] . '
     	<h2>' . $diesesVelo['typ'] . ' | ' . $diesesVelo['marke'] . ' | ' . $diesesVelo['farbe'] . '</h2>';
     if (!empty($diesesVelo['img'])) {
-        echo img(['src'=>'uploads/'.$diesesVelo['img'], 'height'=>'100']);
+        $imgAttrs = ['src'=>'uploads/'.$diesesVelo['img'], 'style'=>'width:100%;max-width:150px', 'class'=>'img-responsive'];
+        $myImg = img($imgAttrs);
+        unset($imgAttrs['style']);
+        echo '
+
+	<div class="row">
+		<div class="col-sm-2">
+            <a data-toggle="modal" data-target="#Velobild'.$diesesVelo['id'].'">'.$myImg.'</a>
+            <div id="Velobild'.$diesesVelo['id'].'" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            '.img($imgAttrs).'
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>';
     }
     echo '
     	<div class="row">

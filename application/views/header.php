@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<?php 
+<?php
 $min = ('dev' == substr($_SERVER['SERVER_NAME'], 0, 3)) ? '' : '.min';
 echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap' . $min . '.css">';
 echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap-datepicker' . $min . '.css">';
@@ -20,7 +20,7 @@ echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap-datepicker' .
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/main.css">
 
-<?php 
+<?php
 if (!empty($querformat)) {
 	// The cheap way. Will have to add a pdf link too.
 	echo '
@@ -36,7 +36,7 @@ if (!empty($querformat)) {
         <![endif]-->
 
 
-<?php 
+<?php
 if (!isset($hideNavi) || false == $hideNavi) {
 	echo	'
 		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
@@ -50,11 +50,11 @@ if (!isset($hideNavi) || false == $hideNavi) {
 				</button>
 				' . anchor('', img('img/logo_nur_ringe.png').'&nbsp;Velobörse', array('class'=>'navbar-brand')) . '
 			</div><!-- End of navbar-header -->
-		
+
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="vb-navbar-collapse-1">
 				<ul class="nav navbar-nav">';
-	if ($this->session->userdata('logged_in')) {
+	if (is_role('admin,Helfer')) {
 		echo '
 					<li class="dropdown">
           				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -68,15 +68,25 @@ if (!isset($hideNavi) || false == $hideNavi) {
 		echo '
 						</ul>
 			        </li>';
-		if ('superadmin' == $this->session->userdata('user_role')) {
+		// Admins
+		if (is_role('admin')) {
 			echo '
 					<li>' . anchor('login/dispatch/admin', 'Administration') . '</li>';
 		}
-		echo '
+
+	}
+    if (is_role('Verkäufer privat')) {
+        echo '
+				<li>' . anchor('verkaeufer/index', 'Meine Sachen') . '</li>
+				<li>' . anchor('verkaeufer/userForm', 'Adressänderung') . '</li>';
+    }
+	if ($loggedIn) {
+	    echo '
 					<li>' . anchor('login/logout', 'Logout') . '</li>';
 	} else {
 		echo '
-					<li>' . anchor('login/form', 'Login') . '</li>';
+					<li>' . anchor('login/form', 'Login') . '</li>
+		            <li>' . anchor('login/registrationForm', 'Registrierung') . '</li>';
 	}
 	echo '
 				</ul>';
@@ -95,9 +105,9 @@ if (!isset($hideNavi) || false == $hideNavi) {
 ?>
 
 	<div class="container">
-	
-	
-<?php 
+
+
+<?php
 if (1 == $this->session->userdata('logged_in')) {
 	echo '
 		<div id="confirmation_modal" class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">

@@ -281,7 +281,7 @@ class M_user extends MY_Model {
 	private function get_unused_id()
 	{
 	    // Create a random user id between 12000 and 4294967295
-	    $random_unique_int = 2147483648 + mt_rand( -2147471648, 2147483647 );
+	    $random_unique_int = 2147483648 + random_int( -2147471648, 2147483647 );
 
 	    // Make sure the random user_id isn't already in use
 	    $query = $this->db->where( 'user_id', $random_unique_int )

@@ -169,7 +169,7 @@ class M_user extends MY_Model {
 		$this->db->where('users.user_id', $id);
 		$this->db->join('private', 'users.user_id = private.user_id', 'left');
 		$query = $this->db->get('users', 1);
-		if (1 !== $query->num_rows()) {
+		if (1 != $query->num_rows()) {
 			return false;
 		}
 		$row = $query->row();
@@ -373,6 +373,7 @@ class M_user extends MY_Model {
 	 */
 	public function save()
 	{
+	    $success = FALSE;
 	    $this->db->set('auth_level', $this->auth_level);
 	    $this->db->set('banned', $this->banned);
 	    $this->db->set('created_at', $this->created_at);
@@ -411,16 +412,16 @@ class M_user extends MY_Model {
 		    $this->id = $this->get_unused_id();
 		    $this->db->set('user_id', $this->id);
 
-		    $this->db->insert(db_table('user_table'));
+		    $success = $this->db->insert(db_table('user_table'));
 
 		} // End if new user
 		else {
 		    $this->db->where('user_id', $this->id);
-		    $this->db->update(db_table('user_table'));
+		    $success = $this->db->update(db_table('user_table'));
 		}
 
 		// Both new and existing
-		if( $this->db->affected_rows() !== 1 ) {
+		if( TRUE !== $success ) {
 		    log_message('error', 'Benutzer speichern fehlgeschlagen.');
 		    return false;
 		}
@@ -433,7 +434,7 @@ class M_user extends MY_Model {
 		$this->db->set('nachname', $this->nachname);
 		$this->db->set('adresse', $this->adresse);
 		$this->db->set('iban', $this->iban);
-		if (1 !== $query->num_rows()) {
+		if (1 != $query->num_rows()) {
 		    $this->db->set('user_id', $this->id);
 		    $ret = $this->db->insert('private');
 		} else {

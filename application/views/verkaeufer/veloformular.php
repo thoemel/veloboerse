@@ -5,6 +5,11 @@ echo '
 
 <div>
 	<h1>Velo zum Verkauf anbieten</h1>
+
+    <div class="row">
+	<div class="form-group">
+		<div class="col-lg-12">Mit <span class="glyphicon glyphicon-asterisk"></span> markierte Felder sind Pflicht.<br><br></div>
+	</div>
 ';
 
 echo form_open_multipart('verkaeufer/speichereVelo',
@@ -26,15 +31,16 @@ echo '
     </div>
     <div class="row">
 	<div class="form-group">
-		<label for="preis_input" class="col-lg-2 control-label">Preis</label>
+        <label for="preis_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Preis</label>
 		<div class="col-sm-2 col-md-2 col-lg-1">
 			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
         </div>
-		<div>
-			Bitte in ganzen Zehnerbeträgen. Sonst wird auf den nächsten Zehner gerundet.
+		<div class="col-sm-7 col-lg-7">
+            <span class="glyphicon glyphicon-info-sign"></span>
+			Der Preis wird auf Zehner gerundet.
         </div>
 	</div>
-    </div>Sobald der auf "yes" ist,
+    </div>
 
     <div class="row">
     <div class="form-group">

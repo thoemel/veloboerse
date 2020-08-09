@@ -393,9 +393,6 @@ class M_user extends MY_Model {
 		if (0 == $this->id) {
 			// Check if another user has this email address
 			$this->db->where('email', $this->email);
-			if (!empty($this->username)) {
-			    $this->db->or_where('username', $this->username);
-			}
 			$query = $this->db->get('users', 1);
 			if ($query->num_rows() == 1) {
 				log_message('error', 'Benutzer mit dieser Mail Adresse existiert schon.');
@@ -404,7 +401,6 @@ class M_user extends MY_Model {
 			// Check if another user has this username
 		    if (!empty($this->username)) {
 		        $this->db->where('username', $this->username);
-
 		        $query = $this->db->get('users', 1);
 		        if ($query->num_rows() == 1) {
 		            log_message('error', 'Benutzer mit diesem Benutzernamen existiert schon.');

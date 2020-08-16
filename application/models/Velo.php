@@ -175,7 +175,8 @@ class Velo extends CI_Model {
 
 
 	/**
-	 * Get an amount of Velos at random from the database.
+	 * Gib eine gewisse Anzahl Velos aus der DB.
+	 * Bedingung: Bild muss vorhanden sein.
 	 * @param int $count So viele will ich. Default: 10
 	 * @return Array von Velo-Einträgen aus der DB-Tabelle 'Velos'
 	 */
@@ -183,7 +184,7 @@ class Velo extends CI_Model {
 	{
 	    $CI =& get_instance();
 	    $arrOut = [];
-	    $sql = 'SELECT * FROM velos ORDER BY RAND() limit ' . $count;
+	    $sql = 'SELECT * FROM velos where img IS NOT NULL ORDER BY RAND() limit ' . $count;
 	    $query = $CI->db->query($sql);
 	    if (0 == $query->num_rows()) {
 	        return $arrOut;

@@ -48,17 +48,10 @@
 $active_group = 'default';
 $query_builder = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-switch ($_SERVER['SERVER_NAME']){
-	case 'localhost':
-		$db['default']['username'] = 'root';
-		$db['default']['password'] = '';
-	break;
-	default:
-		$db['default']['username'] = 'probern_boerse';
-		$db['default']['password'] = 'upVGSUY3LbMCzKeC';
-}
-$db['default']['database'] = 'probern_boerse';
+// "hostname", "database", "username" and "password" are set in the boerse.php config file
+include APPPATH . 'config/boerse.php';
+
+
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;

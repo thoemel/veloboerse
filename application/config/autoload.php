@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'form_validation', 'session', 'SimpleLoginSecure');
+$autoload['libraries'] = array('database', 'form_validation', 'session');
 
 
 /*
@@ -80,7 +80,7 @@ $autoload['helper'] = array('html', 'url', 'form', 'language', 'auth');
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('boerse');
 
 
 /*

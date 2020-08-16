@@ -175,6 +175,25 @@ class Velo extends CI_Model {
 
 
 	/**
+	 * Get an amount of Velos at random from the database.
+	 * @param int $count So viele will ich. Default: 10
+	 * @return Array von Velo-Einträgen aus der DB-Tabelle 'Velos'
+	 */
+	public static function getRandomly($count = 10)
+	{
+	    $CI =& get_instance();
+	    $arrOut = [];
+	    $sql = 'SELECT * FROM velos ORDER BY RAND() limit ' . $count;
+	    $query = $CI->db->query($sql);
+	    if (0 == $query->num_rows()) {
+	        return $arrOut;
+	    }
+
+	    return $query->result();
+	}
+
+
+	/**
 	 * Prüft, ob eine Quttung im System registriert ist.
 	 * @param int	$quittungNr
 	 * @return	boolean

@@ -184,7 +184,7 @@ class Velo extends CI_Model {
 	{
 	    $CI =& get_instance();
 	    $arrOut = [];
-	    $sql = 'SELECT * FROM velos where img IS NOT NULL ORDER BY RAND() limit ' . $count;
+	    $sql = 'SELECT * FROM velos where img IS NOT NULL AND img != "" ORDER BY RAND() limit ' . $count;
 	    $query = $CI->db->query($sql);
 	    if (0 == $query->num_rows()) {
 	        return $arrOut;

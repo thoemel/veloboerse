@@ -5,7 +5,8 @@ echo '
 <div class="alert alert-info col-lg-6">
 	<p>
         Willst du noch etwas ändern?
-        Dann musst du über diesen ' . anchor('verkaeufer/veloformular/'.$myVelo->id, 'Link') . ' gehen.
+        Dann musst du über diesen ' . anchor('velos/formular/'.$myVelo->id, 'Link') . ' gehen.
+        <br>Beachte: Danach musst du wieder hierher zurück kommen!
     </p>
 </div>
 </div>';

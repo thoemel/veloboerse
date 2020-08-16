@@ -12,3 +12,4 @@ $config['smtp_adress'] = ''; // z.B. 'boerse@provelo-meineregion.ch'
 $config['smtp_name'] = ''; // z.B. 'Pro velo Börse'
 $config['smtp_user'] = ''; // z.B. 'boerse' oder 'boerse@provelo-meineregion.ch'
 $config['smtp_pass'] = ''; // z.B. '324öljkLJK@#¼)('
+$config['smtp_port'] = '587';

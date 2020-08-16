@@ -193,10 +193,18 @@ class Login extends MY_Controller {
 	                $this->addData('noMatch', TRUE);
 	            }
 	        }
-	        $this->config->load('email');
+	        $this->config->load('email', 'forgot_pw');
+	        $mailConfig = config_item('forgot_pw');
+	        $mailConfig['smtp_host'] = config_item('smtp_host');
+	        $mailConfig['smtp_adress'] = config_item('smtp_adress');
+	        $mailConfig['smtp_name'] = config_item('smtp_name');
+	        $mailConfig['smtp_user'] = config_item('smtp_user');
+	        $mailConfig['smtp_pass'] = config_item('smtp_pass');
+	        $mailConfig['smtp_port'] = config_item('smtp_port');
 	        $this->load->library('email');
+	        $this->email->initialize($mailConfig);
 
-	        $this->email->from('boerse@provelobern.ch', 'Pro Velo Bern');
+	        $this->email->from(config_item('smtp_adress'), config_item('smtp_name'));
 	        $this->email->to($this->input->post('email', TRUE ));
 
 	        $this->email->subject('Passwort Velobörse');
@@ -204,8 +212,17 @@ class Login extends MY_Controller {
 	        $msg = sprintf($format, str_replace('p//', 'p://', $link));
 	        $this->email->message($msg);
 
-	        $this->email->send();
+	        $success = $this->email->send(FALSE);
 	    }
+
+	    if (TRUE === $success) {
+	        $this->addData('recovery_success_message', 'Aktivierungs-Link wurde geschickt');
+	    } else {
+	        $this->addData('recovery_success_message', 'Aktivierungs-Link konnte nicht versendet werden.');
+	        log_message('error', $this->email->print_debugger());
+	    }
+
+	    $this->email->clear();
 
 	    $this->load->view('login/recovery_sent', $this->data);
 	    return;

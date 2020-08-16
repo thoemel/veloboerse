@@ -430,7 +430,7 @@ class Verkaeufer extends MY_Controller
          */
         if (0 < $_FILES['userfile']['size']) {
             $config['upload_path']          = './uploads/';
-            $config['allowed_types']        = 'gif|jpg|png';
+            $config['allowed_types']        = 'gif|jpg|jpeg|png';
             $config['encrypt_name']        = TRUE;
 
             $this->load->library('upload', $config);

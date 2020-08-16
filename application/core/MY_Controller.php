@@ -211,10 +211,14 @@ class MY_Controller extends Auth_Controller
 		 * Enter das Formular abschicken, sondern setzt einfach eine leere
 		 * Suche ab. Um das zu verhindern, zeigen wir das Formular gar nicht an.
 		 */
+		$uri_string = uri_string();
 		switch (uri_string()) {
 			case '/auszahlung/kontrollblick':
 			case '/kasse/kontrollblick':
 			case '/abholung/kontrollblick':
+			case 'login/form':
+			case 'login/registrationForm':
+			case '':
 				$this->addData('showSearchForm', false);
 				break;
 			default:

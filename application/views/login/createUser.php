@@ -110,19 +110,50 @@ echo '
 	</div>
     <div class="row">
 	<div class="form-group">
-		<label for="iban_input" class="col-lg-2 control-label">IBAN</label>
+		<label for="iban_input" class="col-lg-2 control-label">
+            IBAN
+            <span class="badge">
+                <span class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#ibanModal"></span>
+            </span>
+        </label>
+
 		<div class="col-sm-6 col-md-6 col-lg-6">
             ' . form_error('iban') . '
 			' . form_input(array('id' => 'iban_input', 'name' => 'iban', 'value' => $myUser->iban, 'class' => 'form-control')) . '
 		</div>
+        <div class="col-sm-1 col-md-1 col-lg-1">
+          <!-- Modal -->
+          <div class="modal fade" id="ibanModal" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Bankverbindung für die Auszahlung</h4>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Die Auszahung (Verkaufspreis minus Provision) soll auf dieses Konto erfolgen.
+                    <br>Die Adressangaben müssen mit dem Kontoinhaber übereinsteimmmen.
+                    <br>Die Auszahlung erfolgt in der Woche nach der Börse.
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
 	</div>
 	</div>
     <div class="row">
 	<div class="form-group col-sm-offset-2 col-sm-10">
         ' . form_submit('submit', 'Speichern', 'class="btn"') . '
 	</div>
-	</div>
-';
+	</div>';
 
 
 echo form_close();

@@ -24,22 +24,36 @@ echo '
 	</div>
 
     <div class="row">
-	<div class="form-group">
-		<div class="col-lg-offset-2 col-lg-2">Provision: <span class="provision">0</span></div>
-		<div class="col-lg-2">Auszahlung: <span class="auszahlungsbetrag">0</span></div>
-	</div>
+    	<div class="form-group">
+            <label for="preis_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Preis</label>
+    		<div class="col-sm-2 col-md-2 col-lg-1">
+    			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
+            </div>
+    		<div class="col-sm-7 col-lg-7">
+                <span class="glyphicon glyphicon-info-sign"></span>
+    			Der Preis wird beim Speichern auf Zehner gerundet.
+            </div>
+    	</div>
     </div>
     <div class="row">
-	<div class="form-group">
-        <label for="preis_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Preis</label>
-		<div class="col-sm-2 col-md-2 col-lg-1">
-			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
-        </div>
-		<div class="col-sm-7 col-lg-7">
-            <span class="glyphicon glyphicon-info-sign"></span>
-			Der Preis wird auf Zehner gerundet.
-        </div>
-	</div>
+    	<div class="form-group">
+            <div class="col-lg-2 control-label">
+                Provision
+            </div>
+    		<div class="col-sm-2 col-md-2 col-lg-1">
+    			<span class="provision">0</span>
+            </div>
+    	</div>
+    </div>
+    <div class="row">
+    	<div class="form-group">
+            <div class="col-lg-2 control-label">
+                Auszahlung
+            </div>
+    		<div class="col-sm-2 col-md-2 col-lg-1">
+    			<span class="auszahlungsbetrag">0</span>
+            </div>
+    	</div>
     </div>
 
     <div class="row">

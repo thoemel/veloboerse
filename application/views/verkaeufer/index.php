@@ -2,11 +2,11 @@
 include APPPATH . 'views/header.php';
 
 echo '
-<h1>Verkäufer*innen</h1>
+<h1>Meine Sachen</h1>
 
 <div>
 	<ul>
-		<li>' . anchor('verkaeufer/veloformular', 'Velo erfassen') . '
+		<li>' . anchor('verkaeufer/veloformular', 'Velo zum Verkauf anbieten') . '
 		<li>' . anchor('verkaeufer/userForm', 'Adresse ändern ') . '
 	</ul>
 </div>

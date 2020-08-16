@@ -25,8 +25,10 @@ echo '
 </div>
 
 <div class="row">
-	<div class="form-group">
-		<label class="col-sm-2 control-label">Rahmennummer OK?</label>
+	<div class="form-group">';
+$rahmennummerLeer = (empty($myVelo->rahmennummer)) ? ' alert alert-warning' : '';
+echo '
+		<label class="col-sm-2 control-label'.$rahmennummerLeer.'">Rahmennummer OK?</label>
 		<div class="col-sm-10">
 			<label class="radio-inline">' . form_radio('rahmennummerOK', 'yes', false) . ' ja</label>
 			<label class="radio-inline">' . form_radio('rahmennummerOK', 'no', false) . ' nein</label>

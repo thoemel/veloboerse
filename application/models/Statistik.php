@@ -38,6 +38,24 @@ class Statistik extends CI_Model {
 	} // End of function afrika()
 
 
+	/**
+	 * Wie viele Velos wurden angemeldet?
+	 * Gibt sich dumm und liefert die Anzahl aller Velos in der DB.
+	 * Ungeachtet des Status, also auch verkaufte, nicht angelieferte, stornierte...
+	 * @return int
+	 */
+	public static function anzahlRegistrierte()
+	{
+	    $CI =& get_instance();
+	    $query = $CI->db->query('SELECT COUNT(id) as anz FROM velos');
+	    return $query->row()->anz;
+	}
+
+
+	/**
+	 * Liefert die genaue Anzahl Velos, die sich jetzt auf dem Areal befinden.
+	 * @return int
+	 */
 	public static function anzahlVelosAufPlatz()
 	{
 		$CI = & get_instance ();

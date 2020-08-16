@@ -18,7 +18,7 @@ class Start extends MY_Controller {
 		$this->load->model('boerse');
 		$boerse = Boerse::naechsteOffene();
 		$this->addData('naechsteBoerse', $boerse);
-		$this->addData('anzahl', Statistik::anzahlVelosAufPlatz());
+		$this->addData('anzahl', Statistik::anzahlRegistrierte());
 		$this->addData('velos', Velo::getRandomly(10));
 
 		$this->load->view('start', $this->data);

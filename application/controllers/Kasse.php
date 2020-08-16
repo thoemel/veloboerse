@@ -106,6 +106,46 @@ class Kasse extends MY_Controller {
 			$this->data['velo'] = $myVelo;
 			$vonHelferGekauft = ('yes' == $myVelo->helfer_kauft) ? 'Ja' : 'Nein';
 			$this->addData('vonHelferGekauft', $vonHelferGekauft);
+
+			// Mail an Verkäufy
+			$verkaeufy = new M_user();
+			$verkaeufy->fetch($myVelo->verkaeufer_id);
+			$this->config->load('email', 'forgot_pw');
+			$mailConfig = config_item('forgot_pw');
+			$mailConfig['smtp_host'] = config_item('smtp_host');
+			$mailConfig['smtp_adress'] = config_item('smtp_adress');
+			$mailConfig['smtp_name'] = config_item('smtp_name');
+			$mailConfig['smtp_user'] = config_item('smtp_user');
+			$mailConfig['smtp_pass'] = config_item('smtp_pass');
+			$mailConfig['smtp_port'] = config_item('smtp_port');
+			$this->load->library('email');
+			$this->email->initialize($mailConfig);
+
+			$this->email->from(config_item('smtp_adress'), config_item('smtp_name'));
+			$this->email->to($verkaeufy->email);
+
+			$this->email->subject('Dein Velo wurde verkauft');
+			$msg = 'Gratuliere, du hast ein Velo verkauft!';
+			$msg .= '
+Dein Velo mit der Quittung Nr. ' . $myVelo->id . ' wurde für Fr. ' . $myVelo->preis . '.-- verkauft.';
+if (empty($verkaeufy->iban)) {
+    $msg .= '
+Du musst deinen Erlös vor Börsenschluss abholen kommen.';
+} else {
+    $msg .= '
+Der Erlös wird dir in den nächsten Tagen auf dein Konto überwiesen.';
+}
+            $msg .= '
+Liebe Grüsse
+Deine Pro Velo';
+			$msg = $msg;
+			$this->email->message($msg);
+
+			$success = $this->email->send(FALSE);
+			if (!$success) {
+			    log_message('error', $this->email->print_debugger());
+			    // Keine weiteren Aktionen hier.
+			}
 		} else {
 			$this->data['error'] = 'Verkauf nicht geklappt.';
 		}

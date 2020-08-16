@@ -44,6 +44,7 @@ class Statistik extends CI_Model {
 		$sql = 'SELECT count(id) as anzahl
 				FROM velos
 				WHERE verkauft = "no"
+                AND angenommen = "yes"
 				AND abgeholt = "no"
 				AND gestohlen = 0
 				AND storniert = 0';

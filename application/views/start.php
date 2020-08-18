@@ -6,6 +6,7 @@ echo '
 <div class="jumbotron">
 	<h1>Velos kaufen und verkaufen: so einfach geht\'s an den Velobörsen von Pro Velo Bern.</h1>
 </div>
+<div class="row">
     <h2>Velo verkaufen</h2>
     <p>
         Du willst dein Velo verkaufen? ' . anchor('login/registrationForm', 'Registriere dich') . '
@@ -77,5 +78,6 @@ if (!empty($naechsteBoerse)) {
     </div>';
 }
 
+echo '</div>';
 
 include APPPATH . 'views/footer.php';

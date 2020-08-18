@@ -25,7 +25,7 @@ echo '
 
     <div class="row">
     	<div class="form-group">
-            <label for="preis_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Preis</label>
+            <label for="preis_input" class="col-lg-2 col-sm-2 col-sm-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Preis</label>
     		<div class="col-sm-2 col-md-2 col-lg-1">
     			' . form_input(array('id' => 'preis_input', 'name' => 'preis', 'value' => $myVelo->preis, 'class' => 'focusPlease form-control')) . '
             </div>
@@ -37,21 +37,17 @@ echo '
     </div>
     <div class="row">
     	<div class="form-group">
-            <div class="col-lg-offset-2 col-lg-1 control-label">
-                Provision
-            </div>
-    		<div class="col-sm-2 col-md-2 col-lg-1">
-    			<span class="provision">0</span>
+            <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-1 col-md-1 col-sm-2 control-label">
+                Provision:
+    			<span class="provision">0</span>.--
             </div>
     	</div>
     </div>
     <div class="row">
     	<div class="form-group">
-            <div class="col-lg-offset-2 col-lg-1 control-label">
-                <strong>Auszahlung<strong>
-            </div>
-    		<div class="col-sm-2 col-md-2 col-lg-1">
-    			<span class="auszahlungsbetrag">0</span>
+            <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-1 col-md-1 col-sm-2 control-label">
+                <strong>Auszahlung:</strong>
+    			<span class="auszahlungsbetrag">0</span>.--
             </div>
     	</div>
     </div>

@@ -202,9 +202,18 @@ CREATE TABLE `acl` (
 
 
 
-
+CREATE TABLE IF NOT EXISTS `private` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `vorname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `nachname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `adresse` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `iban` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_private_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Not related to authentication library
-ALTER TABLE `velos` ADD `verkaeufer_id` INT(11) NOT NULL DEFAULT '0' AFTER `haendler_id`;
+ALTER TABLE `velos` ADD `verkaeufer_id` int(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `haendler_id`;
 
 ALTER TABLE `velos` ADD `angenommen` ENUM('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `preis`, ADD INDEX `idx_angenommen` (`angenommen`);

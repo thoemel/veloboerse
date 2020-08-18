@@ -3,7 +3,7 @@ include APPPATH . 'views/header.php';
 
 echo '
 <h1>Meine Sachen</h1>
-<h2>Willkommen ' . $ich->vorname . ' ' . $ich->nachname . ' - Was möchtest du tun?</h2>;
+<h2>Willkommen ' . $ich->vorname . ' ' . $ich->nachname . ' - Was möchtest du tun?</h2>
 
 <div>
 	<ul>

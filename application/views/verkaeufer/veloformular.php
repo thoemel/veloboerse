@@ -37,7 +37,7 @@ echo '
     </div>
     <div class="row">
     	<div class="form-group">
-            <div class="col-lg-2 control-label">
+            <div class="col-lg-offset-2 col-lg-1 control-label">
                 Provision
             </div>
     		<div class="col-sm-2 col-md-2 col-lg-1">
@@ -47,8 +47,8 @@ echo '
     </div>
     <div class="row">
     	<div class="form-group">
-            <div class="col-lg-2 control-label">
-                Auszahlung
+            <div class="col-lg-offset-2 col-lg-1 control-label">
+                <strong>Auszahlung<strong>
             </div>
     		<div class="col-sm-2 col-md-2 col-lg-1">
     			<span class="auszahlungsbetrag">0</span>

@@ -46,6 +46,28 @@ $(document).ready(function() {
 	    language: 'de',
 	    format: 'yyyy-mm-dd'
 	});
+	
+	/**
+	 * Zeige Checkbox für IBAN, falls der nicht leer ist.
+	 */
+	$('#iban_input').on('keyup', function() {
+		if ($('#iban_input').val() == '') {
+			$('#ibanHinweis').hide();
+		} else {
+			$('#ibanHinweis').show();
+		}
+	});
+	
+	/**
+	 * Schick die Registration nicht ab, wenn IBAN Feld nicht leer und Checkbox nicht checked.
+	 * @returns
+	 */
+	$("#registrierFormular").submit(function(event){
+		if ($('#iban_input').val() != '' && $('#input_check').prop('checked') == false) {
+			event.preventDefault();
+	    	alert("Bitte bestätige, dass du den Hinweis zum IBAN verstanden hast und damit einverstanden bist.");
+		}
+	});
 });
 
 

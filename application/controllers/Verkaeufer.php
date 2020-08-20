@@ -204,9 +204,13 @@ class Verkaeufer extends MY_Controller
 
     /**
      * Stellt eine Quittung in einem PDF zum Ausdrucken zusammen.
+     * Speichert das PDF auf dem Server unter dem Namen Preisschild_<Quittungsnummer>.pdf
+     * Speicherort: Ordner "quittungen".
+     *
      * @param int $id   ID des Velos
+     * @param bool $outputAsDownload Datei zum Download an den Browser schicken. Default: true
      */
-    public function pdf($id)
+    public function pdf($id, $outputAsDownload = TRUE)
     {
         $myVelo = new Velo();
         try {
@@ -309,21 +313,20 @@ class Verkaeufer extends MY_Controller
         $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'R', true);
 
         // Horizontale Linie plus Abstand
-        $tiefsterPunkt = max($preisUnterkante[1], $pdf->getY());
-        $pdf->setY($tiefsterPunkt + 10);
+        $Seitenmitte = 144;
+        $pdf->setY($Seitenmitte);
         $pdf->SetLineWidth(0.2);
         $pdf->SetDrawColor(0,0,0);
         $pdf->Cell(0,1,'','B',1);
-        $pdf->Ln(PDF_MARGIN_TOP);
 
 
         /*
          * Untere Seitenhälfte für Verkäufer
          */
-        $topOfReceipt = [$pdf->getX(), $pdf->GetY()];
+        $topOfReceipt = 150;
 
         // "Kopie für den Verkäufer"
-        $pdf->SetY($topOfReceipt[1]);
+        $pdf->SetY($topOfReceipt);
         $pdf->SetFillColor(192, 192, 255);
         $pdf->SetFont('', 'B', 24);
         $pdf->SetTextColor(0,0,0);
@@ -346,6 +349,7 @@ class Verkaeufer extends MY_Controller
         $pdf->SetTextColor(0,0,0);
         $preisText = 'Fr. ' . $myVelo->preis . '.--';
         $pdf->Write(0, $preisText, '', false, 'L', true);
+        $preisUnterkante = [$pdf->GetX(), $pdf->GetY()];
 
         // Quittungs-Nr.
         $pdf->SetXY($bildOberkante[0], $bildOberkante[1]);
@@ -356,43 +360,80 @@ class Verkaeufer extends MY_Controller
         $pdf->Write(0, $title, '', false, 'R', true);
 
         // Marke
-        $pdf->SetFont('', '', 10);
+        $pdf->SetFont('', '', 8);
         $pdf->SetTextColor(0,0,0);
         $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'R', true);
 
         // Rahmennummer
-        $pdf->SetFont('', '', 10);
+        $pdf->SetFont('', '', 8);
         $pdf->SetTextColor(0,0,0);
         $pdf->Write(0, 'Rahmennummer: ' . $myVelo->rahmennummer, '', false, 'R', true);
 
         // Verkäufer
         $pdf->Ln();
-        $pdf->SetFont('', 'B', 10);
+        $pdf->SetFont('', 'B', 8);
         $pdf->write(0, 'Verkäufer:', '', false, 'R', true);
-        $pdf->SetFont('', '', 10);
+        $pdf->SetFont('', '', 8);
         $vi = $myVelo->verkaeuferInfo();
         $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
         $pdf->write(0, $vi['adresse'], '', false, 'R');
         $pdf->Ln(10);
 
+        $pdf->SetFont('', 'B', 8);
+        $pdf->write(0, 'Auszahlung bestätigen:', '', false, 'R', true);
+
         // Börsendatum
-        $pdf->SetTextColor(0,0,0);
-        $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'R', true);
+        $pdf->SetFont('', '', 8);
+        $pdf->Write(0, 'Datum: ' . date('d. m. Y', strtotime(Boerse::naechsteOffene()->datum)), '', false, 'R', true);
+
+        $pdf->SetFont('', '', 8);
+        $pdf->write(0, 'Verkaufserlös erhalten:', '', false, 'R', true);
+
+
+        $pdf->Ln(10);
+        $pdf->SetFont('', '', 8);
+        $pdf->write(0, 'Unterschrift _____________________________', '', false, 'R', true);
 
         // Barcode
-        $pdf->Ln(10);
+        $pdf->Ln(5);
         $barcodeStyle['position'] = 'R';
         $barcodeStyle['align'] = 'R';
         $barcodeStyle['hpadding'] = 0;
         $barcodeStyle['vpadding'] = 1;
         $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', '', 16, 0.4, $barcodeStyle);
 
+        // Rechtlicher Hinweis
+        $pdf->SetY(261);
+        $pdf->SetFont('', 'B', 6);
+        $pdf->write(0, 'Rechtlicher Hinweis:', '', false, 'L', true);
+        $pdf->SetFont('', '', 6);
+        $Hinweis = 'Pro Velo Bern kann trotz Überwachung der Börse & Kontrolle der Velos für Verlust und Beschädigungen keine Haftung übernehmen. Am Veranstaltungstag ist der Verkaufserlös oder das Velo bis spätestens Börsenschluss abzuholen. Über nicht abgeholte Velos und Verkaufserlöse verfügt Pro Velo Bern. Pro Velo Bern haftet nicht für das verkaufte Velo.';
+        $pdf->write(0, $Hinweis, '', false, 'L', true);
 
-        $filename = 'Preisschild_' . $myVelo->id;
-        $pdf->Output($filename, 'D');
+
+        $pdf->Output($this->quittungspfad($myVelo->id), 'F');
+
+        if ($outputAsDownload) {
+            $filename = 'Preisschild_' . $id . '.pdf';
+            $pdf->Output($filename, 'D');
+        }
 
         return ;
     } // End of function pdf()
+
+
+    /**
+     * Gib den Serverpfad für meine Quittung
+     *
+     * @param int $id Quittungsnummer
+     * @return String $strOut Absoluten Pfad der Quittung mit dieser Nummer
+     */
+    private function quittungspfad($id) {
+        $strOut = '';
+        $filename = 'Preisschild_' . $id . '.pdf';
+        $strOut = realpath(__DIR__ . '/../../quittungen/') . '/' . $filename;
+        return $strOut;
+    }
 
 
     /**
@@ -493,10 +534,50 @@ class Verkaeufer extends MY_Controller
 
         $myVelo->save();
 
+        /*
+         * Mail mit Quittung schicken
+         */
+        $verkaeufy = new M_user();
+        $verkaeufy->fetch($myVelo->verkaeufer_id);
+        $this->config->load('email', 'forgot_pw');
+        $mailConfig = config_item('forgot_pw');
+        $mailConfig['smtp_host'] = config_item('smtp_host');
+        $mailConfig['smtp_adress'] = config_item('smtp_adress');
+        $mailConfig['smtp_name'] = config_item('smtp_name');
+        $mailConfig['smtp_user'] = config_item('smtp_user');
+        $mailConfig['smtp_pass'] = config_item('smtp_pass');
+        $mailConfig['smtp_port'] = config_item('smtp_port');
+        $this->load->library('email');
+        $this->email->initialize($mailConfig);
+
+        $this->email->from(config_item('smtp_adress'), config_item('smtp_name'));
+        $this->email->to($verkaeufy->email);
+        $this->email->subject('Dein Velo ist registriert');
+
+        $msg = 'Liebe/lieber ' . $verkaeufy->vorname . ' ' . $verkaeufy->nachname;
+        $msg .= "\n\nDanke, dass du dein Velo bei uns verkaufen willst!";
+        $msg .= "\nBitte drucke die Quittung in der Beilage aus und bring sie mit dem Velo an die Börse.";
+        $msg .= "\nLiebe Grüsse";
+        $msg .= "\n\nDeine Pro Velo";
+        $this->email->message($msg);
+
+        $this->pdf($myVelo->id, FALSE);
+        $this->email->attach($this->quittungspfad($myVelo->id));
+
+        $success = $this->email->send(FALSE);
+        if (!$success) {
+            log_message('error', $this->email->print_debugger());
+            // Keine weiteren Aktionen hier.
+        }
+
+
         $meineVelos = Velo::fuerVerkaeufer($this->auth_user_id);
         $this->addData('meineVelos', $meineVelos);
+        $ich = new M_user();
+        $ich->fetch($this->auth_user_id);
+        $this->addData('ich', $ich);
         $this->load->view('verkaeufer/index', $this->data);
 
         return;
-    } // End of function erfasse
+    } // End of function speichereVelo
 }

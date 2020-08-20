@@ -148,7 +148,7 @@ echo '
           </div>
         </div>
 	</div>
-	<div class="form-group collapse" id="ibanHinweis">
+	<div class="form-group" id="ibanHinweis">
 		<div class="col-lg-offset-2 col-lg-10">
 			<div class="checkbox">
 				<label>

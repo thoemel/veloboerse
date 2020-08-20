@@ -50,13 +50,13 @@ $(document).ready(function() {
 	/**
 	 * Zeige Checkbox für IBAN, falls der nicht leer ist.
 	 */
-	$('#iban_input').on('keyup', function() {
-		if ($('#iban_input').val() == '') {
-			$('#ibanHinweis').hide();
-		} else {
-			$('#ibanHinweis').show();
-		}
-	});
+//	$('#iban_input').on('keyup', function() {
+//		if ($('#iban_input').val() == '') {
+//			$('#ibanHinweis').hide();
+//		} else {
+//			$('#ibanHinweis').show();
+//		}
+//	});
 	
 	/**
 	 * Schick die Registration nicht ab, wenn IBAN Feld nicht leer und Checkbox nicht checked.

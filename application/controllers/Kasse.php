@@ -123,22 +123,16 @@ class Kasse extends MY_Controller {
 
 			$this->email->from(config_item('smtp_adress'), config_item('smtp_name'));
 			$this->email->to($verkaeufy->email);
-
 			$this->email->subject('Dein Velo wurde verkauft');
-			$msg = 'Gratuliere, du hast ein Velo verkauft!';
-			$msg .= '
-Dein Velo mit der Quittung Nr. ' . $myVelo->id . ' wurde für Fr. ' . $myVelo->preis . '.-- verkauft.';
-if (empty($verkaeufy->iban)) {
-    $msg .= '
-Du musst deinen Erlös vor Börsenschluss abholen kommen.';
-} else {
-    $msg .= '
-Der Erlös wird dir in den nächsten Tagen auf dein Konto überwiesen.';
-}
-            $msg .= '
-Liebe Grüsse
-Deine Pro Velo';
-			$msg = $msg;
+
+			$msg = config_item('text_bestaetigungsmail');
+			$msg = str_replace('<vorname nachname>', $verkaeufy->vorname.' '.$verkaeufy->nachname, $msg);
+			$msg = str_replace('<quittungsnummer>', $myVelo->id, $msg);
+			$msg = str_replace('<preis>', $myVelo->preis, $msg);
+			$rpl = (empty($verkaeufy->iban)) ? config_item('text_ohne_iban') : config_item('text_mit_iban');
+			$msg = str_replace('<mit_oder_ohne_iban>', $rpl, $msg);
+			$auszahlung = $myVelo->preis - Velo::getProvision($myVelo->preis);
+			$msg = str_replace('<betrag_auszahlung>', $auszahlung, $msg);
 			$this->email->message($msg);
 
 			$success = $this->email->send(FALSE);

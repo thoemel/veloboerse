@@ -13,6 +13,19 @@ echo '
 </div>
 
 <div>
+    <h2>So geht\'s</h2>
+    <p>
+        Nachdem du ein Velo erfasst hast, erscheint es auf dieser Seite. Anpassungen können bis zur Übergabe des Velos an Pro Velo am Börsentag gemacht werden.
+    </p>
+    <p>
+        Nach der Erfassung erhältst du eine Bestätigung per E-Mail. Bitte drucke das angehängte PDF-Dokument aus oder weise es bei der Velo-Annahme auf deinem Smartphone vor.
+    </p>
+    <p>
+        Bitte bring ebenfalls einen Ausweis mit.
+    </p>
+</div>
+
+<div>
 ';
 
 if ($meineVelos->num_rows() > 0) {

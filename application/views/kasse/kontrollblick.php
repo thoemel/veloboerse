@@ -89,11 +89,7 @@ echo '
 		</label>
 		<label class="radio-inline">
 			' . form_radio('zahlungsart', 'debit', false) . '
-			Post- oder EC-Karte
-		</label>
-		<label class="radio-inline">
-			' . form_radio('zahlungsart', 'kredit', false) . '
-			Kreditkarte
+			Karte
 		</label>
 	</div>
 	<div id="velo_bemerkungen" class="hidden form-group">

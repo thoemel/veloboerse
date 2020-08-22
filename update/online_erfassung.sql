@@ -136,16 +136,17 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Trigger updates passwd_modified_at field if passwd modified
 --
 
-delimiter $$
-DROP TRIGGER IF EXISTS ca_passwd_trigger ;
-$$
-CREATE TRIGGER ca_passwd_trigger BEFORE UPDATE ON users
-FOR EACH ROW
+delimiter //
+
+CREATE TRIGGER ca_passwd_trigger 
+BEFORE UPDATE 
+ON users FOR EACH ROW
 BEGIN
-    IF ((NEW.passwd <=> OLD.passwd) = 0) THEN
+    IF (NEW.passwd <=> OLD.passwd) THEN
         SET NEW.passwd_modified_at = NOW();
     END IF;
-END;$$
+END;//
+
 delimiter ;
 
 -- --------------------------------------------------------
@@ -220,10 +221,20 @@ ALTER TABLE `private` ADD `strasse` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_
 ALTER TABLE `private` ADD `telefon` VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `ort`;
 
 -- Not related to authentication library
-ALTER TABLE `velos` ADD `verkaeufer_id` int(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `haendler_id`;
+ALTER TABLE `velos` ADD `verkaeufer_id` int(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `haendler_id`, ADD INDEX `idx_verkaeufy` (`verkaeufer_id`);
 
 ALTER TABLE `velos` ADD `angenommen` ENUM('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `preis`, ADD INDEX `idx_angenommen` (`angenommen`);
 
+-- --------------------------------------------------------
+
+--
+-- Insert Superuser
+--
+INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `passwd`, `passwd_recovery_code`, `passwd_recovery_date`, `passwd_modified_at`, `last_login`, `created_at`, `modified_at`) VALUES
+(2981469148, 'maschti', 'boerse@provelobern.ch', 9, '0', '$2y$11$T9p3YDOfvapVa1OIwBmShuSgbo1qbPQVGurYRIjTakV6X2eeHAFEm', '', NULL, '2020-08-22 20:41:12', NULL, '2020-08-22 20:41:12', '2020-08-22 18:41:12');
+
+INSERT INTO `private` (`id`, `user_id`, `vorname`, `nachname`, `adresse`, `iban`, `strasse`, `plz`, `ort`, `telefon`) VALUES
+(14, 2981469148, 'Der', 'Superadmin', '', '', 'Birkenweg 61', '3013', 'Bern', '');
 
 
 

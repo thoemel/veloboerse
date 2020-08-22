@@ -27,7 +27,9 @@ class M_user extends MY_Model {
 
 	public $vorname = '';
 	public $nachname = '';
-	public $adresse = '';
+	public $strasse = '';
+	public $plz = '';
+	public $ort = '';
 	public $iban = '';
 
 
@@ -56,7 +58,9 @@ class M_user extends MY_Model {
 		    'email',
 		    'vorname',
 		    'nachname',
-		    'adresse',
+		    'strasse',
+		    'plz',
+		    'ort',
 		    'auth_level',
 		    'banned',
 		    'passwd_recovery_code',
@@ -87,7 +91,9 @@ class M_user extends MY_Model {
 			$thisUser->passwd_recovery_date = $row->passwd_recovery_date;
 			$thisUser->vorname = $row->vorname;
 			$thisUser->nachname = $row->nachname;
-			$thisUser->adresse = $row->adresse;
+			$thisUser->strasse = $row->strasse;
+			$thisUser->plz = $row->plz;
+			$thisUser->ort = $row->ort;
 
 			$arrOut[] = $thisUser;
 		}
@@ -186,7 +192,9 @@ class M_user extends MY_Model {
 		$this->passwd_recovery_date = $row->passwd_recovery_date;
 		$this->vorname = $row->vorname;
 		$this->nachname = $row->nachname;
-		$this->adresse = $row->adresse;
+		$this->strasse = $row->strasse;
+		$this->plz = $row->plz;
+		$this->ort = $row->ort;
 		$this->iban = $row->iban;
 
 		return true;
@@ -432,7 +440,9 @@ class M_user extends MY_Model {
 
 		$this->db->set('vorname', $this->vorname);
 		$this->db->set('nachname', $this->nachname);
-		$this->db->set('adresse', $this->adresse);
+		$this->db->set('strasse', $this->strasse);
+		$this->db->set('plz', $this->plz);
+		$this->db->set('ort', $this->ort);
 		$this->db->set('iban', $this->iban);
 		if (1 != $query->num_rows()) {
 		    $this->db->set('user_id', $this->id);

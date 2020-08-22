@@ -57,14 +57,24 @@ $config ['createUser'] = array (
         'rules' => ['trim','required']
     ),
     array (
-        'field' => 'adresse',
-        'label' => 'Adresse',
+        'field' => 'strasse',
+        'label' => 'Strasse',
+        'rules' => ['trim','required']
+    ),
+    array (
+        'field' => 'plz',
+        'label' => 'Postleitzahl',
+        'rules' => ['trim','required']
+    ),
+    array (
+        'field' => 'ort',
+        'label' => 'Ort',
         'rules' => ['trim','required']
     ),
     array (
         'field' => 'iban',
         'label' => 'IBAN',
-        'rules' => ['trim','required']
+        'rules' => ['trim']
     )
 );
 
@@ -90,13 +100,21 @@ $config ['editUser'] = [
         'label' => 'Nachname',
         'rules' => ['trim','required']
     ], [
-        'field' => 'adresse',
-        'label' => 'Adresse',
+        'field' => 'strasse',
+        'label' => 'Strasse',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'plz',
+        'label' => 'Postleitzahl',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'ort',
+        'label' => 'Ort',
         'rules' => ['trim','required']
     ], [
         'field' => 'iban',
         'label' => 'IBAN',
-        'rules' => ['trim','required']
+        'rules' => ['trim']
     ], [
         'field' => 'password',
         'label' => 'Passwort',
@@ -126,8 +144,16 @@ $config ['editVerkaeufer'] = [
         'label' => 'Nachname',
         'rules' => ['trim','required']
     ], [
-        'field' => 'adresse',
-        'label' => 'Adresse',
+        'field' => 'strasse',
+        'label' => 'Strasse',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'plz',
+        'label' => 'Postleitzahl',
+        'rules' => ['trim','required']
+    ], [
+        'field' => 'ort',
+        'label' => 'Ort',
         'rules' => ['trim','required']
     ], [
         'field' => 'iban',

@@ -168,7 +168,9 @@ class Annahme extends MY_Controller {
 	    $pdf->SetFont('', '', 8);
 	    $vi = $myVelo->verkaeuferInfo();
 	    $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
-	    $pdf->write(0, $vi['adresse'], '', false, 'R');
+	    $pdf->write(0, $vi['strasse'], '', false, 'R', true);
+	    $pdf->write(0, $vi['plz'], '', false, 'R');
+	    $pdf->write(0, $vi['ort'], '', false, 'R');
 
 
 	    $filename = 'Preisschild_' . $myVelo->id . '.pdf';

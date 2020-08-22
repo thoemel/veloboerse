@@ -98,13 +98,29 @@ echo '
 	</div>
 	</div>
     <div class="row">
-    <div class="form-group">
-		<label class="col-sm-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Adresse</label>
-		<div class="col-sm-10">
-            ' . form_error('adresse') . '
-			<textarea name="adresse" class="form-control" rows="3">'
-                . $myUser->adresse
-                . '</textarea>
+	<div class="form-group">
+		<label for="nachname_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Strasse, Nr.</label>
+		<div class="col-sm-6 col-md-6 col-lg-6">
+            ' . form_error('strasse') . '
+			' . form_input(array('id' => 'strasse_input', 'name' => 'strasse', 'value' => $myUser->strasse, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	</div>
+    <div class="row">
+	<div class="form-group">
+		<label for="plz_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> PLZ</label>
+		<div class="col-sm-6 col-md-6 col-lg-6">
+            ' . form_error('plz') . '
+			' . form_input(array('id' => 'plz_input', 'name' => 'plz', 'value' => $myUser->plz, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	</div>
+    <div class="row">
+	<div class="form-group">
+		<label for="ort_input" class="col-lg-2 control-label"><span class="glyphicon glyphicon-asterisk"></span> Ort</label>
+		<div class="col-sm-6 col-md-6 col-lg-6">
+            ' . form_error('ort') . '
+			' . form_input(array('id' => 'ort_input', 'name' => 'ort', 'value' => $myUser->ort, 'class' => 'form-control')) . '
 		</div>
 	</div>
 	</div>

@@ -318,7 +318,9 @@ class Velo extends CI_Model {
 	    if ($q->num_rows() == 1) {
 	        $ret['nachname'] = $q->row()->nachname;
 	        $ret['vorname'] = $q->row()->vorname;
-	        $ret['adresse'] = $q->row()->adresse;
+	        $ret['strasse'] = $q->row()->strasse;
+	        $ret['plz'] = $q->row()->plz;
+	        $ret['ort'] = $q->row()->ort;
 	        $ret['iban'] = $q->row()->iban;
 	    }
 

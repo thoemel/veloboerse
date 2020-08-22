@@ -38,7 +38,7 @@ foreach ($allUsers as $u) {
             <td>' . $u->vorname . '</td>
             <td>' . $u->nachname . '</td>
             <td>' . $u->email . '</td>
-            <td>' . str_replace("\n", "<br>", $u->adresse) . '</td>
+            <td>' . $u->strasse . ', ' . $u->plz . ' ' . $u->ort . '</td>
             <td>' . $levels_and_roles[$u->auth_level] . '</td>
             <td>';
     echo anchor('benutzeradmin/userForm/' . $u->id,

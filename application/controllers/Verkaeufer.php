@@ -87,7 +87,9 @@ class Verkaeufer extends MY_Controller
         $myUser->username = $this->input->post('username');
         $myUser->vorname = $this->input->post('vorname');
         $myUser->nachname = $this->input->post('nachname');
-        $myUser->adresse = $this->input->post('adresse');
+        $myUser->strasse = $this->input->post('strasse');
+        $myUser->plz = $this->input->post('plz');
+        $myUser->ort = $this->input->post('ort');
         $myUser->iban = $this->input->post('iban');
         if (!empty($this->input->post('password'))) {
             $myUser->set_password($this->input->post('password'));
@@ -305,7 +307,8 @@ class Verkaeufer extends MY_Controller
         $pdf->SetFont('', '', 10);
         $vi = $myVelo->verkaeuferInfo();
         $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
-        $pdf->write(0, $vi['adresse'], '', false, 'R');
+        $pdf->write(0, $vi['strasse'], '', false, 'R', true);
+        $pdf->write(0, $vi['plz'] . ' ' . $vi['ort'], '', false, 'R');
         $pdf->Ln(10);
 
         // Börsendatum
@@ -376,7 +379,8 @@ class Verkaeufer extends MY_Controller
         $pdf->SetFont('', '', 8);
         $vi = $myVelo->verkaeuferInfo();
         $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
-        $pdf->write(0, $vi['adresse'], '', false, 'R');
+        $pdf->write(0, $vi['strasse'], '', false, 'R', true);
+        $pdf->write(0, $vi['plz'] . ' ' . $vi['ort'], '', false, 'R');
         $pdf->Ln(10);
 
         $pdf->SetFont('', 'B', 8);

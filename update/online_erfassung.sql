@@ -213,7 +213,14 @@ CREATE TABLE IF NOT EXISTS `private` (
   UNIQUE KEY `idx_private_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- Adresse auf mehrere Felder aufteilen
+ALTER TABLE `private` ADD `strasse` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `iban`, ADD `plz` VARCHAR(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'auch Nachbarlaender moeglich' AFTER `strasse`, ADD `ort` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `plz`;
+
 -- Not related to authentication library
 ALTER TABLE `velos` ADD `verkaeufer_id` int(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `haendler_id`;
 
 ALTER TABLE `velos` ADD `angenommen` ENUM('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `preis`, ADD INDEX `idx_angenommen` (`angenommen`);
+
+
+
+

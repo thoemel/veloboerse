@@ -56,7 +56,9 @@ class Benutzeradmin extends MY_Controller
             $formValues['username'] = set_value('username');
             $formValues['vorname'] = set_value('vorname');
             $formValues['nachname'] = set_value('nachname');
-            $formValues['adresse'] = set_value('adresse');
+            $formValues['strasse'] = set_value('strasse');
+            $formValues['plz'] = set_value('plz');
+            $formValues['ort'] = set_value('ort');
             $formValues['iban'] = set_value('iban');
             $this->addData('formValues', $formValues);
             redirect('benutzeradmin/userForm/' . $this->input->post('user_id'));
@@ -96,7 +98,9 @@ class Benutzeradmin extends MY_Controller
         $myUser->username = $this->input->post('username');
         $myUser->vorname = $this->input->post('vorname');
         $myUser->nachname = $this->input->post('nachname');
-        $myUser->adresse = $this->input->post('adresse');
+        $myUser->strasse = $this->input->post('strasse');
+        $myUser->plz = $this->input->post('plz');
+        $myUser->ort = $this->input->post('ort');
         $myUser->iban = $this->input->post('iban');
         $myUser->auth_level = $this->input->post('rolle');
         if (!empty($this->input->post('password'))) {
@@ -157,7 +161,9 @@ class Benutzeradmin extends MY_Controller
         $myUser->username = $this->input->post('username');
         $myUser->vorname = $this->input->post('vorname');
         $myUser->nachname = $this->input->post('nachname');
-        $myUser->adresse = $this->input->post('adresse');
+        $myUser->strasse = $this->input->post('strasse');
+        $myUser->plz = $this->input->post('plz');
+        $myUser->ort = $this->input->post('ort');
         $myUser->iban = $this->input->post('iban');
         if (!empty($this->input->post('rolle'))) {
             $myUser->auth_level = $this->input->post('rolle');

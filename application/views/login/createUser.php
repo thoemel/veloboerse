@@ -126,11 +126,40 @@ echo '
 	</div>
     <div class="row">
 	<div class="form-group">
-		<label for="ort_input" class="col-lg-2 control-label">Telefon</label>
+		<label for="ort_input" class="col-lg-2 control-label">
+            Telefon
+            <span class="badge">
+                <span class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#telefonModal"></span>
+            </span>
+        </label>
 		<div class="col-sm-6 col-md-6 col-lg-6">
             ' . form_error('telefon') . '
 			' . form_input(array('id' => 'telefon_input', 'name' => 'telefon', 'value' => $myUser->telefon, 'class' => 'form-control')) . '
 		</div>
+        <div class="col-sm-1 col-md-1 col-lg-1">
+          <!-- Modal -->
+          <div class="modal fade" id="telefonModal" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Telefonnummer</h4>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Die Telefonnummer ist nur für Pro Velo Bern sichtbar.
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
 	</div>
 	</div>
     <div class="row">

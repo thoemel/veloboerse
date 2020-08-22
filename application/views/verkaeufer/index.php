@@ -47,7 +47,7 @@ if ($meineVelos->num_rows() > 0) {
         }
 
         echo '<dl>';
-        foreach (['preis','typ','marke','farbe','rahmennummer'] as $key) {
+        foreach (['id', 'preis','typ','marke','farbe','rahmennummer'] as $key) {
             $value = $row->$key;
             if (empty($value)) {
                 $value = '-';

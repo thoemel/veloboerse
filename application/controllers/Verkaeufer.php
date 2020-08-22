@@ -90,6 +90,7 @@ class Verkaeufer extends MY_Controller
         $myUser->strasse = $this->input->post('strasse');
         $myUser->plz = $this->input->post('plz');
         $myUser->ort = $this->input->post('ort');
+        $myUser->telefon = $this->input->post('telefon');
         $myUser->iban = $this->input->post('iban');
         if (!empty($this->input->post('password'))) {
             $myUser->set_password($this->input->post('password'));

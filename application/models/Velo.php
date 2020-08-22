@@ -321,6 +321,7 @@ class Velo extends CI_Model {
 	        $ret['strasse'] = $q->row()->strasse;
 	        $ret['plz'] = $q->row()->plz;
 	        $ret['ort'] = $q->row()->ort;
+	        $ret['telefon'] = $q->row()->telefon;
 	        $ret['iban'] = $q->row()->iban;
 	    }
 

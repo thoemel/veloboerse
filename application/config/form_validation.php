@@ -72,6 +72,11 @@ $config ['createUser'] = array (
         'rules' => ['trim','required']
     ),
     array (
+        'field' => 'telefon',
+        'label' => 'Telefon',
+        'rules' => ['trim']
+    ),
+    array (
         'field' => 'iban',
         'label' => 'IBAN',
         'rules' => ['trim']
@@ -111,6 +116,10 @@ $config ['editUser'] = [
         'field' => 'ort',
         'label' => 'Ort',
         'rules' => ['trim','required']
+    ], [
+        'field' => 'telefon',
+        'label' => 'Telefon',
+        'rules' => ['trim']
     ], [
         'field' => 'iban',
         'label' => 'IBAN',
@@ -155,6 +164,10 @@ $config ['editVerkaeufer'] = [
         'field' => 'ort',
         'label' => 'Ort',
         'rules' => ['trim','required']
+    ], [
+        'field' => 'telefon',
+        'label' => 'Telefon',
+        'rules' => ['trim']
     ], [
         'field' => 'iban',
         'label' => 'IBAN',

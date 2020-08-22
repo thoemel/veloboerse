@@ -126,6 +126,15 @@ echo '
 	</div>
     <div class="row">
 	<div class="form-group">
+		<label for="ort_input" class="col-lg-2 control-label">Telefon</label>
+		<div class="col-sm-6 col-md-6 col-lg-6">
+            ' . form_error('telefon') . '
+			' . form_input(array('id' => 'telefon_input', 'name' => 'telefon', 'value' => $myUser->telefon, 'class' => 'form-control')) . '
+		</div>
+	</div>
+	</div>
+    <div class="row">
+	<div class="form-group">
 		<label for="iban_input" class="col-lg-2 control-label">
             IBAN
             <span class="badge">

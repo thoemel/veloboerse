@@ -38,7 +38,7 @@ echo '
 
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
-			<button type="submit" class="btn btn-default">Weiter zur Druckansicht</button>
+			<button type="submit" class="btn btn-default">Annehmen und weiter zur Druckansicht</button>
 		</div>
 	</div>
 </form>

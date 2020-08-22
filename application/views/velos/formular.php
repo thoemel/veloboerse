@@ -52,8 +52,13 @@ if (isset($haendler)) {
 		</div>';
 }
 echo '
-	</div>
+	</div>';
 
+if (isset($verkaeuferInfo)) {
+    echo $verkaeuferInfo;
+}
+
+echo '
 	<div class="form-group">
 		<div class="col-lg-offset-2 col-lg-2">Provision: <span class="provision">0</span></div>
 		<div class="col-lg-2">Auszahlung: <span class="auszahlungsbetrag">0</span></div>

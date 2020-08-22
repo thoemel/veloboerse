@@ -85,6 +85,12 @@ class Auszahlung extends MY_Controller {
 			return;
 		}
 
+		// Verkäufy-Info
+		if ($myVelo->verkaeufer_id > 0) {
+		    $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', ['verkaeuferInfo'=>$myVelo->verkaeuferInfo()], TRUE);
+		    $this->addData('verkaeuferInfo', $verkaeuferInfo);
+		}
+
 		// Heading
 		$this->addData('h1', 'Auszahlung bestätigen');
 

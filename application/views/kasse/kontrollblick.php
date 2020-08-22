@@ -52,10 +52,17 @@ echo '
 		</div>
 	</div>';
 
+if (isset($verkaeuferInfo)) {
+    echo '
+    <div class="row">
+        ' . $verkaeuferInfo . '
+    </div>';
+}
+
 if (!empty($velo->bemerkungen)) {
 	echo '
 	<div class="row">
-		<div class="col-sm-2">Bemerkungen: </div>
+		<div class="col-sm-2"><strong>Bemerkungen: </strong></div>
 		<div class="col-sm-10 alert alert-info">' . nl2br($velo->bemerkungen) . '</div>
 	</div>';
 }

@@ -46,6 +46,13 @@ if ('' != $velo->bemerkungen) {
 echo '
 	</dl>';
 
+if (isset($verkaeuferInfo)) {
+    echo '
+    <div class="row">
+        ' .$verkaeuferInfo . '
+    </div>';
+}
+
 
 echo form_open('abholung/abholen');
 echo form_hidden('id', $velo->id);

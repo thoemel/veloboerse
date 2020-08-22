@@ -1,19 +1,19 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Abholung extends MY_Controller {
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// All Methods require login
 		$this->requireLoggedIn();
 	}
-	
-	
+
+
 	/**
-	 * Zeigt gewisse für die Kasse relevante Details an, damit die kontrollieren können, ob das 
-	 * Velo mit der Quittung übereinstimmt. 
+	 * Zeigt gewisse für die Kasse relevante Details an, damit die kontrollieren können, ob das
+	 * Velo mit der Quittung übereinstimmt.
 	 * Namentlich Preis und Foto werden angezeigt.
 	 */
 	public function kontrollblick()
@@ -24,20 +24,26 @@ class Abholung extends MY_Controller {
 			redirect('abholung/index');
 			return;
 		}
-		
+
 		$myVelo = new Velo();
 		$myVelo->find($quittungNr);
-				
+
 		if ('yes' == $myVelo->verkauft) {
 			$this->addData('error', 'Das Velo wurde bereits verkauft. Es kann nicht sein, dass es jetzt abgeholt wird.');
 		}
 		$this->addData('velo', $myVelo);
-		
+
+		// Verkäufy-Info
+		if ($myVelo->verkaeufer_id > 0) {
+		    $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', ['verkaeuferInfo'=>$myVelo->verkaeuferInfo()], TRUE);
+		    $this->addData('verkaeuferInfo', $verkaeuferInfo);
+		}
+
 		$this->load->view('abholung/kontrollblick', $this->data);
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -46,8 +52,8 @@ class Abholung extends MY_Controller {
 	{
 		$this->load->view('abholung/formular', $this->data);
 	}
-	
-	
+
+
 	/**
 	 * Schliesst den Verkauf ab.
 	 * @uses	POST vars
@@ -62,7 +68,7 @@ class Abholung extends MY_Controller {
 			$this->session->set_flashdata('error', 'Das Velo ist nicht registriert. Abholung fehlgeschlagen.');
 			redirect();
 		}
-		
+
 		/*
 		 * Mögliche Fehler abfangen
 		 */
@@ -93,7 +99,7 @@ class Abholung extends MY_Controller {
 		} else {
 			$this->data['error'] = 'Abholung nicht geklappt.';
 		}
-		
+
 		/*
 		 * Bei Händlern prüfen, ob alle Velos verkauft oder rausgebracht worden sind.
 		 * Gegebenenfalls Status setzen.
@@ -109,13 +115,13 @@ class Abholung extends MY_Controller {
 				$this->addData('bodyClass', ' class="alert alert-success"');
 			}
 		}
-		
+
 		$this->addData('velo', $myVelo);
 		$abgeholt = ('yes' == $myVelo->abgeholt) ? 'Ja' : 'Nein';
 		$this->addData('abgeholt', $abgeholt);
-		
+
 		$this->load->view('abholung/formular', $this->data);
 	} // End of function abholen()
-	
-	
+
+
 } // End of class Abholung

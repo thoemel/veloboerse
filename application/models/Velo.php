@@ -308,7 +308,7 @@ class Velo extends CI_Model {
 
 	/**
 	 * Gib ein Array mit Infos über den Verkäufer
-	 * @return NULL[]
+	 * @return array
 	 */
 	public function verkaeuferInfo()
 	{

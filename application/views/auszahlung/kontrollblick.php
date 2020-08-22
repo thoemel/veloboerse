@@ -12,6 +12,13 @@ if ($keinAusweis) {
 	</div>';
 }
 
+if (isset($verkaeuferInfo)) {
+    echo '
+    <div class="row">
+        ' . $verkaeuferInfo . '
+    </div>';
+}
+
 echo form_open('auszahlung/speichern_private', array('class' => 'form-horizontal', 'role' => 'form'));
 
 

@@ -114,6 +114,11 @@ class Velos extends MY_Controller {
 			$this->addData('haendler', $haendler);;
 		}
 
+		if ($myVelo->verkaeufer_id > 0) {
+		    $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', ['verkaeuferInfo'=>$myVelo->verkaeuferInfo()], TRUE);
+		    $this->addData('verkaeuferInfo', $verkaeuferInfo);
+		}
+
 		$provisionsliste = Velo::provisionsliste();
 		$tstest = json_encode($provisionsliste);
 		$this->data['provisionsliste'] = $provisionsliste;

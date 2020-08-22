@@ -36,6 +36,12 @@ class Kasse extends MY_Controller {
 		$myVelo = new Velo();
 		$myVelo->find($quittungNr);
 
+		// Verkäufy-Info
+		if ($myVelo->verkaeufer_id > 0) {
+		    $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', ['verkaeuferInfo'=>$myVelo->verkaeuferInfo()], TRUE);
+		    $this->addData('verkaeuferInfo', $verkaeuferInfo);
+		}
+
 		// Velo darf nicht mehr verkauft werden, wenn schon abgeholt
 		if ('yes' == $myVelo->abgeholt) {
 			$this->session->set_flashdata('error', 'Hilfe! <br>Hol den Thoemel! <br>Das Velo ist als "abgeholt" registriert - das muss dringend geklärt werden!');

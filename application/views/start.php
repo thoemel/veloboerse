@@ -17,7 +17,7 @@ echo '
     <h2>Velo kaufen</h2>
     <p>
         Vorbeischauen, sich beraten lassen und eine Probefahrt machen.';
-if (!empty($naechsteBoerse)) {
+if (empty($naechsteBoerse)) {
     $naechstesDatum = '(Datum leider noch nicht bekannt)';
 } else {
     $naechstesDatum = date('d. F Y', strtotime($naechsteBoerse->datum));

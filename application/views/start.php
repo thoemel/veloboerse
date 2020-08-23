@@ -11,7 +11,7 @@ echo '
     <p>
         Du willst dein Velo verkaufen? ' . anchor('login/registrationForm', 'Registriere dich') . '
         und trage die Velos ein, die du verkaufen möchtest.
-        Pro Person können maximal fünf Velos verlauft werden.
+        Pro Person können maximal fünf Velos verkauft werden.
     </p>
 
     <h2>Velo kaufen</h2>

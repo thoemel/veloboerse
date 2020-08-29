@@ -316,6 +316,11 @@ class Verkaeufer extends MY_Controller
         $pdf->SetTextColor(0,0,0);
         $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'R', true);
 
+        // Velafrica
+        if ($myVelo->afrika == 1) {
+            $pdf->Image(FCPATH . '/img/velafrica.ch_logo_de.png', $pdf->GetX(), 120, 0, 10.0, 'png', '', 'M', true, 300, 'R');
+        }
+
         // Horizontale Linie plus Abstand
         $Seitenmitte = 144;
         $pdf->setY($Seitenmitte);

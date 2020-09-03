@@ -1,12 +1,17 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*
+ * Datenbank Anbindung
+ */
 $db['default']['hostname'] = ''; // z.B. 'localhost'
 $db['default']['database'] = ''; // z.B. 'probern_boerse'
 $db['default']['username'] = ''; // z. B. 'probern_int'
 $db['default']['password'] = ''; // z. B. '324öljkLJK@#¼'
 
-
+/*
+ * Mail Server Settings
+ */
 $config['smtp_host'] = ''; // z.B. 'smtp.mydomain.ch'
 $config['smtp_adress'] = ''; // z.B. 'boerse@provelo-meineregion.ch'
 $config['smtp_name'] = ''; // z.B. 'Pro velo Börse'
@@ -36,3 +41,11 @@ Der Erlös von Fr. <betrag_auszahlung>.-- wird dir in den nächsten Tagen auf de
 $config['text_ohne_iban'] = '
 Du musst deinen Erlös von Fr. <betrag_auszahlung>.-- vor Börsenschluss abholen kommen.
 ';
+
+// Für die Zahlungsliste (EZAG)
+$config['ezag_iban'] = '';
+$config['ezag_Nm'] = 'Pro Velo Bern';
+$config['ezag_AdrLine'] = 'Bern';
+$config['ezag_Ctry'] = 'CH';
+$config['ezag_BIC'] = 'POFICHBEXXX';
+$config['ezag_bemerkung'] = 'Pro Velo Börse, Velo Nr. <qn>';

@@ -36,6 +36,31 @@ class Velo extends CI_Model {
 
 
 	/**
+	 * Hole Informationen für den EZAG
+	 *
+	 * @return CI_DB_result Object or NULL
+	 */
+	public static function ezag() {
+	    $ret = NULL;
+	    $CI =& get_instance();
+	    $sql = '
+            SELECT *, velos.id as qn
+            FROM velos
+            INNER JOIN private on private.user_id = velos.verkaeufer_id
+            WHERE verkauft = "yes"
+            AND ausbezahlt = "no"
+            AND verkaeufer_id > 0
+            AND iban != ""
+            ';
+	    $query = $CI->db->query($sql);
+	    if ($query->num_rows() > 0) {
+	        $ret = $query->result();
+	    }
+	    return $ret;
+	}
+
+
+	/**
 	 * Löscht ein Velo aus der DB
 	 * @return boolean True on success
 	 */

@@ -45,15 +45,15 @@ class M_user extends MY_Model {
 
 	/**
 	 * Array aller Benutzer
-	 * Vorläufig noch ohne die Werte aus der Tabelle "private".
 	 *
-	 * @return	array of objects with db field names (except pw) as keys
+	 * @return	array of M_user
 	 */
-	public function all()
+	public static function all()
 	{
 		$arrOut = array();
+		$CI =& get_instance();
 
-		$this->db->select(array(
+		$CI->db->select(array(
 		    config_item('user_table').'.user_id',
 		    'username',
 		    'email',
@@ -63,6 +63,7 @@ class M_user extends MY_Model {
 		    'plz',
 		    'ort',
 		    'telefon',
+		    'iban',
 		    'auth_level',
 		    'banned',
 		    'passwd_recovery_code',
@@ -71,9 +72,9 @@ class M_user extends MY_Model {
 		    'last_login',
 		    'created_at',
 		    'modified_at'));
-		$this->db->order_by('email', 'asc');
-		$this->db->join('private', 'private.user_id = '.config_item('user_table').'.user_id', 'left');
-		$query = $this->db->get(config_item('user_table'));
+	    $CI->db->order_by('email', 'asc');
+	    $CI->db->join('private', 'private.user_id = '.config_item('user_table').'.user_id', 'left');
+	    $query = $CI->db->get(config_item('user_table'));
 		if ($query->num_rows() == 0) {
 			return $arrOut;
 		}
@@ -97,8 +98,9 @@ class M_user extends MY_Model {
 			$thisUser->plz = $row->plz;
 			$thisUser->ort = $row->ort;
 			$thisUser->telefon = $row->telefon;
+			$thisUser->iban = $row->iban;
 
-			$arrOut[] = $thisUser;
+			$arrOut[$row->user_id] = $thisUser;
 		}
 		return $arrOut;
 	}

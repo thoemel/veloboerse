@@ -206,6 +206,84 @@ class Admin extends MY_Controller
 	} // End of function editUser()
 
 
+
+	public function ezag()
+	{
+	    $this->output->enable_profiler(FALSE);
+	    // Hat es eine offene Börse in der Vergangenheit?
+	    if (Boerse::letzteOffene() === NULL) {
+	        $this->session->set_flashdata('error', 'Es hat keine offene Börse in der Vergangenheit. Zur Zeit kann kein EZAG erstellt werden.');
+	        redirect('admin');
+	        return;
+	    }
+
+
+	    // Velos, die verkauft und nicht ausbezahlt wurden
+        $velos = Velo::ezag();
+//         $verkaeufys = [];
+
+        // Provision abziehen und grand Total berechnen
+        $grandTotal = 0;
+        $falscheIban = [];
+        foreach ($velos as &$row) {
+            if ('yes' == $row->keine_provision) {
+                $row->auszuzahlen = $row->preis;
+            } else {
+                $row->auszuzahlen = $row->preis - velo::getProvision($row->preis);
+            }
+            $grandTotal += $row->auszuzahlen;
+
+            // Check if IBAN is syntactically correct
+            $ibanOk = preg_match('/[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}/', str_replace(' ', '', $row->iban));
+            if (0 == $ibanOk) {
+                $userWithWrongIban = new M_user();
+                $userWithWrongIban->fetch($row->verkaeufer_id);
+                if (!array_key_exists($row->verkaeufer_id, $falscheIban)) {
+                    $falscheIban[$row->verkaeufer_id] = [
+                        'user_id' => $userWithWrongIban->id,
+                        'vorname' => $userWithWrongIban->vorname,
+                        'nachname' => $userWithWrongIban->nachname,
+                        'strasse' => $userWithWrongIban->strasse,
+                        'plz' => $userWithWrongIban->plz,
+                        'ort' => $userWithWrongIban->ort,
+                        'iban' => $userWithWrongIban->iban,
+                        'email' => $userWithWrongIban->email
+                    ];
+                }
+            }
+        }
+
+
+
+	    // XML zusammenstellen
+        $this->addData('velos', $velos);
+        $this->addData('grandTotal', $grandTotal);
+        $ezag = $this->load->view('admin/ezag', $this->data, true);
+
+        // XML validieren
+        libxml_use_internal_errors(TRUE);
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadXML($ezag);
+        $valid = $dom->schemaValidate(FCPATH.'application/models/pain.001.001.03.ch.02.xsd');
+        if (!$valid) {
+            $errors = libxml_get_errors();
+//             var_dump($errors);
+//             var_dump($falscheIban);
+//             die('hier');
+            $this->addData('xml_errors', $errors);
+            $this->addData('falscheIban', $falscheIban);
+            $this->load->view('admin/ezag_fehler', $this->data);
+        } else {
+            // Datei als Download
+            $this->load->helper('download');
+            force_download('ezag_veloboerse'.boerse::letzteOffene()->datum.'.xml', $ezag);
+        }
+        libxml_use_internal_errors(FALSE);
+
+	    return;
+	} // End of function ezag()
+
+
 	public function index()
 	{
 		// Letzte Börse abschliessen oder neue eröffnen

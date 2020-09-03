@@ -220,17 +220,33 @@ class Velo extends CI_Model {
 
 
 	/**
+	 * Prüft, ob ein Velo durch die Annahme gegangen ist.
+	 * @param int	$quittungNr
+	 * @return	boolean
+	 */
+	public static function istAngenommen($quittungNr)
+	{
+	    $CI =& get_instance();
+
+	    $CI->db->where('id', $quittungNr);
+	    $CI->db->where('angenommen', 'yes');
+	    $query = $CI->db->get('velos', 1);
+	    return ( 1 == $query->num_rows() );
+	}
+
+
+	/**
 	 * Prüft, ob eine Quttung im System registriert ist.
 	 * @param int	$quittungNr
 	 * @return	boolean
 	 */
 	public static function istRegistriert($quittungNr)
 	{
-		$CI =& get_instance();
+	    $CI =& get_instance();
 
-		$CI->db->where('id', $quittungNr);
-		$query = $CI->db->get('velos', 1);
-		return ( 1 == $query->num_rows() );
+	    $CI->db->where('id', $quittungNr);
+	    $query = $CI->db->get('velos', 1);
+	    return ( 1 == $query->num_rows() );
 	}
 
 

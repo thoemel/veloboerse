@@ -26,12 +26,19 @@ class Kasse extends MY_Controller {
 		  $quittungNr = $this->input->post('id');
 	    }
 
-		// Prüfung, ob Velo überhaupt registriert ist.
-		if (!Velo::istRegistriert($quittungNr)) {
-			$this->session->set_flashdata('error', 'Keine gültige Quittungsnummer');
-			redirect('kasse/index');
-			return;
-		}
+	    // Prüfung, ob Velo überhaupt registriert ist.
+	    if (!Velo::istRegistriert($quittungNr)) {
+	        $this->session->set_flashdata('error', 'Keine gültige Quittungsnummer');
+	        redirect('kasse/index');
+	        return;
+	    }
+
+	    // Prüfung, ob Velo überhaupt angenommen ist (nur Private).
+	    if (!Velo::istAngenommen($quittungNr)) {
+	        $this->session->set_flashdata('error', 'Das Velo ist nicht ordentlich durch die Annahme gekommen.');
+	        redirect('kasse/index');
+	        return;
+	    }
 
 		$myVelo = new Velo();
 		$myVelo->find($quittungNr);

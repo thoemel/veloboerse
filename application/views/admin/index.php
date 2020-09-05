@@ -12,6 +12,7 @@ echo '
 		<li>' . anchor('auswertung/cashMgmt', 'Cash Management') . '</li>
 		<li>' . anchor('auswertung/statistik', 'Statistik') . '</li>
 		<li>' . anchor('auswertung/afrika', 'Velos für Afrika') . '</li>
+		<li>' . anchor('admin/ezag', 'EZAG') . '</li>
 	</ul>
 </div>
 	' . heading('Nächste Börse einrichten', 2) . '

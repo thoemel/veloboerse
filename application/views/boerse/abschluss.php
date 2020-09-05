@@ -8,11 +8,6 @@ echo '
         Ausserdem kannst du den EZAG für die Auszahlung der Privaten hier herunterladen.
 	</p>
 	<p>
-		' . anchor('admin/ezag',
-				'EZAG ' . $letzteBoerse->datum . ' herunterladen',
-				array('class'=> 'btn btn-primary', 'role' => 'button')) . '
-	</p>
-	<p>
 		' . anchor('admin/boerseAbschliessen/'.$letzteBoerse->id,
 				'Börse von ' . $letzteBoerse->datum . ' abschliessen',
 				array('class'=> 'btn btn-primary', 'role' => 'button')) . '

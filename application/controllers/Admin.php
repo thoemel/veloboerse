@@ -211,7 +211,7 @@ class Admin extends MY_Controller
 	{
 	    $this->output->enable_profiler(FALSE);
 	    // Hat es eine offene Börse in der Vergangenheit?
-	    if (Boerse::letzteOffene() === NULL) {
+	    if (Boerse::aktuelle() === NULL) {
 	        $this->session->set_flashdata('error', 'Es hat keine offene Börse in der Vergangenheit. Zur Zeit kann kein EZAG erstellt werden.');
 	        redirect('admin');
 	        return;
@@ -220,7 +220,6 @@ class Admin extends MY_Controller
 
 	    // Velos, die verkauft und nicht ausbezahlt wurden
         $velos = Velo::ezag();
-//         $verkaeufys = [];
 
         // Provision abziehen und grand Total berechnen
         $grandTotal = 0;
@@ -234,6 +233,8 @@ class Admin extends MY_Controller
             $grandTotal += $row->auszuzahlen;
 
             // Check if IBAN is syntactically correct
+            $tmp = strtoupper(substr($row->iban, 0, 2));
+            $row->iban = $tmp . substr($row->iban, 2);
             $ibanOk = preg_match('/[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}/', str_replace(' ', '', $row->iban));
             if (0 == $ibanOk) {
                 $userWithWrongIban = new M_user();
@@ -276,7 +277,7 @@ class Admin extends MY_Controller
         } else {
             // Datei als Download
             $this->load->helper('download');
-            force_download('ezag_veloboerse'.boerse::letzteOffene()->datum.'.xml', $ezag);
+            force_download('ezag_veloboerse'.Boerse::aktuelle()->datum.'.xml', $ezag);
         }
         libxml_use_internal_errors(FALSE);
 

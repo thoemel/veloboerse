@@ -210,7 +210,9 @@ class Statistik extends CI_Model {
 					$myHaendler['einstellgebuehr'] += 10;
 				}
 			}
-			$myHaendler['anteilVerkauft'] = $myHaendler['velosVerkauft'] / $myHaendler['velosAufPlatz'];
+			if (0 < $myHaendler['velosAufPlatz']) {
+			    $myHaendler['anteilVerkauft'] = $myHaendler['velosVerkauft'] / $myHaendler['velosAufPlatz'];
+			}
 			$myHaendler['velosZurück'] = $myHaendler['velosAufPlatz'] - $myHaendler['velosVerkauft'];
 			$myHaendler['betragAusbezahlt'] = $myHaendler['betragAusbezahlt'] - $myHaendler['einstellgebuehr'] - $myHaendler['standgebuehr'];
 

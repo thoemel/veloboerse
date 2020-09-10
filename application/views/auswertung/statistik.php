@@ -8,7 +8,7 @@ echo '
 	' . anchor('auswertung/csv/haendler', 'Download Händler Tabelle .CSV', array('class'=>'btn btn-info')) . '
 	' . anchor('auswertung/csv/velos', 'Download Velos Tabelle .CSV', array('class'=>'btn btn-info')) . '
 </div>
-			
+
 ' . heading('Verkaufte Velos', 2) . '
 <div class="row">
 	<div class="col-sm-2">Händler</div>
@@ -17,11 +17,11 @@ echo '
 </div>
 <div class="row">
 	<div class="col-sm-2">
-		' . $verkaufteVelos['haendler']['anzahl'] . ' 
+		' . $verkaufteVelos['haendler']['anzahl'] . '
 		(' . round($verkaufteVelos['haendler']['anzahlAnteil'] * 100) . '%)
 	</div>
 	<div class="col-sm-2">
-		' . $verkaufteVelos['private']['anzahl'] . ' 
+		' . $verkaufteVelos['private']['anzahl'] . '
 		(' . round($verkaufteVelos['private']['anzahlAnteil'] * 100) . '%)
 	</div>
 	<div class="col-sm-2">
@@ -44,13 +44,18 @@ echo '
 		<th scope="col">Summe Helfer kauft</th>
 		<th scope="col">Anzahl bar</th>
 		<th scope="col">Anzahl Debit</th>
-		<th scope="col">Anzahl Kredit</th>
+		<th scope="col">Einstellgebühr</th>
 		<th scope="col">Anteil am Umsatz</th>
 		<th scope="col">Verkauft / angeboten</th>
 	</tr>
 </thead>
 </tbody>';
 foreach ($veloStatistik as $type => $values) {
+    if ('haendler' == $type) {
+        $einstellgebuehr = $totalEinstellgebuehrHaendler;
+    } else {
+        $einstellgebuehr = '-';
+    }
 	echo '
 	<tr>
 		<th scope="row">' . ucfirst($type) . '</th>
@@ -62,7 +67,7 @@ foreach ($veloStatistik as $type => $values) {
 		<td>' . $values['sumHelferKauft'] . '</td>
 		<td>' . $values['zahlungsart']['bar'] . '</td>
 		<td>' . $values['zahlungsart']['debit'] . '</td>
-		<td>' . $values['zahlungsart']['kredit'] . '</td>
+		<td>' . $einstellgebuehr . '</td>
 		<td>' . round($values['anteilVerkauftGruppeVonVerkauftTotal'], 2) . '</td>
 		<td>' . round($values['anteilVerkauftGruppeVonAnzahlGruppe'], 2) . '</td>
 	</tr>';

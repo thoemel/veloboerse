@@ -2,7 +2,7 @@
 
 class Auswertung extends MY_Controller {
 
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -10,8 +10,8 @@ class Auswertung extends MY_Controller {
 		// All methods require user to be logged in.
 		$this->requireLoggedIn();
 	}
-	
-	
+
+
 	/**
 	 * Zusammenzug der verkauften aber nicht ausbezahlten Velos.
 	 * In der Annahme, dass die alle für Afrika gespendet werden.
@@ -21,8 +21,8 @@ class Auswertung extends MY_Controller {
 		$this->data['veloQuery'] = Statistik::afrika();
 		$this->load->view('auswertung/afrika', $this->data);
 	}
-	
-	
+
+
 	/**
 	 * Velos-Tabelle Export als CSV
 	 * @param String	$tabelle	Name der DB-Tabelle
@@ -38,16 +38,16 @@ class Auswertung extends MY_Controller {
 				$tabelle = 'velos';
 		}
 		$this->data['tabelle'] = $tabelle;
-		
+
 		$this->load->dbutil();
 		$query = $this->db->query("SELECT * FROM " . $tabelle);
 		$this->data['content'] = $this->dbutil->csv_from_result($query, ';');
-		
+
 		$this->load->view('auswertung/csv', $this->data);
 		return ;
 	}
-	
-	
+
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -57,8 +57,8 @@ class Auswertung extends MY_Controller {
 		// Die Übersicht steht neuerdings unter dem Navipunkt "Administration".
 		redirect('admin/index');
 	}
-	
-	
+
+
 	/**
 	 * Wie viel Geld haben wir vor Ort?
 	 */
@@ -72,12 +72,12 @@ class Auswertung extends MY_Controller {
 			if ($thisVelo['zahlungsart'] == 'bar') {
 				$cash += $thisVelo['preis'];
 			}
-			if (!$thisVelo['haendler_id'] 
+			if (!$thisVelo['haendler_id']
 				&& 'yes' == $thisVelo['verkauft'])
 			{
 				$benoetigtesCash += ($thisVelo['preis'] - Velo::getProvision($thisVelo['preis']));
 			}
-			if (!$thisVelo['haendler_id'] 
+			if (!$thisVelo['haendler_id']
 				&& 'no' == $thisVelo['ausbezahlt']
 				&& !in_array($thisVelo['zahlungsart'], array('debit','kredit')))
 			{
@@ -91,12 +91,12 @@ class Auswertung extends MY_Controller {
 		$this->addData('benoetigtesCash', $benoetigtesCash);
 		$this->addData('worstCaseCash', $worstCaseCash);
 		$this->addData('newStatistics', Statistik::cashMgmt());
-		
+
 		$this->load->view('auswertung/cashMgmt', $this->data);
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Zeigt eine statistische Auswertung.
 	 * @param string $format	'csv', falls ein Export im CSV-Format gewünscht.
@@ -104,25 +104,34 @@ class Auswertung extends MY_Controller {
 	public function statistik($format = 'html')
 	{
 		$this->load->model('statistik');
-		
+
 		$this->addData('verkaufteVelos', Statistik::verkaufteVelos());
 
 		$this->addData('veloStatistik', Statistik::velos());
-		
+
 		$this->addData('haendlerStatistik', Statistik::haendler());
-		
+
 		$this->addData('modalSplit', Statistik::modalsplit());
-		
+
+
+		// Summe Einstellgebühr Händler
+		$totalEinstellgebuehr = 0;
+		foreach ($this->data['haendlerStatistik'] as $myHaendler) {
+		    $totalEinstellgebuehr += $myHaendler['einstellgebuehr'];
+		}
+		$this->addData('totalEinstellgebuehrHaendler', $totalEinstellgebuehr);
+
 		switch ($format) {
 			case 'csv':
+			    $this->output->enable_profiler(FALSE);
 				$this->load->view('auswertung/statistik_csv', $this->data);
 				break;
 			default:
 				$this->load->view('auswertung/statistik', $this->data);
 		}
-		
+
 		return ;
 	}
-	
-	
+
+
 }

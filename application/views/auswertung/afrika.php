@@ -33,7 +33,7 @@ echo '
 </tbody>
 </table>';
 echo '
-<h2>Alle für Afrika registrierte Velos</h2>
+<h2>Alle für Afrika registrierten Velos</h2>
 
 <table class="table table-striped table-bordered table-condensed">
 <thead>

@@ -22,7 +22,8 @@ class Statistik extends CI_Model {
 
 		$sql = 'SELECT *
 				FROM velos
-				WHERE verkauft = "yes"
+				WHERE angenommen = "yes"
+                AND verkauft = "yes"
 				AND ausbezahlt = "no"
 				AND (haendler_id = 0)
 				ORDER BY id asc';
@@ -31,6 +32,7 @@ class Statistik extends CI_Model {
 		$sql = 'SELECT *
 				FROM velos
 				WHERE afrika = 1
+                AND angenommen = "yes"
 				ORDER BY id asc';
 		$q2 = $CI->db->query($sql);
 		return array('verkauft_nicht_ausbezahlt' => $query->result(),

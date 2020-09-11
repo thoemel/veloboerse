@@ -207,7 +207,7 @@ echo '
 			<div class="checkbox">
 				<label>
 					' . form_checkbox('iban_verstanden', '1', false, ['id'=>'input_check']) . '
-					Ich habe den Hinweis verstanden.
+					Ich habe den Hinweis zum IBAN verstanden.
 				</label>
 			</div>
 		</div>

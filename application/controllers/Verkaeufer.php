@@ -296,6 +296,11 @@ class Verkaeufer extends MY_Controller
         $pdf->SetTextColor(0,0,0);
         $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'R', true);
 
+        // Farbe
+        $pdf->SetFont('', '', 10);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, 'Farbe: ' . $myVelo->farbe, '', false, 'R', true);
+
         // Rahmennummer
         $pdf->SetFont('', '', 10);
         $pdf->SetTextColor(0,0,0);
@@ -354,9 +359,15 @@ class Verkaeufer extends MY_Controller
 
         // Preis
         $pdf->Ln();
-        $pdf->SetFont('', 'B', 52);
+        $pdf->SetFont('', 'B', 36);
         $pdf->SetTextColor(0,0,0);
         $preisText = 'Fr. ' . $myVelo->preis . '.--';
+        $pdf->Write(0, $preisText, '', false, 'L', true);
+
+        // Auszahlung
+        $pdf->SetFont('', '', 24);
+        $pdf->SetTextColor(0,0,0);
+        $preisText = 'Auszahlung: Fr. ' . ($myVelo->preis - $myVelo->getProvision($myVelo->preis)) . '.--';
         $pdf->Write(0, $preisText, '', false, 'L', true);
         $preisUnterkante = [$pdf->GetX(), $pdf->GetY()];
 
@@ -372,6 +383,11 @@ class Verkaeufer extends MY_Controller
         $pdf->SetFont('', '', 8);
         $pdf->SetTextColor(0,0,0);
         $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'R', true);
+
+        // Farbe
+        $pdf->SetFont('', '', 8);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Write(0, 'Farbe: ' . $myVelo->farbe, '', false, 'R', true);
 
         // Rahmennummer
         $pdf->SetFont('', '', 8);

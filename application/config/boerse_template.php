@@ -43,3 +43,33 @@ $config['ezag_AdrLine'] = 'Bern';
 $config['ezag_Ctry'] = 'CH';
 $config['ezag_BIC'] = 'POFICHBEXXX';
 $config['ezag_bemerkung'] = 'Pro Velo Börse, Velo Nr. <qn>'; // <qn> wird durch die Quittungsnummer ersetzt.
+
+
+// Startseite
+$config['boerse_zeit'] = ', 10:00 Uhr bis 14:00 Uhr';
+$config['spezielle_zeit_fuer_mitglieder'] = '<br>Für Mitglieder mit Ausweis ab 9.00 Uhr';
+$config['mitgliedschafts_link'] = ' (<a href="https://www.provelobern.ch/ueber-uns/mitglied-werden">Jetzt Mitglied werden</a>). Der Erwerb der Neumitgliedschaft vor Ort ist möglich.';
+$config['starteseite'] = '
+    <div class="jumbotron">
+        <h1>Velos kaufen und verkaufen: so einfach geht\'s an den Velobörsen von Pro Velo Bern.</h1>
+    </div>
+    <div class="row">
+        <h2>Velo verkaufen</h2>
+        <p>
+            Du willst dein Velo verkaufen? Registriere dich über den Menupunkt "Registrierung"
+            und trage die Velos ein, die du verkaufen möchtest.
+            Pro Person können maximal fünf Velos verkauft werden.
+        </p>
+
+        <h2>Velo kaufen</h2>
+        <p>
+            Vorbeischauen, sich beraten lassen und eine Probefahrt machen.
+            <br>{boerseDatumUndZeit}
+            <br>Mehrzweckhalle Kaserne, Papiermühlestrasse 13c.
+            {spezielle_zeit_fuer_mitglieder}
+            {mitgliedschafts_link}
+        </p>
+    </div>';
+$config['zeige_carousel'] = TRUE;
+$config['anzahl_bilder_fuer_carousel'] = 30;
+

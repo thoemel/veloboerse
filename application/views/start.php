@@ -1,42 +1,27 @@
 <?php
 include APPPATH . 'views/header.php';
 
-echo '
-
-<div class="jumbotron">
-	<h1>Velos kaufen und verkaufen: so einfach geht\'s an den Velobörsen von Pro Velo Bern.</h1>
-</div>
-<div class="row">
-    <h2>Velo verkaufen</h2>
-    <p>
-        Du willst dein Velo verkaufen? ' . anchor('login/registrationForm', 'Registriere dich') . '
-        und trage die Velos ein, die du verkaufen möchtest.
-        Pro Person können maximal fünf Velos verkauft werden.
-    </p>
-
-    <h2>Velo kaufen</h2>
-    <p>
-        Vorbeischauen, sich beraten lassen und eine Probefahrt machen.';
+$st = config_item('starteseite');
 if (empty($naechsteBoerse)) {
     $naechstesDatum = '(Datum leider noch nicht bekannt)';
 } else {
-    $naechstesDatum = date('d. F Y', strtotime($naechsteBoerse->datum));
+    $naechstesDatum = date('d. F Y', strtotime($naechsteBoerse->datum)) . config_item('boerse_zeit');
 }
-echo '<br>' . $naechstesDatum . ', 10:00 Uhr bis 14:00 Uhr.
+$st = str_replace('{boerseDatumUndZeit}', $naechstesDatum, $st);
+$st = str_replace('{spezielle_zeit_fuer_mitglieder}', config_item('spezielle_zeit_fuer_mitglieder'), $st);
+$st = str_replace('{mitgliedschafts_link}', config_item('mitgliedschafts_link'), $st);
 
-        <br>Mehrzweckhalle Kaserne, Papiermühlestrasse 13c.
-        <br>Für Mitglieder mit Ausweis ab 9.00 Uhr
-        (<a href="https://www.provelobern.ch/ueber-uns/mitglied-werden">Jetzt Mitglied werden</a>).
-        Der Erwerb der Neumitgliedschaft vor Ort ist möglich.
-    </p>';
+echo $st;
 
 if (!empty($naechsteBoerse)) {
 	echo '
+    <div class="row">
 	<p>
 		Anzahl Velos, die für den Verkauf registriert wurden:
         <span class="badge">' . $anzahl . '</span>
 	</p>';
 
+	if (config_item('zeige_carousel')) {
     echo '
     <div class="col-lg-offset-3 col-lg-6">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -75,9 +60,12 @@ if (!empty($naechsteBoerse)) {
         <span class="sr-only">Nächstes</span>
       </a>
     </div>
+    </div>
     </div>';
-}
+	} // End if zeige_carousel
+	echo '
+    </div>';
+} // End if !empty($naechsteBoerse)
 
-echo '</div>';
 
 include APPPATH . 'views/footer.php';

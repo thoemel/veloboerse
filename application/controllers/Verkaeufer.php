@@ -272,8 +272,10 @@ class Verkaeufer extends MY_Controller
         $pdf->Ln(10);
         $bildOberkante = [$pdf->GetX(), $pdf->GetY()];
         if (!empty($myVelo->img)) {
-            $imgType = substr($myVelo->img, (strrpos($myVelo->img, '.')+1));
-            $pdf->Image(FCPATH . 'uploads/' . $myVelo->img, $pdf->GetX(), $pdf->GetY(), 0, 50, '', $imgType, 'B', true, 300, 'L');
+            if (file_exists(FCPATH . 'uploads/' . $myVelo->img)) {
+                $imgType = substr($myVelo->img, (strrpos($myVelo->img, '.')+1));
+                $pdf->Image(FCPATH . 'uploads/' . $myVelo->img, $pdf->GetX(), $pdf->GetY(), 0, 50, '', $imgType, 'B', true, 300, 'L');
+            }
         }
 
         // Preis
@@ -353,8 +355,10 @@ class Verkaeufer extends MY_Controller
         // Bild
         $bildOberkante = [$pdf->GetX(), $pdf->GetY() + 5];
         if (!empty($myVelo->img)) {
-            $imgType = substr($myVelo->img, (strrpos($myVelo->img, '.')+1));
-            $pdf->Image(FCPATH . 'uploads/' . $myVelo->img, $pdf->GetX(), $bildOberkante[1], 0, 50, '', $imgType, 'B', true, 300, 'L');
+            if (file_exists(FCPATH . 'uploads/' . $myVelo->img)) {
+                $imgType = substr($myVelo->img, (strrpos($myVelo->img, '.')+1));
+                $pdf->Image(FCPATH . 'uploads/' . $myVelo->img, $pdf->GetX(), $bildOberkante[1], 0, 50, '', $imgType, 'B', true, 300, 'L');
+            }
         }
 
         // Preis

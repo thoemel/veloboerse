@@ -36,6 +36,61 @@ class Admin extends MY_Controller
 			$this->session->set_flashdata('error', 'Börse konnte nicht abgeschlossen werden.');
 			redirect('admin/index');
 		} else {
+
+		    // Velobilder
+		    $bkupPath = FCPATH . 'backups/';
+		    $imgPath = FCPATH . 'uploads/';
+		    try
+		    {
+		        $archiveName = $bkupPath . 'bkup_boerse_bilder_' . date('Ymd', strtotime($boerse->datum)) . '.tar';
+		        $a = new PharData($archiveName);
+
+		        foreach (glob($imgPath.'*.{gif,jpg,jpeg,png,GIF,JPG,JPEG,PNG}',GLOB_BRACE) as $filename) {
+		            $a->addFile($filename);
+		        }
+
+		        // COMPRESS archive.tar FILE. COMPRESSED FILE WILL BE archive.tar.gz
+		        $a->compress(Phar::GZ);
+
+		        // NOTE THAT BOTH FILES WILL EXISTS. SO IF YOU WANT YOU CAN UNLINK archive.tar
+		        unlink($archiveName);
+		    }
+		    catch (Exception $e)
+		    {
+		        echo "Exception : " . $e;
+		        die();
+		    }
+		    foreach (glob($imgPath.'*.{gif,jpg,jpeg,png,GIF,JPG,JPEG,PNG}',GLOB_BRACE) as $filename) {
+		        unlink($filename);
+		    }
+
+		    // Quittungen
+		    $quittungenPath = FCPATH . 'quittungen/';
+		    try
+		    {
+		        $archiveName = $bkupPath . 'bkup_boerse_quittungen_' . date('Ymd', strtotime($boerse->datum)) . '.tar';
+		        $a = new PharData($archiveName);
+
+		        foreach (glob($quittungenPath.'*.pdf',GLOB_BRACE) as $filename) {
+		            $a->addFile($filename);
+		        }
+
+		        // COMPRESS archive.tar FILE. COMPRESSED FILE WILL BE archive.tar.gz
+		        $a->compress(Phar::GZ);
+
+		        // NOTE THAT BOTH FILES WILL EXISTS. SO IF YOU WANT YOU CAN UNLINK archive.tar
+		        unlink($archiveName);
+		    }
+		    catch (Exception $e)
+		    {
+		        echo "Exception : " . $e;
+		        die();
+		    }
+		    foreach (glob($quittungenPath.'*.pdf',GLOB_BRACE) as $filename) {
+		        unlink($filename);
+		    }
+
+
 			$this->load->dbutil();
 			$this->load->helper('file');
 
@@ -70,6 +125,7 @@ class Admin extends MY_Controller
 			// Haendler  zurücksetzen
 			$this->load->model('haendler');
 			Haendler::alleZuruecksetzen();
+
 
 			$this->index();
 		}
@@ -111,6 +167,8 @@ class Admin extends MY_Controller
 		$zip->addFile("backups/bkup_boerse_haendler_".$datumsTeil.".csv");
 		$zip->addFile("backups/bkup_boerse_velos_".$datumsTeil.".csv");
 		$zip->addFile("backups/bkup_boerse_db_".$datumsTeil.".sql.gz");
+		$zip->addFile("backups/bkup_boerse_bilder_".$datumsTeil.".tar.gz");
+		$zip->addFile("backups/bkup_boerse_quittungen_".$datumsTeil.".tar.gz");
 		$zip->close();
 		force_download($filename, NULL, true);
 		unlink($filename);

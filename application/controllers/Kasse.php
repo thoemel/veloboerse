@@ -40,8 +40,15 @@ class Kasse extends MY_Controller {
 	        return;
 	    }
 
-		$myVelo = new Velo();
-		$myVelo->find($quittungNr);
+	    $myVelo = new Velo();
+	    $myVelo->find($quittungNr);
+
+	    // Prüfung, ob Velo storniert.
+	    if (1 == $myVelo->storniert) {
+	        $this->session->set_flashdata('error', 'Das Velo ist storniert.');
+	        redirect('kasse/index');
+	        return;
+	    }
 
 		// Verkäufy-Info
 		if ($myVelo->verkaeufer_id > 0) {

@@ -55,10 +55,13 @@
  */
 // 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 switch ($_SERVER['SERVER_NAME']) {
-	case 'localhost':
-	case 'dev.provelobern.ch':
-		define('ENVIRONMENT', 'development');
-		break;
+    case 'localhost':
+    case 'dev.provelobern.ch':
+        define('ENVIRONMENT', 'development');
+        break;
+    case 'thoemel.ch':
+        define('ENVIRONMENT', 'testing');
+        break;
 	case 'www.provelobern.ch':
 	case 'provelobern.ch':
 	default:

@@ -437,7 +437,7 @@ class Verkaeufer extends MY_Controller
         $pdf->SetFont('', 'B', 6);
         $pdf->write(0, 'Rechtlicher Hinweis:', '', false, 'L', true);
         $pdf->SetFont('', '', 6);
-        $Hinweis = 'Pro Velo Bern kann trotz Überwachung der Börse & Kontrolle der Velos für Verlust und Beschädigungen keine Haftung übernehmen. Am Veranstaltungstag ist der Verkaufserlös oder das Velo bis spätestens Börsenschluss abzuholen. Über nicht abgeholte Velos und Verkaufserlöse verfügt Pro Velo Bern. Pro Velo Bern haftet nicht für das verkaufte Velo.';
+        $Hinweis = config_item('haftungsausschluss');
         $pdf->write(0, $Hinweis, '', false, 'L', true);
 
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 include APPPATH . 'views/header.php';
 
 echo '
@@ -10,7 +10,7 @@ if ($myVelo->verkauft == 'yes') {
 	echo '
 		<p>Ja, es wurde für ' . $myVelo->preis . ' Franken verkauft.</p>
 		<p>Ab 12 Uhr kann das Geld (abzüglich Provision von ' . Velo::getProvision($myVelo->preis) . ' Franken, d.h. am Schluss ' . ($myVelo->preis - Velo::getProvision($myVelo->preis)) . ' Franken) an der Velobörse abgeholt werden.</p>
-		<p>Herzlichen Dank, Ihre Pro Velo Bern</p>';
+		<p>Herzlichen Dank, ' . config_item('veranstalter') . '</p>';
 } else {
 	echo '
 		<p>Leider wurde das Velo noch nicht verkauft.</p>

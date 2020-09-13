@@ -19,6 +19,10 @@ $config['smtp_user'] = ''; // z.B. 'boerse' oder 'boerse@provelo-meineregion.ch'
 $config['smtp_pass'] = ''; // z.B. '324öljkLJK@#¼)('
 $config['smtp_port'] = '587';
 
+// Ort
+$config['ort'] = 'Bern';
+$config['veranstalter'] = 'Pro Velo Bern';
+
 /*
  * Text für das Bestätigungsmail, wenn ein Velo verkauft wurde.
  * Die in spitzen Klammern stehenden Texte <...> werden durch die entsprechenden Angaben ersetzt.
@@ -73,3 +77,6 @@ $config['starteseite'] = '
 $config['zeige_carousel'] = TRUE;
 $config['anzahl_bilder_fuer_carousel'] = 30;
 
+
+// Haftungsausschluss auf Quittung
+$config['haftungsausschluss'] = 'Pro Velo Bern kann trotz Überwachung der Börse & Kontrolle der Velos für Verlust und Beschädigungen keine Haftung übernehmen. Am Veranstaltungstag ist der Verkaufserlös oder das Velo bis spätestens Börsenschluss abzuholen. Über nicht abgeholte Velos und Verkaufserlöse verfügt Pro Velo Bern. Pro Velo Bern haftet nicht für das verkaufte Velo.';

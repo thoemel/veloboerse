@@ -8,15 +8,15 @@ echo '
 		<li>' . anchor('haendleradmin', 'Händleradmin') . '</li>
 		<li class="active">Abrechnung ' . $haendler->firma . '</li>
 	</ol>
-	
+
 	<h1>Abrechnung</h1>
 		<h2>Händler Nr. ' . $haendler->id . '</h2>
 		<p>' . $haendler->firma . '<br>
 			' . $haendler->person . '<br>
 			' . nl2br($haendler->adresse) . '<br>
 		</p>
-	
-	
+
+
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>
 		<tr>
@@ -30,7 +30,7 @@ echo '
 			<th>Nein</th>
 		</tr>
 		</thead>
-			
+
 		<tfoot>
 		<tr>
 			<th scope="row">Total</th>
@@ -52,10 +52,10 @@ foreach ($arrVelos as $velo) {
 			<td>' . $velo['abgeholt'] . '</td>
 		</tr>';
 }
-	
+
 echo '
 	</table>
-					
+
 	<dl>
 		<dt>Total Preis verkaufte Velos</dt>
 		<dd>Fr. ' . $preisVerkaufte . '</dd>
@@ -82,7 +82,7 @@ if (in_array($haendler->getStatus(), array('abgeholt', 'ausbezahlt'))) {
 		<button type="submit">abschliessen</button>
 	</p>
 		' . form_close() . '
-	
+
 	<p class="hidden-print">
 			'.anchor('auszahlung/einstieg_haendler', 'zur Händlerauswahl').'
 	</p>';
@@ -94,16 +94,16 @@ if (in_array($haendler->getStatus(), array('abgeholt', 'ausbezahlt'))) {
 
 echo '
 		<p>
-			Ich akzeptiere diese Abrechnung und bin damit einverstanden, 
-			dass mir der Betrag von ' . $auszahlungBetrag . ' von Pro Velo Bern 
+			Ich akzeptiere diese Abrechnung und bin damit einverstanden,
+			dass mir der Betrag von ' . $auszahlungBetrag . '
 			auf folgendes Konto überwiesen wird:<br>
 			' . $haendler->bankverbindung . '<br>
 			IBAN: ' . $iban . '
 		</p>
 		<p>
-			Bern, den ' . date('d.m.Y') . '<br><br><br>
+			' . config_item('ort') . ', den ' . date('d.m.Y') . '<br><br><br>
 			<hr><br>
-			' . $haendler->person . '			
+			' . $haendler->person . '
 		</p>
 	</div>';
 

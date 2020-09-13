@@ -149,7 +149,7 @@ echo '
                 </div>
                 <div class="modal-body">
                   <p>
-                    Die Telefonnummer ist nur für Pro Velo Bern sichtbar.
+                    Die Telefonnummer ist nur für die Börsen-Betreiber sichtbar.
                   </p>
                 </div>
                 <div class="modal-footer">

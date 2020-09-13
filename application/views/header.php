@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html>
-<!--<![endif]-->
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>Velobörse <?php echo config_item('ort'); ?></title>
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Velobörse <?php echo config_item('ort'); ?></title>
+    <meta name="description" content="Velobörse: Velos kaufen und verkaufen. Online Erfassung">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<?php
-$min = ('dev' == substr($_SERVER['SERVER_NAME'], 0, 3)) ? '' : '.min';
-echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap' . $min . '.css">';
-echo '<link rel="stylesheet" href="' . base_url() . 'css/bootstrap-datepicker' . $min . '.css">';
-?>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">';
 
-<link rel="stylesheet" href="<?php echo base_url();?>css/main.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>css/main.css">
 
 <?php
 if (!empty($querformat)) {
 	// The cheap way. Will have to add a pdf link too.
 	echo '
-<style type="text/css" media="print">@page {size: landscape;}</style>';
+    <style type="text/css" media="print">@page {size: landscape;}</style>';
 }
 ?>
 
-<script src="<?php echo base_url();?>js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
 </head>
 <body<?php echo $bodyClass; ?>>
 	<!--[if lt IE 7]>

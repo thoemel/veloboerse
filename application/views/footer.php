@@ -9,16 +9,12 @@
 </footer>
 
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="<?php echo base_url();?>js/jquery-1.12.4.min.js"><\/script>')</script>
+<script src="<?php echo base_url();?>js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
-<?php 
-$min = ('dev' == substr($_SERVER['SERVER_NAME'], 0, 3)) ? '' : '.min';
+<?php
 echo '
-<script src="' . base_url() . 'js/vendor/bootstrap' . $min . '.js"></script>
-<script src="' . base_url() . 'js/vendor/bootstrap-datepicker' . $min . '.js"></script>
-<script src="' . base_url() . 'js/vendor/bootstrap-datepicker.de.min.js"></script>
-
 <script src="' . base_url() . 'js/main.js?' . (filemtime('js/main.js')) . '"></script>';
 ?>
 

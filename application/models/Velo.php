@@ -270,6 +270,43 @@ class Velo extends CI_Model {
 
 
 	/**
+	 * Gibt ein Array mit Rahmennummern und andern Attributen aus.
+	 * Wählt nur die, die nicht schon exportiert wurden.
+	 * @return array
+	 */
+	public static function polizei_rahmennummern() {
+	    $CI =& get_instance();
+
+	    // Höchste id bei letztem Export
+	    $hoechste = 0;
+	    $CI->db->order_by('datum', 'desc');
+	    $query = $CI->db->get('rahmennummern', 1);
+	    if ($query->num_rows() > 0) {
+	        $hoechste = $query->row()->hoechste_quittung;
+	    }
+
+	    $CI->db->select('id, rahmennummer, preis, typ, farbe, marke, verkaeufer_id');
+	    $CI->db->where('angenommen', 1);
+	    $CI->db->where('storniert', 0);
+	    $CI->db->where('verkaeufer_id > 0');
+	    $CI->db->where('id >', $hoechste);
+	    $CI->db->order_by('id', 'asc');
+	    $rq = $CI->db->get('velos');
+
+
+
+	    if ($rq->num_rows() > 0) {
+	        $ret = $rq->result();
+	        $CI->db->insert('rahmennummern', array('hoechste_quittung'=>end($ret)->id, 'datum'=>date('Y-m-d H:i:s')));
+	        reset($ret);
+	        return $ret;
+	    } else {
+	        return array();
+	    }
+	}
+
+
+	/**
 	 * Schreibt die Werte der aktuellen Instanz in die DB
 	 * @return boolean
 	 */

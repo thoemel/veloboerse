@@ -27,8 +27,8 @@ class MY_Controller extends Auth_Controller
 		$this->db->trans_off();
 
 		// Profiling infos für die Entwicklung einschalten
-		if ($_SERVER['SERVER_NAME'] == 'dev.provelobern.ch') {
-	           $this->output->enable_profiler(TRUE);
+		if ('development' == ENVIRONMENT) {
+		    $this->output->enable_profiler(TRUE);
 		}
 
 

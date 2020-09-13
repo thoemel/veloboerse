@@ -225,6 +225,25 @@ ALTER TABLE `velos` ADD `verkaeufer_id` int(10) UNSIGNED NOT NULL DEFAULT '0' AF
 
 ALTER TABLE `velos` ADD `angenommen` ENUM('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `preis`, ADD INDEX `idx_angenommen` (`angenommen`);
 
+
+-- Rahmennummern fuer Polizei
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+CREATE TABLE `rahmennummern` (
+  `id` int(11) NOT NULL,
+  `hoechste_quittung` int(11) NOT NULL,
+  `datum` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Für den Export der Rahmennummern für die Polizei';
+
+ALTER TABLE `rahmennummern`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_datum` (`datum`);
+
+ALTER TABLE `rahmennummern`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
 -- --------------------------------------------------------
 
 --

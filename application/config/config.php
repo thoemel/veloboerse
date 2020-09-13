@@ -14,16 +14,7 @@
 | path to your installation.
 |
 */
-switch ($_SERVER['SERVER_NAME']) {
-	case 'localhost':
-	case 'dev.provelobern.ch':
-		$config['base_url']	= '//' . $_SERVER['HTTP_HOST'] . '/veloboerse';
-		break;
-	case 'www.provelobern.ch':
-	case 'provelobern.ch':
-	default:
-		$config['base_url']	= '//' . $_SERVER['HTTP_HOST'] . '/boerse';
-}
+$config['base_url']	= '//' . $_SERVER['HTTP_HOST'] . '/boerse';
 
 
 /*
@@ -36,16 +27,7 @@ switch ($_SERVER['SERVER_NAME']) {
 | variable so that it is blank.
 |
 */
-switch ($_SERVER['SERVER_NAME']) {
-    case 'www.provelobern.ch':
-    case 'provelobern.ch':
-        $config['index_page'] = '';
-        break;
-	case 'localhost':
-	case 'dev.provelobern.ch':
-	default:
-	    $config['index_page'] = 'index.php';
-}
+$config['index_page'] = '';
 
 
 /*
@@ -200,15 +182,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-switch ($_SERVER['SERVER_NAME']) {
-	case 'dev.provelobern.ch':
-		$config['log_threshold'] = 2;
-		break;
-	case 'provelobern.ch':
-	case 'www.provelobern.ch':
-	default:
-		$config['log_threshold'] = 1;
-}
+$config['log_threshold'] = 1;
 
 
 /*

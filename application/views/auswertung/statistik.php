@@ -129,25 +129,39 @@ echo '
 <thead>
 	<tr>
 		<th scope="col" rowspan="2">Provisions-Obergrenze</th>
-		<th scope="col" colspan="2">Händler</th>
-		<th scope="col" colspan="2">Private</th>
+		<th scope="col" colspan="3">Händler</th>
+		<th scope="col" colspan="3">Private</th>
 	</tr>
 	<tr>
 		<th scope="col">Anzahl verkauft</th>
 		<th scope="col">Anzahl nicht verkauft</th>
+		<th scope="col">% verkauft</th>
 		<th scope="col">Anzahl verkauft</th>
 		<th scope="col">Anzahl nicht verkauft</th>
+		<th scope="col">% verkauft</th>
 	</tr>
 </thead>
 </tbody>';
 foreach ($modalSplit[0] as $provision => $verkauftUndNicht) {
+    if ($modalSplit[1][$provision]['verkauft'] + $modalSplit[1][$provision]['nicht_verkauft'] != 0) {
+        $anteilHaendler = round(($modalSplit[1][$provision]['verkauft'] / ($modalSplit[1][$provision]['nicht_verkauft'] + $modalSplit[1][$provision]['verkauft'])) * 100, 2);
+    } else {
+        $anteilHaendler = '-';
+    }
+    if ($verkauftUndNicht['verkauft'] + $verkauftUndNicht['nicht_verkauft'] != 0) {
+        $anteilPrivate = round(($verkauftUndNicht['verkauft'] / ($verkauftUndNicht['nicht_verkauft'] + $verkauftUndNicht['verkauft'])) * 100, 2);
+    } else {
+        $anteilPrivate = '-';
+    }
 	echo '
 	<tr>
 		<td>' . $provision . '</td>
 		<td>' . $modalSplit[1][$provision]['verkauft'] . '</td>
 		<td>' . $modalSplit[1][$provision]['nicht_verkauft'] . '</td>
+		<td>' . $anteilHaendler . '</td>
 		<td>' . $verkauftUndNicht['verkauft'] . '</td>
 		<td>' . $verkauftUndNicht['nicht_verkauft'] . '</td>
+		<td>' . $anteilPrivate . '</td>
 	</tr>';
 }
 echo '

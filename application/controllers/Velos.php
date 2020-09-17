@@ -127,6 +127,29 @@ class Velos extends MY_Controller {
 	}
 
 
+    /**
+     * Eine Liste aller Velos eines Verkäufys
+     *
+     * @param int $verkaeufy_id
+     */
+	public function fuerVerkaeufy($verkaeufy_id) {
+	    $verkaeufy = new M_user();
+	    try {
+	        $verkaeufy->fetch($verkaeufy_id);
+	    } catch (Exception $e) {
+	        $this->session->set_flashdata('error', 'kein Verkäufy mit dieser ID.');
+	        redirect();
+	        return;
+	    }
+	    $this->addData('verkaeufy', $verkaeufy);
+	    $this->addData('meineVelos', Velo::fuerVerkaeufer($verkaeufy->id));
+	    $this->addData('showFormLink', $this->verify_role('admin', 'Helfer'));
+
+	    $this->load->view('velos/liste', $this->data);
+	    return;
+	}
+
+
 	/**
 	 * Index Page for this controller.
 	 *

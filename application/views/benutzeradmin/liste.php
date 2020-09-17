@@ -41,9 +41,13 @@ foreach ($allUsers as $u) {
             <td>' . $u->strasse . ', ' . $u->plz . ' ' . $u->ort . '</td>
             <td>' . $levels_and_roles[$u->auth_level] . '</td>
             <td>';
+    echo anchor('velos/fuerVerkaeufy/' . $u->id,
+        '&nbsp;',
+        array('title' => 'Velos', 'class' => 'glyphicon glyphicon-list'));
+    echo '&nbsp;&nbsp;';
     echo anchor('benutzeradmin/userForm/' . $u->id,
-                '&nbsp;',
-    			array('title' => 'editieren', 'class' => 'glyphicon glyphicon-edit'));
+        '&nbsp;',
+        array('title' => 'editieren', 'class' => 'glyphicon glyphicon-edit'));
     echo '&nbsp;&nbsp;';
     echo anchor('benutzeradmin/deleteUser/' . $u->id,
                 '&nbsp;',

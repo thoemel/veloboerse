@@ -218,7 +218,6 @@ class MY_Controller extends Auth_Controller
 			case '/abholung/kontrollblick':
 			case 'login/form':
 			case 'login/registrationForm':
-			case '':
 				$this->addData('showSearchForm', false);
 				break;
 			default:

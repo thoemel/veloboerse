@@ -8,3 +8,5 @@
 quittungen/*
 quittungen/!index.html
 uploads/*
+application/config/development/*
+application/config/testing/*

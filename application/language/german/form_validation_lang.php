@@ -1,7 +1,13 @@
 <?php
 
 $lang['form_validation_required']				= "Das Feld %s ist ein Pflichtfeld.";
-$lang['form_validation_check_password_strength'] = "Passwort zu einfach.";
+$lang['form_validation_check_password_strength'] = "Passwort zu einfach:
+<ul>
+    <li>Mindestens 8 Zeichen</li>
+    <li>Mindestens 1 Grosbuchstabe</li>
+    <li>Mindestens 1 Kleinbuchstabe</li>
+    <li>Mindestens 1 Zahl</li>
+</ul>";
 $lang['form_validation_error_message_not_set'] = "Keine Fehlermeldung für diesen Fehler";
 
 $lang['required']				= "Das Feld %s ist ein Pflichtfeld.";

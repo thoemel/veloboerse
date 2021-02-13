@@ -170,8 +170,20 @@ class Verkaeufer extends MY_Controller
     {
         $this->addData('formAction', 'verkaeufer/editUser');
 
-        $this->M_user->fetch($this->auth_user_id);
-        $this->addData('myUser', $this->M_user);
+        $myUser = new M_user();
+        $myUser->fetch($this->auth_user_id);
+        if (!empty(validation_errors())) {
+            $myUser->email = set_value('email');
+            $myUser->username = set_value('username');
+            $myUser->vorname = set_value('vorname');
+            $myUser->nachname = set_value('nachname');
+            $myUser->strasse = set_value('strasse');
+            $myUser->plz = set_value('plz');
+            $myUser->ort = set_value('ort');
+            $myUser->telefon = set_value('telefon');
+            $myUser->iban = set_value('iban');
+        }
+        $this->addData('myUser', $myUser);
 
 
         $this->load->view('login/createUser', $this->data);

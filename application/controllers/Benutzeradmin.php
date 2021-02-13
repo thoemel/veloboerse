@@ -155,6 +155,17 @@ class Benutzeradmin extends MY_Controller
         if ($this->form_validation->run('createUser') === false) {
             // Not registered because of wrong input
             $this->session->set_flashdata('error', validation_errors());
+            $myUser = new stdClass();
+            $myUser->email = set_value('email');
+            $myUser->username = set_value('username');
+            $myUser->vorname = set_value('vorname');
+            $myUser->nachname = set_value('nachname');
+            $myUser->strasse = set_value('strasse');
+            $myUser->plz = set_value('plz');
+            $myUser->ort = set_value('ort');
+            $myUser->telefon = set_value('telefon');
+            $myUser->iban = set_value('iban');
+            $this->session->set_flashdata('myUser', $myUser);
             redirect($back_uri);
         }
 

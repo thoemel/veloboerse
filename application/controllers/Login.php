@@ -312,7 +312,21 @@ class Login extends MY_Controller {
 	 */
 	public function registrationForm()
 	{
-	    $this->addData('myUser', new M_user());
+	    $myUser = new M_user();
+	    if (!empty($this->session->flashdata('myUser'))) {
+	        $tmp = $this->session->flashdata('myUser');
+	        $myUser->email = $tmp->email;
+	        $myUser->username = $tmp->username;
+	        $myUser->vorname = $tmp->vorname;
+	        $myUser->nachname = $tmp->nachname;
+	        $myUser->strasse = $tmp->strasse;
+	        $myUser->plz = $tmp->plz;
+	        $myUser->ort = $tmp->ort;
+	        $myUser->telefon = $tmp->telefon;
+	        $myUser->iban = $tmp->iban;
+
+	    }
+	    $this->addData('myUser', $myUser);
 	    $this->addData('formAction', 'Benutzeradmin/registerUser');
 	    $this->load->view('login/createUser', $this->data);
 	}

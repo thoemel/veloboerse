@@ -120,7 +120,7 @@ class Annahme extends MY_Controller {
 	    $this->load->library('pv_tcpdf');
 	    $pdf = new Pv_tcpdf('L', 'mm', 'custom', true, 'UTF-8');
 	    $pdf->SetMargins(2, 2);
-	    $pdf->AddPage('L', [29, 90]);
+	    $pdf->AddPage('L', [28, 300]);
 	    $pdf->setPageOrientation('L', true, 2);
 
 
@@ -141,36 +141,78 @@ class Annahme extends MY_Controller {
 	        'fontsize' => 10,
 	        'stretchtext' => 4
 	    );
-	    $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', 80, 15, 0.4, $barcodeStyle, 'T');
+	    $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', 20, 15, 0.4, $barcodeStyle, 'T');
 
 	    // Preis
-	    $pdf->SetXY(2, 15);
-	    $pdf->SetFont('', 'B', 24);
+	    $pdf->SetXY(30, 5);
+	    $pdf->SetFont('', 'B', 45);
+	    $pdf->SetTextColor(0,0,0);
+	    $preisText = 'Fr. ' . $myVelo->preis . '.--';
+	    $pdf->Write(0, $preisText, '', false, 'L');
+
+	    // Typ
+	    $pdf->SetXY(120, 5);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->SetTextColor(0,0,0);
+	    $pdf->Write(0, 'Typ: ' . $myVelo->typ, '', false, 'L', true);
+
+	    // Marke
+	    $pdf->SetX(120);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->SetTextColor(0,0,0);
+	    $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'L', true);
+
+	    // Farbe
+	    $pdf->SetX(120);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->SetTextColor(0,0,0);
+	    $pdf->Write(0, 'Farbe: ' . $myVelo->farbe, '', false, 'L', true);
+
+	    // Rahmennummer
+	    $pdf->SetX(120);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->SetTextColor(0,0,0);
+	    $pdf->Write(0, 'Rahmennr: ' . $myVelo->rahmennummer, '', false, 'L', true);
+
+	    // Verkäufer
+	    $pdf->SetXY(150, 5);
+	    $pdf->SetFont('', 'B', 8);
+	    $pdf->write(0, 'Verkäufer:', '', false, 'L', true);
+	    $pdf->SetFont('', '', 8);
+	    $vi = $myVelo->verkaeuferInfo();
+	    $pdf->SetX(150);
+	    $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'L', true);
+	    $pdf->SetX(150);
+	    $pdf->write(0, $vi['strasse'], '', false, 'L', true);
+	    $pdf->SetX(150);
+	    $pdf->write(0, $vi['plz'], '', false, 'L');
+	    $pdf->write(0, $vi['ort'], '', false, 'L');
+
+	    // Preis
+	    $pdf->SetXY(200, 5);
+	    $pdf->SetFont('', 'B', 45);
 	    $pdf->SetTextColor(0,0,0);
 	    $preisText = 'Fr. ' . $myVelo->preis . '.--';
 	    $pdf->Write(0, $preisText, '', false, 'L', false);
 
-	    // Marke
-	    $pdf->SetY(2);
-	    $pdf->SetFont('', '', 8);
-	    $pdf->SetTextColor(0,0,0);
-	    $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'R', true);
-
-	    // Rahmennummer
-	    $pdf->SetFont('', '', 8);
-	    $pdf->SetTextColor(0,0,0);
-	    $pdf->Write(0, 'Rahmennummer: ' . $myVelo->rahmennummer, '', false, 'R', true);
-
-	    // Verkäufer
-	    $pdf->Ln();
-	    $pdf->SetFont('', 'B', 8);
-	    $pdf->write(0, 'Verkäufer:', '', false, 'R', true);
-	    $pdf->SetFont('', '', 8);
-	    $vi = $myVelo->verkaeuferInfo();
-	    $pdf->write(0, $vi['vorname'] . ' ' . $vi['nachname'], '', false, 'R', true);
-	    $pdf->write(0, $vi['strasse'], '', false, 'R', true);
-	    $pdf->write(0, $vi['plz'], '', false, 'R');
-	    $pdf->write(0, $vi['ort'], '', false, 'R');
+	    // Barcode
+	    $barcodeStyle = array(
+	        'position' => 'R',
+	        'align' => 'L',
+	        'stretch' => false,
+	        'fitwidth' => true,
+	        'cellfitalign' => '',
+	        'border' => false,
+	        'hpadding' => 2,
+	        'vpadding' => 2,
+	        'fgcolor' => array(0,0,0),
+	        'bgcolor' => false, //array(255,255,255),
+	        'text' => true,
+	        'font' => 'helvetica',
+	        'fontsize' => 10,
+	        'stretchtext' => 4
+	    );
+	    $pdf->write1DBarcode($myVelo->id, 'C128A', '', '', 20, 15, 0.4, $barcodeStyle, 'T');
 
 
 	    $filename = 'Preisschild_' . $myVelo->id . '.pdf';

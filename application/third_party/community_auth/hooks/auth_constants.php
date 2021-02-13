@@ -21,20 +21,31 @@ function auth_constants(){
 | -----------------------------------------------------------------
 | Set to 1 for standard SSL certificate.
 | Set to 0 for no SSL.
-| 
+|
 */
 
-	define('USE_SSL', 0);
+    if (
+        ( ! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || ( ! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        || ( ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+        || (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
+        || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
+        ) {
+            define('USE_SSL', 1);
+        } else {
+            define('USE_SSL', 0);
+        }
 
 /*
 | -----------------------------------------------------------------
 | LOGIN_PAGE
 | -----------------------------------------------------------------
-| This is the uri string to the hidden login route. 
-| We can change this if there is a brute force attack on the login. 
-| You can set this to almost anything except "examples/login", unless 
+| This is the uri string to the hidden login route.
+| We can change this if there is a brute force attack on the login.
+| You can set this to almost anything except "examples/login", unless
 | you modify the login method in the User controller.
-| 
+|
 */
 
 	define('LOGIN_PAGE', 'login');
@@ -46,7 +57,7 @@ function auth_constants(){
 | Community Auth uses a query string param for the location
 | to redirect back to after successful login. This can be customized,
 | in case "redirect" would conflict with your application.
-| 
+|
 */
 
 	define('AUTH_REDIRECT_PARAM', 'redirect');
@@ -58,7 +69,7 @@ function auth_constants(){
 | Community Auth uses a query string param to indicate that
 | user should be shown a message when logged out. This can be customized,
 | in case "logout" would conflict with your application.
-| 
+|
 */
 
 	define('AUTH_LOGOUT_PARAM', 'logout');

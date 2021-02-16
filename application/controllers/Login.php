@@ -127,9 +127,7 @@ class Login extends MY_Controller {
 	{
 		$this->authentication->logout();
 
-		$redirect_protocol = USE_SSL ? 'https' : NULL;
-
-		redirect( site_url( LOGIN_PAGE . '?' . AUTH_LOGOUT_PARAM . '=1', $redirect_protocol ) );
+		redirect( site_url( LOGIN_PAGE . '?' . AUTH_LOGOUT_PARAM . '=1' ) );
 	}
 
 	/**
@@ -174,7 +172,7 @@ class Login extends MY_Controller {
 	                        );
 
 	                    // Set the link protocol
-	                    $link_protocol = USE_SSL ? 'https' : 'http';
+	                    $link_protocol = is_https() ? 'https:' : 'http:';
 
 	                    // Set URI of link
 	                    $link_uri = 'login/recovery_verification/' . $user_data->user_id . '/' . $recovery_code;

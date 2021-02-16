@@ -22,20 +22,13 @@ function auth_constants(){
 | Set to 1 for standard SSL certificate.
 | Set to 0 for no SSL.
 |
+| Lass das auf 0 stehen, dann haben wir protokoll-relative Links (beginnend mit //)
+| Falls auf 1, werden Links zu https//... (fälschlicherweise ohne Doppelpunkt vor dem Doppelslash).
+| CI will das Protokoll sowieso nur für Links, die nicht im Browser angezeigt werden (Mail, PDF, ...).
+|
 */
 
-    if (
-        ( ! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        || ( ! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
-        || ( ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')
-        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
-        || (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
-        || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
-        ) {
-            define('USE_SSL', 1);
-        } else {
-            define('USE_SSL', 0);
-        }
+	define('USE_SSL', 0);
 
 /*
 | -----------------------------------------------------------------

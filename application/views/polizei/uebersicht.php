@@ -9,6 +9,7 @@ echo '
 	</p>
 	<ul>
 		<li>' . anchor('polizei/gestohlene', 'Gestohlene Velos') . '</li>
+		<li>' . anchor('polizei/rahmennummern', 'Rahmennummern') . '</li>
 	</ul>
 </div>';
 

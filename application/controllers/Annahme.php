@@ -124,29 +124,6 @@ class Annahme extends MY_Controller {
 	    $pdf->setPageOrientation('L', true, 2);
 
 
-	    // Logo
-	    $pdf->Image(FCPATH . '/img/logo.png', $pdf->GetX(), 3, 0, 5.0, 'png', '', 'M', true, 300, 'L');
-
-	    // Barcode
-	    $pdf->SetXY(2, 15);
-	    $barcodeStyle = array(
-	        'position' => 'L',
-	        'align' => 'L',
-	        'stretch' => false,
-	        'fitwidth' => true,
-	        'cellfitalign' => '',
-	        'border' => false,
-	        'hpadding' => 2,
-	        'vpadding' => 0,
-	        'fgcolor' => array(0,0,0),
-	        'bgcolor' => false, //array(255,255,255),
-	        'text' => true,
-	        'font' => 'helvetica',
-	        'fontsize' => 10,
-	        'stretchtext' => 4
-	    );
-	    $pdf->write1DBarcode($myVelo->id, 'C128A', '', 10, 40, 15, 0.4, $barcodeStyle, 'T');
-
 	    // Preis
 	    $pdf->SetXY(42, 5);
 	    $pdf->SetFont('', 'B', 45);
@@ -191,6 +168,11 @@ class Annahme extends MY_Controller {
 	    $pdf->SetX(150);
 	    $pdf->write(0, $vi['plz'], '', false, 'L');
 	    $pdf->write(0, $vi['ort'], '', false, 'L');
+
+	    // Pro Velo Bern kann trotz Kontrolle der Velos keine Haftung übernehmen.
+	    $pdf->SetXY(42, 22);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->write(0, 'Pro Velo Bern kann trotz Kontrolle der Velos keine Haftung übernehmen.', '', false, 'L', true);
 
 	    // Preis
 	    $pdf->SetXY(190, 5);

@@ -641,12 +641,7 @@ class Verkaeufer extends MY_Controller
         }
 
 
-        $meineVelos = Velo::fuerVerkaeufer($this->auth_user_id);
-        $this->addData('meineVelos', $meineVelos);
-        $ich = new M_user();
-        $ich->fetch($this->auth_user_id);
-        $this->addData('ich', $ich);
-        $this->load->view('verkaeufer/index', $this->data);
+        redirect('verkaeufer/index');
 
         return;
     } // End of function speichereVelo

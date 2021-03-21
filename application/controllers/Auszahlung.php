@@ -89,6 +89,7 @@ class Auszahlung extends MY_Controller {
 		if ($myVelo->verkaeufer_id > 0) {
 		    $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', ['verkaeuferInfo'=>$myVelo->verkaeuferInfo()], TRUE);
 		    $this->addData('verkaeuferInfo', $verkaeuferInfo);
+		    $this->addData('verkaeufyId', $myVelo->verkaeufer_id);
 		}
 
 		// Heading
@@ -156,6 +157,129 @@ class Auszahlung extends MY_Controller {
 		$this->addData('hideNavi', true);
 
 		$this->load->view('auszahlung/kontrollblick', $this->data);
+	}
+
+
+	/**
+	 * Liefert eine Quittung für das Verkäufy
+	 * @param int $verkaeufyId
+	 */
+	public function pdf($verkaeufyId) {
+
+	    $alleMeine = Velo::fuerVerkaeufer($verkaeufyId);
+	    $meineVelos = [];
+	    $verkaufssumme = 0;
+	    $provision_total = 0;
+	    $auszahlung_betrag = 0;
+	    $keinAusweis = false;
+	    $maxPreis = 0;
+
+	    foreach ($alleMeine->result() as $row) {
+	        if ('no' == $row->verkauft || 'no' == $row->angenommen || 'yes' == $row->ausbezahlt) {
+	            continue;
+	        }
+	        $diesesVelo = [];
+	        $diesesVelo['status'] = 'Verkauft';
+	        if ('yes' == $row->ausbezahlt) {
+	            $diesesVelo['status'] = 'Schon ausbezahlt';
+	        }
+	        if ('no' == $row->verkauft) {
+	            $diesesVelo['status'] = 'Noch nicht verkauft';
+	        }
+	        if (1 == $row->gestohlen) {
+	            $diesesVelo['status'] = 'Gestohlen';
+	        }
+
+	        $diesesVelo['id'] = $row->id;
+	        $diesesVelo['preis'] = $row->preis;
+	        $diesesVelo['marke'] = $row->marke;
+	        $diesesVelo['typ'] = $row->typ;
+	        $diesesVelo['farbe'] = $row->farbe;
+	        $diesesVelo['rahmennummer'] = $row->rahmennummer;
+	        $diesesVelo['verkauft'] = $row->verkauft;
+	        $diesesVelo['angenommen'] = $row->angenommen;
+	        $diesesVelo['gestohlen'] = $row->gestohlen;
+	        $diesesVelo['ausbezahlt'] = $row->ausbezahlt;
+
+	        $meineVelos[] = $diesesVelo;
+
+	        if ('yes' == $row->verkauft && 'yes' == $row->angenommen && 0 == $row->gestohlen && 'no' == $row->ausbezahlt) {
+	            $verkaufssumme += $row->preis;
+	            $provision_total += Velo::getProvision($row->preis);
+	            $auszahlung_betrag += ($row->preis - Velo::getProvision($row->preis));
+	            // Provisionserlass für Helferlein
+	            $maxPreis = max([$diesesVelo['preis'], $maxPreis]);
+	        }
+
+	    } // End foreach $alleMeine
+
+
+	    /*
+	     * PDF Quittung erstellen
+	     */
+	    $this->load->library('pv_tcpdf');
+	    $pdf = new Pv_tcpdf('L', 'mm', 'custom', true, 'UTF-8');
+	    $pdf->SetMargins(2, 2);
+	    $pageHeight = 35 + 45 * count($meineVelos);
+	    $pdf->AddPage('P', [54, $pageHeight]);
+	    $pdf->setPageOrientation('P', true, 2);
+
+
+	    // Logo
+	    $pdf->Image(FCPATH . '/img/logo.png', $pdf->GetX(), 3, 0, 10.0, 'png', '', 'M', true, 300, 'L');
+
+	    foreach ($meineVelos as $velo) {
+
+	        // Nicht auf Quittung nehmen, wenn nicht jetzt ausbezahlt.
+	        if ($velo['verkauft'] != 'yes' || $velo['ausbezahlt'] != 'no') {
+	            continue;
+	        }
+
+    	    // Quittungsnummer
+    	    $pdf->Ln(7);
+    	    $pdf->SetFont('', '', 8);
+    	    $pdf->SetTextColor(0,0,0);
+    	    $idText = 'Velo Nr. ' . $velo['id'];
+    	    $pdf->Write(0, $idText, '', false, 'L', true);
+
+    	    // Typ
+    	    $pdf->Write(0, 'Typ: ' . $velo['typ'], '', false, 'L', true);
+
+    	    // Marke
+    	    $pdf->Write(0, 'Marke: ' . $velo['marke'], '', false, 'L', true);
+
+    	    // Farbe
+    	    $pdf->Write(0, 'Farbe: ' . $velo['farbe'], '', false, 'L', true);
+
+    	    // Rahmennummer
+    	    $pdf->Write(0, 'Rahmennr: ' . $velo['rahmennummer'], '', false, 'L', true);
+
+    	    // Preis
+    	    $preisText = 'Verkaufspreis: Fr. ' . $velo['preis'] . '.--';
+    	    $pdf->Write(0, $preisText, '', false, 'L', true);
+
+    	    // Provision
+    	    $pdf->write(0, 'Provision: Fr. ' . velo::getProvision($velo['preis']) . '.--', '', false, 'L', true);
+
+    	    // Auszahlungsbetrag
+    	    $pdf->Write(0, 'Auszahlungsbetrag: Fr. ' . ($velo['preis'] - velo::getProvision($velo['preis'])) . '.--', '', false, 'L', true);
+
+	    } // end foreach $meineVelos
+
+
+	    // Unterschrift
+	    $pdf->Ln(5);
+	    $pdf->Write(0, 'Total Fr. ' . $auszahlung_betrag . '.-- erhalten', '', false, 'R', true);
+	    $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'R', true);
+	    $pdf->Write(0, 'Unterschrift:', '', false, 'R', true);
+	    $pdf->Ln(9);
+	    $pdf->Write(0, '______________________', '', false, 'R', true);
+
+
+	    $filename = 'Auszahlungsquittung_' . $verkaeufyId . '.pdf';
+	    $pdf->Output($filename, 'I');
+
+	    return ;
 	}
 
 

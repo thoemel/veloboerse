@@ -129,6 +129,7 @@ echo '
     <p>Velos verkauft für Fr. <span class="verkaufssumme">' . $verkaufssumme . '</span></p>
     <p>Provision insgesamt Fr. <span class="provision_total">' . $provision_total . '</span></p>
 	<p class="verybig">Auszahlen: Fr. <span class="auszahlungsbetrag">' . $auszahlung_betrag . '</span></p>
+    <p>' . anchor_popup('auszahlung/pdf/' . $verkaeufyId, 'Quittung zum Ausdrucken') . '</p>
 	<div class="form-group">
 		<div class="col-lg-offset-2 col-lg-10">
 			<button type="submit" class="btn btn-default">Bestätigen</button>

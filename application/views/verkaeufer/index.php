@@ -9,6 +9,7 @@ echo '
 	<ul>
 		<li>' . anchor('verkaeufer/veloformular', 'Velo zum Verkauf anbieten') . '
 		<li>' . anchor('verkaeufer/userForm', 'Adresse ändern ') . '
+		' . $nl_li . '
 	</ul>
 </div>
 

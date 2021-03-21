@@ -117,6 +117,17 @@ class Verkaeufer extends MY_Controller
         $ich = new M_user();
         $ich->fetch($this->auth_user_id);
         $this->addData('ich', $ich);
+
+        // Newsletter-Anmelde-Link
+        $this->load->config('newsletter_anmeldung');
+        $newsletter_html = config_item('newsletter_html');
+        if (empty($newsletter_html)) {
+            $nl_li = '';
+        } else {
+            $nl_li = '<li>' . anchor('verkaeufer/newsletter', 'Newsletter abonnieren');
+        }
+        $this->addData('nl_li', $nl_li);
+
         $this->load->view('verkaeufer/index', $this->data);
         return;
     }
@@ -214,6 +225,23 @@ class Verkaeufer extends MY_Controller
         $this->addData('myVelo', $myVelo);
         $this->addData('provisionsliste', Velo::provisionsliste());
         $this->load->view('verkaeufer/veloformular', $this->data);
+    }
+
+
+    public function newsletter() {
+        $this->config->load('newsletter_anmeldung');
+        $verkaeufy = new M_user();
+        $verkaeufy->fetch($this->auth_user_id);
+        $this->addData('verkaeufy', $verkaeufy);
+
+        $newsletter_html = config_item('newsletter_html');
+        $newsletter_html = str_replace('{email}', $verkaeufy->email, $newsletter_html);
+        $newsletter_html = str_replace('{vorname}', $verkaeufy->vorname, $newsletter_html);
+        $newsletter_html = str_replace('{nachname}', $verkaeufy->nachname, $newsletter_html);
+        $this->addData('newsletter_html', $newsletter_html);
+
+        $this->load->view('verkaeufer/newsletter_anmeldung', $this->data);
+        return;
     }
 
 

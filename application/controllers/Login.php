@@ -136,6 +136,7 @@ class Login extends MY_Controller {
 	public function recover()
 	{
 
+	    $success = FALSE;
 	    // If IP or posted email is on hold, display message
 	    if( $on_hold = $this->authentication->current_hold_status( TRUE ) ) {
 	        $this->addData('accountDisabled', TRUE);
@@ -183,44 +184,46 @@ class Login extends MY_Controller {
 	                        'target ="_blank"'
 	                        ));
 	                }
+	                $this->config->load('email', 'forgot_pw');
+	                $mailConfig = config_item('forgot_pw');
+	                $mailConfig['smtp_host'] = config_item('smtp_host');
+	                $mailConfig['smtp_adress'] = config_item('smtp_adress');
+	                $mailConfig['smtp_name'] = config_item('smtp_name');
+	                $mailConfig['smtp_user'] = config_item('smtp_user');
+	                $mailConfig['smtp_pass'] = config_item('smtp_pass');
+	                $mailConfig['smtp_port'] = config_item('smtp_port');
+	                $this->load->library('email');
+	                $this->email->initialize($mailConfig);
+
+	                $this->email->from(config_item('smtp_adress'), config_item('smtp_name'));
+	                $this->email->to($this->input->post('email', TRUE ));
+
+	                $this->email->subject('Passwort Velobörse');
+	                $format = config_item('pw_vergessen_text');
+	                $msg = sprintf($format, str_replace('p//', 'p://', $link));
+	                $this->email->message($msg);
+
+	                $success = $this->email->send(FALSE);
+
+	                if (TRUE === $success) {
+	                    $this->addData('recovery_success_message', 'Aktivierungs-Link wurde geschickt');
+	                } else {
+	                    $this->addData('recovery_success_message', 'Aktivierungs-Link konnte nicht versendet werden.');
+	                    log_message('error', $this->email->print_debugger());
+	                }
+
+	                $this->email->clear();
 	            } else {
 	                // There was no match, log an error, and display a message
 	                // Log the error
 	                $this->authentication->log_error( $this->input->post('email', TRUE ) );
 
 	                $this->addData('noMatch', TRUE);
+	                $this->addData('recovery_success_message', 'Es wurde kein Nutzer mit dieser E-Mail Adresse gefunden.');
 	            }
 	        }
-	        $this->config->load('email', 'forgot_pw');
-	        $mailConfig = config_item('forgot_pw');
-	        $mailConfig['smtp_host'] = config_item('smtp_host');
-	        $mailConfig['smtp_adress'] = config_item('smtp_adress');
-	        $mailConfig['smtp_name'] = config_item('smtp_name');
-	        $mailConfig['smtp_user'] = config_item('smtp_user');
-	        $mailConfig['smtp_pass'] = config_item('smtp_pass');
-	        $mailConfig['smtp_port'] = config_item('smtp_port');
-	        $this->load->library('email');
-	        $this->email->initialize($mailConfig);
-
-	        $this->email->from(config_item('smtp_adress'), config_item('smtp_name'));
-	        $this->email->to($this->input->post('email', TRUE ));
-
-	        $this->email->subject('Passwort Velobörse');
-	        $format = config_item('pw_vergessen_text');
-	        $msg = sprintf($format, str_replace('p//', 'p://', $link));
-	        $this->email->message($msg);
-
-	        $success = $this->email->send(FALSE);
 	    }
 
-	    if (TRUE === $success) {
-	        $this->addData('recovery_success_message', 'Aktivierungs-Link wurde geschickt');
-	    } else {
-	        $this->addData('recovery_success_message', 'Aktivierungs-Link konnte nicht versendet werden.');
-	        log_message('error', $this->email->print_debugger());
-	    }
-
-	    $this->email->clear();
 
 	    $this->load->view('login/recovery_sent', $this->data);
 	    return;

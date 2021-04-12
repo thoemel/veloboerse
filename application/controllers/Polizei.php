@@ -49,7 +49,7 @@ class Polizei extends MY_Controller {
 	    }
 
 	    header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-	    header("Content-Disposition: attachment; filename=veloboerse_statistik_" . date('Ymd') . ".csv");
+	    header("Content-Disposition: attachment; filename=veloboerse_rahmennummern_" . date('Ymd_His') . ".csv");
 	    echo $msg;
 	    return;
 	}

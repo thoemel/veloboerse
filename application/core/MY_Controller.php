@@ -26,12 +26,6 @@ class MY_Controller extends Auth_Controller
 		//Transactions für die Entwicklung ausschalten.
 		$this->db->trans_off();
 
-		// Profiling infos für die Entwicklung einschalten
-		if ('development' == ENVIRONMENT) {
-		    $this->output->enable_profiler(TRUE);
-		}
-
-
 		// Statistik
 		$this->load->model('Statistik');
 		Statistik::registriere();

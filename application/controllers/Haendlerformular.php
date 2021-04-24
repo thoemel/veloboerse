@@ -7,8 +7,8 @@ class Haendlerformular extends MY_Controller {
 	 * @var Haendler
 	 */
 	public $haendler = NULL;
-	
-	
+
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -16,8 +16,8 @@ class Haendlerformular extends MY_Controller {
 		$this->load->model('haendler');
 		$this->haendler = new Haendler();
 	}
-	
-	
+
+
 	/**
 	 * CodeIgniters _remap Methode wird bei jedem Aufruf ausgeführt.
 	 * @param String	$method	Zweites URL-Segment
@@ -30,7 +30,7 @@ class Haendlerformular extends MY_Controller {
 		if (method_exists($this, $method)) {
 			return call_user_func_array(array($this, $method), $params);
 		}
-		
+
 		// Falls URL keine Methode enthält, suche einen Händler mit entsprechendem Code
 		if (0 < $haendler_id = $this->haendler->idFuerCode($method)) {
 			$this->haendler->find($haendler_id);
@@ -38,13 +38,13 @@ class Haendlerformular extends MY_Controller {
 			$this->index();
 			return ;
 		}
-		
+
 		// Falls weder Methode noch Händlercode gefunden, ist nix.
 		show_404();
 		return ;
 	}
-	
-	
+
+
 	/**
 	 * Weist eine Händler die persönlichen Angaben zu.
 	 * Übernimmt die Formulareingaben aus haendlerformular/haendlerconfig.
@@ -59,7 +59,7 @@ class Haendlerformular extends MY_Controller {
 			$this->session->set_flashdata('error', 'Falsche Händler-Nummer ' . intval($haendler_id) . '. Versuchs vielleicht mit neu einloggen.');
 			redirect('haendleradmin/index');
 		}
-	
+
 		// Daten aus Formular lesen
 		// TODO Formularwerte prüfen
 		$firma = strval($this->input->post('input_Firma'));
@@ -71,11 +71,11 @@ class Haendlerformular extends MY_Controller {
 		$iban = strval($this->input->post('input_Iban'));
 		$kommentar = strval($this->input->post('input_Kommentar'));
 		$anzahlVelos = strval($this->input->post('input_velos'));
-		
+
 		// Neue Instanz von Haendler
 		$myHandler  = new Haendler();
 		$myHandler->find($haendler_id);
-		
+
 		// Überschreiben der Datenbank- mit den Formular-Werten
 		$myHandler->firma = $firma;
 		$myHandler->person = $person;
@@ -88,18 +88,18 @@ class Haendlerformular extends MY_Controller {
 		$myHandler->uptodate = 1;
 		$myHandler->anzahlVelos = $anzahlVelos;
 		$myHandler->save();
-		
-	
+
+
 		if (!empty($errorsForFlash)) {
 			$this->session->set_flashdata('error', implode('<br>', $errorsForFlash));
 		} else {
 			$this->session->set_flashdata('success', 'Händler-Angaben wurden gespeichert (' . $firma . ').');
 		}
-	
+
 		redirect('haendlerformular/index');
 	} // End of function quittungenSpeichern
-	
-	
+
+
 	/**
 	 * Index Page for this controller.
 	 */
@@ -112,10 +112,10 @@ class Haendlerformular extends MY_Controller {
 		} else {
 			show_error('Sorry, Sie sind nicht berechtigt.');
 		}
-		
+
 		$myVelos = Velo::getAll($this->haendler->id);
-		
-		if (0 == $this->haendler->uptodate) 
+
+		if (0 == $this->haendler->uptodate)
 		{
 			$this->data['haendler'] = $this->haendler;
 			$this->load->view('haendlerformular/haendlerconfig' , $this->data);
@@ -128,8 +128,8 @@ class Haendlerformular extends MY_Controller {
 		}
 		elseif (1 == $this->haendler->uptodate AND 0 < $myVelos->num_rows())
 		{
-			if (isset($this->session->userdata['user_role']) 
-				&& in_array($this->session->userdata['user_role'], array('admin','provelo'))) {
+		    if ($this->hasMinLevel(8)) {
+		        // Admins oder Helfer§
 				$this->data['useTabindex'] = true;
 				$this->data['mayDelete'] = true;
 			} else {
@@ -143,11 +143,11 @@ class Haendlerformular extends MY_Controller {
 		}
 		return ;
 	} // End of function index()
-	
-	
+
+
 	/**
 	 * Stellt das Händlerformular in einem PDF zum Ausdrucken zusammen.
-	 * @param UUID $haendler_code	UUID des Händlers
+	 * @param String $haendler_code	UUID des Händlers
 	 */
 	public function pdf($haendler_code)
 	{
@@ -158,15 +158,15 @@ class Haendlerformular extends MY_Controller {
 		} else {
 			show_error('Sorry, Sie sind nicht berechtigt.');
 		}
-		
+
 		$veloquery = Velo::getAll($this->haendler->id);
-		
-		
+
+
 		$this->load->library('pv_tcpdf');
 		$pdf = new Pv_tcpdf('L');
 		$pdf->SetMargins(PDF_MARGIN_LEFT, 20, 20);
 		$pdf->AddPage();
-		
+
 		// Logo
 		$pdf->Image(
 				FCPATH . '/img/logo.png',
@@ -180,7 +180,7 @@ class Haendlerformular extends MY_Controller {
 				true,
 				300,
 				'R');
-		
+
 		// Horizontale Linie
 		$pdf->Ln();
 		$pdf->SetLineWidth(0.2);
@@ -189,15 +189,15 @@ class Haendlerformular extends MY_Controller {
 		$pdf->Ln(6);
 
 		// Titel
-		$title = 'Händler Nr. ' . $this->haendler->id . ': ' 
-				. $this->haendler->firma . ' | ' 
+		$title = 'Händler Nr. ' . $this->haendler->id . ': '
+				. $this->haendler->firma . ' | '
 				. $this->haendler->person;
 		$pdf->SetFont('', 'B', 16);
 		$pdf->SetTextColor(0,0,0);
 		$pdf->Write(0, $title, '', false, 'C', true);
 		$pdf->Ln(3);
-		
-		
+
+
 		/*
 		 * Tabelle
 		 */
@@ -212,7 +212,7 @@ class Haendlerformular extends MY_Controller {
 				50,
 				50
 		);
-		
+
 		// Inhalte
 		$tbody = array();
 		foreach ($veloquery->result() as $velo) {
@@ -229,11 +229,11 @@ class Haendlerformular extends MY_Controller {
 
 		$filename = 'Quittungsformular';
 		$pdf->Output($filename, 'I');
-		
+
 		return ;
 	} // End of function pdf()
-	
-	
+
+
 	/**
 	 * Speichert die Velos, die ein Händler eingegeben hat
 	 */
@@ -250,6 +250,7 @@ class Haendlerformular extends MY_Controller {
 		$vignettennummern = $this->input->post('vignettennummer');
 		$stornierte = NULL === $this->input->post('storniert') ? array() : $this->input->post('storniert');
 		$zu_loeschende = NULL === $this->input->post('zuLoeschen') ? array() : $this->input->post('zuLoeschen');
+		$velosAnnehmen = $this->input->post('velosAnnehmen') == 1;
 		$countVelos = count($ids);
 		for ($i = 0; $i < $countVelos; $i++) {
 			$myVelo = new Velo();
@@ -259,12 +260,12 @@ class Haendlerformular extends MY_Controller {
 				log_message('error', $e->getMessage());
 				show_error('Ungültige Quittungsnummer.');
 			}
-			
+
 			if (in_array($myVelo->id, $zu_loeschende)) {
 				$myVelo->delete($myVelo->id);
 				continue;
 			}
-			
+
 			$myVelo->preis = $preise[$i];
 			$myVelo->typ = $typen[$i];
 			$myVelo->farbe = $farben[$i];
@@ -273,23 +274,28 @@ class Haendlerformular extends MY_Controller {
 			$myVelo->vignettennummer = $vignettennummern[$i];
 			// Checkboxen werden nur übermittelt, falls gecheckt. Darum ist der Value
 			// auf die velo->id gesetzt.
-			
+
 			$myVelo->storniert = in_array($myVelo->id, $stornierte);
+
+			if ($velosAnnehmen && !$myVelo->storniert) {
+			    $myVelo->angenommen = 1;
+			}
+
 			$ret = $ret && $myVelo->save();
-		}
-		
+		} // End for each Velo
+
 		if ($ret) {
 			$this->session->set_flashdata('success', 'Velos wurden gespeichert.');
 		} else {
 			$this->session->set_flashdata('error', 'Beim Speichern ist etwas fehlgeschlagen. Bitte kontrollieren Sie die Angaben zu Ihren Velos noch einmal!');
 		}
-		
+
 		if (1 == $this->session->userdata('logged_in')) {
 			redirect('haendleradmin/index');
 		} else {
 			redirect('haendlerformular/index');
 		}
 	}
-	
-	
+
+
 }

@@ -8,10 +8,10 @@ echo '
 		<li>' . anchor('haendleradmin', 'Händleradmin') . '</li>
 		<li class="active">Quittungen zuweisen</li>
 	</ol>
-		
+
 	<h1>Quittungen zuweisen</h1>
 	<h2>Händler Nr. ' . $haendler->id . ', ' . $anzeigename . '</h2>
-			
+
 	<h3>Zugewiesene Quittungsnummern</h3>
 	<ul>';
 
@@ -33,19 +33,19 @@ echo '
 		<div class="form-group col-md-1">
 			<input placeholder="bis" value="" name="range_to" type="text" class="form-control">
 		</div>
-		<div class="form-group">
+		<div class="form-group col-md-1">
 			<button type="submit" class="btn btn-default">Speichern</button>
 		</div>
 	</div>
 	</form>
-	
+
 	<h3>Link für Händlerformular</h3>
 	<p>
 		Diesen Link kannst Du den Händlern mailen. Sie können damit ohne Login ihre Velos eintragen:<br>
 		' . site_url('haendlerformular/'.$haendler->code) . '<br>
 		oder ' . anchor('haendlerformular/'.$haendler->code, 'hier klicken') . ', um selbst zu schauen.
 	</p>
-	
+
 </div>';
 
 

@@ -36,6 +36,8 @@ $lang['less_than_equal_to']		= "Das Feld %s muss eine Zahl kleiner oder gleich a
 $lang['greater_than']			= "Das Feld %s muss eine Zahl gr&ouml;sser als %s enthalten.";
 $lang['greater_than_equal_to']	= "Das Feld %s muss eine Zahl gr&ouml;sser oder gleich als %s enthalten.";
 
+$lang['form_validation_is_natural']	= "Das Feld %s darf nur positive Zahlen enthalten.";
+
 
 /* End of file form_validation_lang.php */
 /* Location: ./system/language/german/form_validation_lang.php */

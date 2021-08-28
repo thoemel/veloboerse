@@ -125,32 +125,32 @@ class Annahme extends MY_Controller {
 
 
 	    // Preis
-	    $pdf->SetXY(42, 5);
+	    $pdf->SetXY(30, 5);
 	    $pdf->SetFont('', 'B', 45);
 	    $pdf->SetTextColor(0,0,0);
 	    $preisText = 'Fr. ' . $myVelo->preis;
 	    $pdf->Write(0, $preisText, '', false, 'L');
 
 	    // Typ
-	    $pdf->SetXY(110, 5);
+	    $pdf->SetXY(98, 5);
 	    $pdf->SetFont('', '', 8);
 	    $pdf->SetTextColor(0,0,0);
 	    $pdf->Write(0, 'Typ: ' . $myVelo->typ, '', false, 'L', true);
 
 	    // Marke
-	    $pdf->SetX(110);
+	    $pdf->SetX(98);
 	    $pdf->SetFont('', '', 8);
 	    $pdf->SetTextColor(0,0,0);
 	    $pdf->Write(0, 'Marke: ' . $myVelo->marke, '', false, 'L', true);
 
 	    // Farbe
-	    $pdf->SetX(110);
+	    $pdf->SetX(98);
 	    $pdf->SetFont('', '', 8);
 	    $pdf->SetTextColor(0,0,0);
 	    $pdf->Write(0, 'Farbe: ' . $myVelo->farbe, '', false, 'L', true);
 
 	    // Rahmennummer
-	    $pdf->SetX(110);
+	    $pdf->SetX(98);
 	    $pdf->SetFont('', '', 8);
 	    $pdf->SetTextColor(0,0,0);
 	    $pdf->Write(0, 'Rahmennr: ' . $myVelo->rahmennummer, '', false, 'L', true);

@@ -214,6 +214,17 @@ echo '
 	</div>
 
 
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+			<div class="checkbox">
+				<label>
+					' . form_checkbox('agb', '1', false, ['id'=>'agb_check']) . '
+					Ich akzeptiere die ' . anchor_popup(base_url().'uploads/Teilnahmebedingungen_Veloboerse.pdf', 'Teilnahmebedingungen') . '.
+				</label>
+			</div>
+		</div>
+    </div>
+
 
 
     </div>

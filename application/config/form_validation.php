@@ -80,6 +80,12 @@ $config ['createUser'] = array (
         'field' => 'iban',
         'label' => 'IBAN',
         'rules' => ['trim']
+    ),
+    array (
+        'field' => 'agb',
+        'label' => 'Teilnahmebedingungen',
+        'rules' => ['trim','matches[1]'],
+        'message' => 'gugs'
     )
 );
 

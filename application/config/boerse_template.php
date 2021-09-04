@@ -78,5 +78,7 @@ $config['zeige_carousel'] = TRUE;
 $config['anzahl_bilder_fuer_carousel'] = 30;
 
 
-// Haftungsausschluss auf Quittung
+// Haftungsausschluss auf Quittung A4
 $config['haftungsausschluss'] = 'Pro Velo Bern kann trotz Überwachung der Börse & Kontrolle der Velos für Verlust und Beschädigungen keine Haftung übernehmen. Am Veranstaltungstag ist der Verkaufserlös oder das Velo bis spätestens Börsenschluss abzuholen. Über nicht abgeholte Velos und Verkaufserlöse verfügt Pro Velo Bern. Pro Velo Bern haftet nicht für das verkaufte Velo.';
+// Gewährleistungstext auf Etikette
+$config['gewaehrleistung'] = 'Pro Velo Bern leistet keine Gewähr für die verkauften Velos. Gewährleistungspflicht für Mängel am gekauften Velo liegt ausschliesslich bei Verkäufer*in. Das Velo ist von Käufer*in sorgfältig zu prüfen. Mängel sind umgehend bei Verkäufer*in zu melden.';

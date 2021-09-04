@@ -170,9 +170,10 @@ class Annahme extends MY_Controller {
 	    $pdf->write(0, $vi['ort'], '', false, 'L');
 
 	    // Pro Velo Bern leistet keine Gewähr für die verkauften Velos. Mängel bitte umgehend der Verkäufer*in melden.
-	    $pdf->SetXY(30, 22);
-	    $pdf->SetFont('', '', 8);
-	    $pdf->write(0, 'Pro Velo Bern leistet keine Gewähr für die verkauften Velos. Mängel bitte umgehend der Verkäufer*in melden.', '', false, 'L', true);
+	    $pdf->SetXY(20, 22);
+	    $pdf->SetFont('', '', 5);
+	    $gewaehrleistung = config_item('gewaehrleistung');
+	    $pdf->write(0, $gewaehrleistung, '', false, 'L', true);
 
 	    // Preis
 	    $pdf->SetXY(190, 5);

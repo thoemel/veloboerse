@@ -152,6 +152,8 @@ class Benutzeradmin extends MY_Controller
             $redirect_uri = 'login/form';
         }
 
+        $this->form_validation->set_message('matches', 'Die Teilnahmebedingungen müssen akzeptiert werden.');
+
         if ($this->form_validation->run('createUser') === false) {
             // Not registered because of wrong input
             $this->session->set_flashdata('error', validation_errors());

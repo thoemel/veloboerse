@@ -326,6 +326,11 @@ class Verkaeufer extends MY_Controller
         $pdf->Write(0, $preisText, '', false, 'L', true);
         $preisUnterkante = [$pdf->GetX(), $pdf->GetY()];
 
+        // Rechtlicher Hinweis
+        $pdf->SetFont('', '', 6);
+        $gewaehrleistung = config_item('gewaehrleistung');
+        $pdf->write(0, $gewaehrleistung, '', false, 'L', true);
+
         // Quittungs-Nr.
         $pdf->SetXY($bildOberkante[0], $bildOberkante[1] + 5);
         $title = 'Velo Nr: ' . $id;

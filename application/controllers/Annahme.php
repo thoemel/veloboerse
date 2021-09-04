@@ -158,7 +158,7 @@ class Annahme extends MY_Controller {
 	    // Verkäufer
 	    $pdf->SetXY(150, 5);
 	    $pdf->SetFont('', 'B', 8);
-	    $pdf->write(0, 'Verkäufer:', '', false, 'L', true);
+	    $pdf->write(0, 'Verkäufer*in:', '', false, 'L', true);
 	    $pdf->SetFont('', '', 8);
 	    $vi = $myVelo->verkaeuferInfo();
 	    $pdf->SetX(150);
@@ -169,10 +169,10 @@ class Annahme extends MY_Controller {
 	    $pdf->write(0, $vi['plz'], '', false, 'L');
 	    $pdf->write(0, $vi['ort'], '', false, 'L');
 
-	    // Pro Velo Bern kann trotz Kontrolle der Velos keine Haftung übernehmen.
-	    $pdf->SetXY(42, 22);
+	    // Pro Velo Bern leistet keine Gewähr für die verkauften Velos. Mängel bitte umgehend der Verkäufer*in melden.
+	    $pdf->SetXY(30, 22);
 	    $pdf->SetFont('', '', 8);
-	    $pdf->write(0, 'Pro Velo Bern kann trotz Kontrolle der Velos keine Haftung übernehmen.', '', false, 'L', true);
+	    $pdf->write(0, 'Pro Velo Bern leistet keine Gewähr für die verkauften Velos. Mängel bitte umgehend der Verkäufer*in melden.', '', false, 'L', true);
 
 	    // Preis
 	    $pdf->SetXY(190, 5);

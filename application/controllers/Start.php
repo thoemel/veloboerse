@@ -8,6 +8,11 @@ class Start extends MY_Controller {
 	}
 
 
+	public function disclaimer() {
+	    $this->load->view('disclaimer', $this->data);
+	}
+
+
 	/**
 	 * Index Page for this controller.
 	 *

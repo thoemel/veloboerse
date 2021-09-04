@@ -22,6 +22,7 @@ $config['smtp_port'] = '587';
 // Ort
 $config['ort'] = 'Bern';
 $config['veranstalter'] = 'Pro Velo Bern';
+$config['adresse'] = 'Birkenweg 61 <br>3014 Bern';
 
 /*
  * Text für das Bestätigungsmail, wenn ein Velo verkauft wurde.

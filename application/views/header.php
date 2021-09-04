@@ -81,6 +81,7 @@ if (!isset($hideNavi) || false == $hideNavi) {
 		            <li>' . anchor('login/registrationForm', 'Registrierung') . '</li>';
 	}
 	echo '
+                    <li>' . anchor('start/disclaimer', 'Disclaimer') . '</li>
 				</ul>';
 	if (true === $showSearchForm) {
 	echo '

@@ -4,7 +4,10 @@
 
 <footer>
 	<div class="container hidden-print">
-<?php echo anchor('', img('img/logo_nur_ringe.png'), array('title'=>'Start')); ?>
+<?php
+    echo anchor('', img('img/logo_nur_ringe.png'), array('title'=>'Start'));
+    echo '&nbsp;' . anchor('start/disclaimer', 'Disclaimer');
+?>
 	</div>
 </footer>
 

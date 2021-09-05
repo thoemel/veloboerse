@@ -185,6 +185,12 @@ class Annahme extends MY_Controller {
 	    // Logo
 	    $pdf->Image(FCPATH . '/img/logo.png', $pdf->GetX(), 3, 0, 5.0, 'png', '', 'M', true, 300, 'R');
 
+	    if ($myVelo->afrika) {
+	        // Velafrika
+	        $pdf->Image(FCPATH . '/img/velafrica.ch_logo_de.png', 260, 3, 0, 5.0, 'png', '', 'M', true, 300, '');
+	    }
+
+
 	    // Barcode
 	    $pdf->SetXY(260, 10);
 	    $barcodeStyle = array(

@@ -519,6 +519,8 @@ class Verkaeufer extends MY_Controller
         // Require user to be logged in.
         $this->requireLoggedIn();
 
+        $this->form_validation->set_message('matches', 'Die rechtlichen Hinweise müssen akzeptiert werden.');
+
         // form validation
         if ($this->form_validation->run('veloErfassenVerkaeufer') === false) {
             $this->session->set_flashdata('error', validation_errors());

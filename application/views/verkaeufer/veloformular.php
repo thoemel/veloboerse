@@ -117,6 +117,27 @@ echo '
 
     <div class="row">
 	<div class="form-group">
+		<label class="col-sm-2 control-label">Rechtliche Hinweise</label>
+		<div class="col-sm-10">
+			<p>
+                ' . config_item('veranstalter') . ' kann trotz Überwachung der Börse und Kontrolle der Velos für Verlust und Beschädigungen keine Haftung übernehmen.
+                <br>Am Veranstaltungstag ist der Verkaufserlös oder das Velo bis spätestens Börsenschluss abzuholen.
+                <br>Über nicht abgeholte Velos und Verkaufserlöse verfügt ' . config_item('veranstalter') . '.
+                <br>' . config_item('veranstalter') . ' leistet keine Gewähr für die verkauften Velo. ' . config_item('veranstalter') . ' ist Vermittler nicht Verkäufer.
+            </p>
+            <div class="checkbox">
+				<label>
+					' . form_checkbox('rechtliche_hinweise', '1', false, ['id'=>'rechtliche_hinweise']) . '
+					Ich habe die rechtlichen Hinweise verstanden.
+				</label>
+			</div>
+		</div>
+	</div>
+    </div>
+
+
+    <div class="row">
+	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-default">Speichern</button>
 		</div>
@@ -126,6 +147,13 @@ echo '
 </form>
 </div>';
 
+
+/*
+ *     Pro Velo Bern kann trotz Überwachung der Börse und Kontrolle der Velos für Verlust und Beschädigungen keine Haftung übernehmen.
+    Am Veranstaltungstag ist der Verkaufserlös oder das Velo bis spätestens Börsenschluss abzuholen.
+    Über nicht abgeholte Velos und Verkaufserlöse verfügt pro Velo Bern.
+    Pro Velo Bern leistet keine Gewähr für die verkauften Velo. Pro Velo Bern ist Vermittler nicht Verkäufer.
+ */
 			    // JSON object with provisionsliste
 			    echo '
 <script type="text/javascript">

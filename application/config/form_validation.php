@@ -84,8 +84,7 @@ $config ['createUser'] = array (
     array (
         'field' => 'agb',
         'label' => 'Teilnahmebedingungen',
-        'rules' => ['trim','matches[1]'],
-        'message' => 'gugs'
+        'rules' => ['trim','matches[1]']
     )
 );
 
@@ -246,17 +245,22 @@ $config['veloErfassenVerkaeufer'] = array(
     array(
         'field' => 'id',
         'label' => 'Quittungsnummer',
-        'rules' => 'trim|required|is_natural'
+        'rules' => ['trim','required','is_natural']
     ),
     array(
         'field' => 'preis',
         'label' => 'Preis',
-        'rules' => 'trim|required|is_natural'
+        'rules' => ['trim','required','is_natural']
     ),
     array(
         'field' => 'userfile',
         'label' => 'Foto',
-        'rules' => 'trim'
+        'rules' => ['trim']
+    ),
+    array(
+        'field' => 'rechtliche_hinweise',
+        'label' => 'rechtliche Hinweise',
+        'rules' => ['trim','matches[1]']
     ),
 );
 

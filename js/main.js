@@ -15,7 +15,7 @@ $(document).ready(function() {
 	
 	// Kasse: Bemerkungsfeld für Helferlein Namen ein- oder ausblenden
 	$('input[name=helfer_kauft]').change(function() {
-		if ($('#helfer_kauft').attr('checked')) {
+		if ($('#helfer_kauft').prop('checked')) {
 			$('#velo_bemerkungen').removeClass('hidden');
 		} else {
 			$('#velo_bemerkungen').addClass('hidden');
@@ -24,7 +24,7 @@ $(document).ready(function() {
 	
 	// Annahme: Warnung bei fünfstelligem Preis
 	$('#erfassungsformular').submit(function() {
-		var meinPreis = $('#preis_input').attr('value');
+		var meinPreis = $('#preis_input').prop('value');
 		if (10000 < meinPreis) {
 			return confirm('Kostet das Velo wirklich Fr. ' + meinPreis + '?');
 		}
@@ -82,7 +82,7 @@ function calcProvision() {
 	var auszahlung_betrag = $('.auszahlungsbetrag').first().text();
 	var verkaufssumme = $('.verkaufssumme').first().text();
 	var provision_total = $('.provision_total').first().text();
-	if ($('#no_provision').attr('checked')) {
+	if ($('#no_provision').prop('checked')) {
 		auszahlung_betrag = (verkaufssumme - provision_total + parseInt(provision));
 	} else {
 		auszahlung_betrag = verkaufssumme - provision_total;
@@ -95,15 +95,15 @@ function calcProvision() {
  * Auf Kasse-Formular Preis ändern, wenn "Helfer kauft" angeklickt ist.
  */
 function calcProvisionAtCashier() {
-	var angeschriebener_preis = parseInt($('input[name=angeschriebener_preis]').attr('value'), 10);
-	var provision = parseInt($('input[name=provision]').attr('value'), 10);
+	var angeschriebener_preis = parseInt($('input[name=angeschriebener_preis]').prop('value'), 10);
+	var provision = parseInt($('input[name=provision]').prop('value'), 10);
 	var preis;
-	if ($('#helfer_kauft').attr('checked')) {
+	if ($('#helfer_kauft').prop('checked')) {
 		preis = angeschriebener_preis - provision;
 	} else {
 		preis = angeschriebener_preis;
 	}
-	$('#preis').text(preis);
+	$('#preis').text(preis + ' Fr.');
 	return;
 }
 

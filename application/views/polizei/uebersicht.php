@@ -9,7 +9,9 @@ echo '
 	</p>
 	<ul>
 		<li>' . anchor('polizei/gestohlene', 'Gestohlene Velos') . '</li>
-		<li>' . anchor('polizei/rahmennummern', 'Rahmennummern') . '</li>
+		<li>' . anchor('polizei/rahmennummern', 'Neu hinzugekommene Rahmennummern') . ' Vorsicht: Es werden die Velos exportiert, die seit dem letzten Export angenommen wurden.
+            Vergiss nicht, die Datei direkt zu speichern und der Polizei zu geben. Wenn du zweimal hintereinander klickst, ist die Liste leer.</li>
+        <li>' . anchor('polizei/rahmennummern/alle', 'Alle Rahmennummern') . '</li>
 	</ul>
 </div>';
 

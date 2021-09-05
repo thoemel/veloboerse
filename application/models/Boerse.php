@@ -81,6 +81,7 @@ class Boerse extends CI_Model {
 
 		$ret = $CI->db->query('TRUNCATE velos');
 		$ret = $ret && $CI->db->query('TRUNCATE statistik');
+		$ret = $ret && $CI->db->query('TRUNCATE rahmennummern');
 		return $ret;
 	}
 

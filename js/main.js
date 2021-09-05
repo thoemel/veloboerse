@@ -42,10 +42,10 @@ $(document).ready(function() {
 		$('#confirmation_modal').modal('show');
 	});
 	
-	$('.datepicker').datepicker({
-	    language: 'de',
-	    format: 'yyyy-mm-dd'
-	});
+//	$('.datepicker').datepicker({
+//	    language: 'de',
+//	    format: 'yyyy-mm-dd'
+//	});
 	
 	/**
 	 * Zeige Checkbox für IBAN, falls der nicht leer ist.

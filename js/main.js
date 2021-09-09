@@ -22,11 +22,16 @@ $(document).ready(function() {
 		}
 	});
 	
-	// Annahme: Warnung bei fünfstelligem Preis
 	$('#erfassungsformular').submit(function() {
+		// Annahme: Warnung bei fünfstelligem Preis
 		var meinPreis = $('#preis_input').prop('value');
 		if (10000 < meinPreis) {
 			return confirm('Kostet das Velo wirklich Fr. ' + meinPreis + '?');
+		}
+		// Annahme: Rechtliche Hinweise müssen akzeptiert werden.
+		if ($('#rechtliche_hinweise').prop('checked') == false) {
+			event.preventDefault();
+	    	alert("Die rechtlichen Hinweise müssen akzeptiert werden.");
 		}
 	});
 	
@@ -60,6 +65,7 @@ $(document).ready(function() {
 	
 	/**
 	 * Schick die Registration nicht ab, wenn IBAN Feld nicht leer und Checkbox nicht checked.
+	 * Ebensowenig, wenn Teilnahmebedingungen nicht checked.
 	 * @returns
 	 */
 	$("#registrierFormular").submit(function(event){
@@ -67,7 +73,12 @@ $(document).ready(function() {
 			event.preventDefault();
 	    	alert("Bitte bestätige, dass du den Hinweis zum IBAN verstanden hast und damit einverstanden bist.");
 		}
+		if ($('#agb_check').prop('checked') == false) {
+			event.preventDefault();
+	    	alert("Die Teilnahmebedingungen müssen akzeptiert werden.");
+		}
 	});
+	
 });
 
 

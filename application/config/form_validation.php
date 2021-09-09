@@ -84,7 +84,7 @@ $config ['createUser'] = array (
     array (
         'field' => 'agb',
         'label' => 'Teilnahmebedingungen',
-        'rules' => ['trim','matches[1]']
+        'rules' => ['trim','required']
     )
 );
 
@@ -260,7 +260,7 @@ $config['veloErfassenVerkaeufer'] = array(
     array(
         'field' => 'rechtliche_hinweise',
         'label' => 'rechtliche Hinweise',
-        'rules' => ['trim','matches[1]']
+        'rules' => ['trim','required']
     ),
 );
 

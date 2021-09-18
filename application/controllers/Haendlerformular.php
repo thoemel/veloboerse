@@ -284,6 +284,13 @@ class Haendlerformular extends MY_Controller {
 			$ret = $ret && $myVelo->save();
 		} // End for each Velo
 
+		if ($velosAnnehmen) {
+		    // Wenn Velos als angenommen definiert werden, auch den Händlystatus auf angenommen setzen.
+		    $this->haendler->find($this->session->userdata('haendler_id'));
+		    $this->haendler->setStatus('angenommen');
+		    $ret = $ret && $this->haendler->save();
+		}
+
 		if ($ret) {
 			$this->session->set_flashdata('success', 'Velos wurden gespeichert.');
 		} else {

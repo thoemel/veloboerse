@@ -5,7 +5,7 @@
 <footer>
 	<div class="container hidden-print">
 <?php
-    echo anchor('', img('img/logo_nur_ringe.png'), array('title'=>'Start'));
+    echo anchor('', img('img/logo-veloboerse-de_32.png'), array('title'=>'Start'));
     echo '&nbsp;' . anchor('start/disclaimer', 'Disclaimer');
 ?>
 	</div>

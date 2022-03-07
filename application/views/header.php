@@ -40,7 +40,7 @@ if (!isset($hideNavi) || false == $hideNavi) {
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				' . anchor('', img('img/logo_nur_ringe.png').'&nbsp;Velobörse', array('class'=>'navbar-brand')) . '
+				' . anchor('', img('img/logo-veloboerse-de_32.png', array('alt'=>'Logo Velobörse')), array('class'=>'navbar-brand')) . '
 			</div><!-- End of navbar-header -->
 
 			<!-- Collect the nav links, forms, and other content for toggling -->

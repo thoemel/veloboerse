@@ -544,7 +544,7 @@ class Verkaeufer extends MY_Controller
         }
 
         // Preis in ganzen Zehnern
-        $preis = round($this->input->post('preis')/10) * 10;
+        $preis = round((int)$this->input->post('preis')/10) * 10;
 
         $myVelo = new Velo();
         try {

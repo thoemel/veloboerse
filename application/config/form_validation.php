@@ -250,7 +250,7 @@ $config['veloErfassenVerkaeufer'] = array(
     array(
         'field' => 'preis',
         'label' => 'Preis',
-        'rules' => ['trim','required','is_natural']
+        'rules' => ['trim','required']
     ),
     array(
         'field' => 'userfile',

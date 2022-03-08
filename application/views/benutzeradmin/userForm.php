@@ -13,6 +13,7 @@ echo '
 
 echo form_open($formAction, array('id' => 'registrierFormular'));
 echo form_hidden('user_id',$myUser->id);
+echo form_hidden('agb',1);
 
 echo '
     <div class="row">

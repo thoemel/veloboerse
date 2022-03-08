@@ -216,9 +216,24 @@ class Verkaeufer extends MY_Controller
                 $myVelo->find($id);
             } catch (Exception $e) {
                 log_message('error', $e->getMessage());
-                $this->addData('error', 'Es ist kein Velo mit dieser Quittungsnummer registriert.');
-                $this->index();
-                return ;
+                // Kein Velo mit dieser ID
+                $this->session->set_flashdata('error', 'Kein Velo mit dieser ID registriert.');
+                redirect('verkaeufer');
+                return;
+            }
+
+            if ($this->auth_user_id != $myVelo->verkaeufer_id && $this->auth_level < 8) {
+                // Eingeloggter User ist entweder Helfer, Admin oder Besitzer des Velos.
+                $this->session->set_flashdata('error', 'Dieses Velo gehört nicht dir.');
+                redirect('verkaeufer');
+                return;
+            }
+
+            if ($myVelo->angenommen == 'yes') {
+                // Angenommene Velos dürfen nicht mehr verändert werden.
+                $this->session->set_flashdata('error', 'Angenommene Velos dürfen nicht mehr verändert werden.');
+                redirect('verkaeufer');
+                return;
             }
         }
 
@@ -534,6 +549,18 @@ class Verkaeufer extends MY_Controller
         $myVelo = new Velo();
         try {
             $myVelo->find($this->input->post('id'));
+            if ($this->auth_user_id != $myVelo->verkaeufer_id && $this->auth_level < 8) {
+                // Eingeloggter User ist entweder Helfer, Admin oder Besitzer des Velos.
+                $this->session->set_flashdata('error', 'Dieses Velo gehört nicht dir.');
+                redirect('verkaeufer');
+                return;
+            }
+            if ($myVelo->angenommen == 'yes') {
+                // Angenommene Velos dürfen nicht mehr verändert werden.
+                $this->session->set_flashdata('error', 'Angenommene Velos dürfen nicht mehr verändert werden.');
+                redirect('verkaeufer');
+                return;
+            }
         } catch (Exception $e) {
             $myVelo->id = 0;
         }

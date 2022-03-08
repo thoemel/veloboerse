@@ -339,7 +339,7 @@ class Login extends MY_Controller {
 		$this->requireLoggedIn();
 
 		// Admins sehen auch Auswertungs-Link
-		$this->addData('showAuswertung', $this->requireRole('admin'));
+		$this->addData('showAuswertung', $this->is_role('admin'));
 
 		$this->load->view('login/auswahl', $this->data);
 		return;

@@ -197,7 +197,7 @@ class Admin extends MY_Controller
 			Boerse::eroeffne();
 		}
 
-		$boerse->datum = $this->input->post('boerseDatum');
+		$boerse->datum = date('Y-m-d', strtotime($this->input->post('boerseDatum')));
 		if ($boerse->save()) {
 			$this->session->set_flashdata('success', 'Börse gespeichert.');
 		} else {

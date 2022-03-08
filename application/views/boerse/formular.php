@@ -8,7 +8,11 @@ if (0 < $naechsteBoerse->id) {
 }
 echo '
 <div class="input-group date col-sm-2 col-md-2 col-lg-2">
-	<input type="text" class="form-control datepicker col-sm-4 col-md-4 col-lg-4" name="boerseDatum" value="' . $naechsteBoerse->datum . '">
+	<input type="text"
+        class="form-control datepicker col-sm-4 col-md-4 col-lg-4"
+        name="boerseDatum"
+        value="' . $naechsteBoerse->datum . '"
+        placeholder="JJJJ-MM-DD">
 	<div class="input-group-addon">
 	<span class="glyphicon glyphicon-th"></span>
 	</div>

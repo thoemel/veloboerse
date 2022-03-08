@@ -5,8 +5,9 @@
 <footer>
 	<div class="container hidden-print">
 <?php
-    echo anchor('', img('img/logo-veloboerse-de_32.png'), array('title'=>'Start'));
-    echo '&nbsp;' . anchor('start/disclaimer', 'Disclaimer');
+echo anchor('', img('img/logo-veloboerse-de_32.png'), array('title'=>'Start'));
+echo '&nbsp;' . anchor('start/disclaimer', 'Disclaimer');
+echo '&nbsp;|&nbsp;' . anchor('start/datenschutzerklaerung', 'Datenschutzerklärung');
 ?>
 	</div>
 </footer>

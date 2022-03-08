@@ -8,6 +8,11 @@ class Start extends MY_Controller {
 	}
 
 
+	public function datenschutzerklaerung() {
+	    $this->load->view('datenschutzerklaerung', $this->data);
+	}
+
+
 	public function disclaimer() {
 	    $this->load->view('disclaimer', $this->data);
 	}

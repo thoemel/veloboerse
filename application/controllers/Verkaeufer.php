@@ -660,7 +660,7 @@ class Verkaeufer extends MY_Controller
 
         $msg = 'Liebe/lieber ' . $verkaeufy->vorname . ' ' . $verkaeufy->nachname;
         $msg .= "\n\nDanke, dass du dein Velo bei uns verkaufen willst!";
-        $msg .= "\nBitte drucke die Quittung in der Beilage aus und bring sie mit dem Velo an die Börse.";
+        $msg .= "\nBitte drucke das angehängte PDF-Dokument aus oder weise es bei der Velo-Annahme auf deinem Smartphone vor.";
         $msg .= "\nLiebe Grüsse";
         $msg .= "\n\nDeine Pro Velo";
         $this->email->message($msg);

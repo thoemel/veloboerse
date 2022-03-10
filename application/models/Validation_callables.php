@@ -104,6 +104,21 @@ class Validation_callables extends MY_Model {
 	 * @param String $in
 	 * @return boolean
 	 */
+	public function check_unique_email($in) {
+	    $this->db->where('email', $in);
+	    $query = $this->db->get('users', 1);
+	    if ($query->num_rows() > 0) {
+	        return FALSE;
+	    }
+	    return TRUE;
+	}
+
+
+	/**
+	 * Check if user with this username already exists in database.
+	 * @param String $in
+	 * @return boolean
+	 */
 	public function check_unique_username($in) {
 	    if ('' === $in) {
 	        return TRUE;

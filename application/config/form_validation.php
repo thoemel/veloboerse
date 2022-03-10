@@ -24,7 +24,10 @@ $config ['createUser'] = array (
 	array (
 		'field' => 'email',
 		'label' => 'E-Mail',
-	    'rules' => ['trim','required','valid_email']
+	    'rules' => ['trim','required','valid_email', [
+	        'check_unique_email', [ $CI->validation_callables, 'check_unique_email']
+	       ]
+	    ]
 	),
     array (
         'field' => 'username',

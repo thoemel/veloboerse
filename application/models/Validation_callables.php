@@ -100,7 +100,7 @@ class Validation_callables extends MY_Model {
 
 
 	/**
-	 * Check if user with this username already exists in database.
+	 * Check if user with this email already exists in database.
 	 * @param String $in
 	 * @return boolean
 	 */
@@ -115,21 +115,19 @@ class Validation_callables extends MY_Model {
 
 
 	/**
-	 * Check if user with this username already exists in database.
+	 * Check the syntax of an IBAN string
 	 * @param String $in
 	 * @return boolean
 	 */
-	public function check_unique_username($in) {
+	public function check_iban_syntax($in) {
 	    if ('' === $in) {
 	        return TRUE;
 	    }
-	    $this->db->where('username', $in);
-	    $query = $this->db->get('users', 1);
-	    if ($query->num_rows() > 0) {
-	        return FALSE;
-	    }
-	    return TRUE;
+	    $ret = preg_match('/[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}/', str_replace(' ', '', $in));
+	    $ret = $ret == TRUE;
+	    return $ret == TRUE;
 	}
+
 
 
 }

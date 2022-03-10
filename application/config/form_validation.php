@@ -82,7 +82,10 @@ $config ['createUser'] = array (
     array (
         'field' => 'iban',
         'label' => 'IBAN',
-        'rules' => ['trim']
+        'rules' => ['trim', [
+            'check_iban_syntax', [ $CI->validation_callables, 'check_iban_syntax']
+            ]
+        ]
     ),
     array (
         'field' => 'agb',
@@ -131,7 +134,9 @@ $config ['editUser'] = [
     ], [
         'field' => 'iban',
         'label' => 'IBAN',
-        'rules' => ['trim']
+        'rules' => ['trim', [
+            'check_iban_syntax', [ $CI->validation_callables, 'check_iban_syntax']
+        ]]
     ], [
         'field' => 'password',
         'label' => 'Passwort',
@@ -179,7 +184,9 @@ $config ['editVerkaeufer'] = [
     ], [
         'field' => 'iban',
         'label' => 'IBAN',
-        'rules' => ['trim']
+        'rules' => ['trim', [
+            'check_iban_syntax', [ $CI->validation_callables, 'check_iban_syntax']
+        ]]
     ], [
         'field' => 'password',
         'label' => 'Passwort',

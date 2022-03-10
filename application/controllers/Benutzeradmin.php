@@ -60,10 +60,10 @@ class Benutzeradmin extends MY_Controller
          * Testen, ob ein anderer User diese E-Mail hat.
          */
         $testUser = new M_user();
-        if (true === $testUser->fetch4email($this->input->post('email'))) {
-            $formValues['email'] = set_value('Diese E-Mail ist schon vergeben.');
-            $this->addData('formValues', $formValues);
-            $this->userForm($this->input->post('user_id'));
+        $testUser->fetch4email($this->input->post('email'));
+        if (!(0 == $testUser->id || $this->input->post('user_id') == $testUser->id)) {
+            $this->session->set_flashdata('error', 'Diese E-Mail ist schon vergeben.');
+            redirect('benutzeradmin/userForm/' . $this->input->post('user_id'));
             return;
         }
 

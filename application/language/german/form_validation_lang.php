@@ -39,6 +39,7 @@ $lang['greater_than_equal_to']	= "Das Feld %s muss eine Zahl gr&ouml;sser oder g
 $lang['form_validation_is_natural']	= "Das Feld %s darf nur positive Zahlen enthalten.";
 $lang['form_validation_check_unique_email'] = 'Diese Mailadresse ist schon vergeben.';
 $lang['form_validation_check_unique_username'] = 'Dieser Benutzername ist schon vergeben.';
+$lang['form_validation_check_iban_syntax'] = 'Falsches Format für IBAN.';
 
 
 /* End of file form_validation_lang.php */

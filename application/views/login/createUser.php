@@ -28,11 +28,44 @@ echo '
     </div>
     <div class="row">
 	<div class="form-group">
-		<label for="username_input" class="col-lg-2 control-label">Benutzername</label>
+		<label for="username_input" class="col-lg-2 control-label">Benutzername
+            <span class="badge">
+                <span class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#unameModal"></span>
+            </span>
+        </label>
 		<div class="col-sm-6 col-md-6 col-lg-6">
             ' . form_error('username') . '
-			' . form_input(array('id' => 'username_input', 'name' => 'username', 'value' => $myUser->username, 'class' => 'form-control')) . '
+			' . form_input(array('id' => 'username_input', 'name' => 'username', 'value' => $myUser->username, 'class' => 'form-control', 'maxlength' => 12)) . '
 		</div>
+        <div class="col-sm-1 col-md-1 col-lg-1">
+          <!-- Modal -->
+          <div class="modal fade" id="unameModal" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Benutzername-Anforderungen</h4>
+                </div>
+                <div class="modal-body">
+                  <p>
+                  <ul>
+                  	<li>Es ist kein Benutzername nötig.
+                  	<li>Beim Login kannst du den Benutzernamen oder die E-Mail Adresse verwenden.
+                    <li>Wenn schon jemand anderes den gleichen Benutzernamen hat, musst du einen andern suchen.
+                    <li>Er darf höchstens 12 Zeichen lang sein.
+                  </ul>
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
 	</div>
 
 	</div>

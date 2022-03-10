@@ -61,8 +61,7 @@ class Verkaeufer extends MY_Controller
          * Testen, ob ein anderer User diese E-Mail hat.
          */
         $testUser = new M_user();
-        $testUser->fetch4email($this->input->post('email'));
-        if ($testUser->id != $this->auth_user_id) {
+        if (true === $testUser->fetch4email($this->input->post('email'))) {
             $this->appendData('error', 'Diese E-Mail ist schon vergeben.');
             $this->userForm();
             return;

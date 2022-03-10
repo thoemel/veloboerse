@@ -51,17 +51,7 @@ class Benutzeradmin extends MY_Controller
 
         if ($this->form_validation->run('editUser') === false) {
             // Not registered because of wrong input
-            $formValues = array();
-            $formValues['email'] = set_value('email');
-            $formValues['username'] = set_value('username');
-            $formValues['vorname'] = set_value('vorname');
-            $formValues['nachname'] = set_value('nachname');
-            $formValues['strasse'] = set_value('strasse');
-            $formValues['plz'] = set_value('plz');
-            $formValues['ort'] = set_value('ort');
-            $formValues['telefon'] = set_value('telefon');
-            $formValues['iban'] = set_value('iban');
-            $this->addData('formValues', $formValues);
+            $this->session->set_flashdata('error', validation_errors());
             redirect('benutzeradmin/userForm/' . $this->input->post('user_id'));
             return;
         }
@@ -70,11 +60,10 @@ class Benutzeradmin extends MY_Controller
          * Testen, ob ein anderer User diese E-Mail hat.
          */
         $testUser = new M_user();
-        $testUser->fetch4email($this->input->post('email'));
-        if ($testUser->id !== $this->input->post('user_id')) {
+        if (true === $testUser->fetch4email($this->input->post('email'))) {
             $formValues['email'] = set_value('Diese E-Mail ist schon vergeben.');
             $this->addData('formValues', $formValues);
-            $this->userForm($this->input->post('id'));
+            $this->userForm($this->input->post('user_id'));
             return;
         }
 

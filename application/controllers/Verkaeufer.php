@@ -74,7 +74,7 @@ class Verkaeufer extends MY_Controller
         if ($this->auth_username != $this->input->post('username')) {
             $testUser = new M_user();
             $testUser->fetch4username($this->input->post('username'));
-            if ($testUser->id !== $this->auth_user_id) {
+            if ($testUser->id !== 0 && $testUser->id !== $this->auth_user_id) {
                 $this->appendData('error', 'Dieser Benutzername ist schon vergeben.');
                 $this->userForm();
                 return;

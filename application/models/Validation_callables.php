@@ -115,6 +115,24 @@ class Validation_callables extends MY_Model {
 
 
 	/**
+	 * Check if user with this email already exists in database.
+	 * @param String $in
+	 * @return boolean
+	 */
+	public function check_unique_username($in) {
+	    if ('' == $in) {
+	        return TRUE;
+	    }
+	    $this->db->where('username', $in);
+	    $query = $this->db->get('users', 1);
+	    if ($query->num_rows() > 0) {
+	        return FALSE;
+	    }
+	    return TRUE;
+	}
+
+
+	/**
 	 * Check the syntax of an IBAN string
 	 * @param String $in
 	 * @return boolean

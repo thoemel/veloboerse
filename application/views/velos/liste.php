@@ -64,15 +64,16 @@ if ($meineVelos->num_rows() > 0) {
         }
         echo '</dd>
             </dl>';
-        if ('no' == $row->angenommen) {
-            echo anchor('verkaeufer/veloformular/' . $row->id, 'Angebot ändern');
-            echo '<br>';
-            echo anchor('verkaeufer/stornieren/' . $row->id, 'Angebot zurückziehen');
-            echo '<br>';
-            echo anchor('verkaeufer/pdf/' . $row->id, 'Zettel für ans Velo drucken');
-        }
         if ($showFormLink) {
             echo anchor('velos/formular/' . $row->id, 'Zum Veloformular');
+        } else {
+            if ('no' == $row->angenommen) {
+                echo anchor('verkaeufer/veloformular/' . $row->id, 'Angebot ändern');
+                echo '<br>';
+                echo anchor('verkaeufer/stornieren/' . $row->id, 'Angebot zurückziehen');
+                echo '<br>';
+                echo anchor('verkaeufer/pdf/' . $row->id, 'Zettel für ans Velo drucken');
+            }
         }
         echo '
         </div>';

@@ -51,8 +51,11 @@ class Kasse extends MY_Controller {
 	    }
 
 		// Verkäufy-Info
-		if ($myVelo->verkaeufer_id > 0) {
-		    $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', ['verkaeuferInfo'=>$myVelo->verkaeuferInfo()], TRUE);
+	    if ($myVelo->verkaeufer_id > 0) {
+	        $verkaeuferInfo = $this->load->view('verkaeufer/verkaeuferinfo', [
+	            'verkaeuferInfo'=>$myVelo->verkaeuferInfo(),
+	            'verkaeufer_id'=> $myVelo->verkaeufer_id
+	        ], TRUE);
 		    $this->addData('verkaeuferInfo', $verkaeuferInfo);
 		}
 

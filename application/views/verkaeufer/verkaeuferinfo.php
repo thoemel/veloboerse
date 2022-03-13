@@ -30,6 +30,7 @@ foreach ($verkaeuferInfo as $key => $value) {
 ?>
 					</dl>
                   </p>
+                  <p><?php echo anchor('velos/fuerVerkaeufy/' . $verkaeufer_id, 'Liste aller Velos dieses Verläufys') ?></p>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>

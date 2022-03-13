@@ -74,14 +74,15 @@ if (!isset($hideNavi) || false == $hideNavi) {
     }
 	if ($loggedIn) {
 	    echo '
+					<li><a href="' . base_url() . 'uploads/anleitungen_veloboerse.doc" target="_blank">Anleitungen</a></li>
 					<li>' . anchor('login/logout', 'Logout') . '</li>';
 	} else {
 		echo '
 					<li>' . anchor('login/form', 'Login') . '</li>
-		            <li>' . anchor('login/registrationForm', 'Registrierung') . '</li>';
+		            <li>' . anchor('login/registrationForm', 'Registrierung') . '</li>
+                    <li>' . anchor('start/disclaimer', 'Disclaimer') . '</li>';
 	}
 	echo '
-                    <li>' . anchor('start/disclaimer', 'Disclaimer') . '</li>
 				</ul>';
 	if (true === $showSearchForm) {
 	echo '

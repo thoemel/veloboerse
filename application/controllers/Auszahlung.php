@@ -164,10 +164,11 @@ class Auszahlung extends MY_Controller {
 
 
 	/**
-	 * Liefert eine Quittung für das Verkäufy
+	 * Liefert eine Quittung für Pro Velo, auf der das Verkäufy den Erhalt des Geldes bestätigt.
 	 * @param int $verkaeufyId
+	 * @param int $helfy   1 falls Verkäufy ein Helfy ist.
 	 */
-	public function pdf($verkaeufyId) {
+	public function pdf($verkaeufyId, $helfy = 0) {
 
 	    $alleMeine = Velo::fuerVerkaeufer($verkaeufyId);
 	    $meineVelos = [];
@@ -223,7 +224,10 @@ class Auszahlung extends MY_Controller {
 	    $this->load->library('pv_tcpdf');
 	    $pdf = new Pv_tcpdf('L', 'mm', 'custom', true, 'UTF-8');
 	    $pdf->SetMargins(2, 2);
-	    $pageHeight = 35 + 45 * count($meineVelos);
+	    $pageHeight = 35 + 50 * count($meineVelos);
+	    if (1 == $helfy) {
+	        $pageHeight += 10;
+	    }
 	    $pdf->AddPage('P', [54, $pageHeight]);
 	    $pdf->setPageOrientation('P', true, 2);
 
@@ -265,14 +269,30 @@ class Auszahlung extends MY_Controller {
     	    $pdf->write(0, 'Provision: Fr. ' . velo::getProvision($velo['preis']) . '.--', '', false, 'L', true);
 
     	    // Auszahlungsbetrag
-    	    $pdf->Write(0, 'Auszahlungsbetrag: Fr. ' . ($velo['preis'] - velo::getProvision($velo['preis'])) . '.--', '', false, 'L', true);
+    	    $pdf->Write(0, 'Auszahlungsbetrag: ', '', false, 'L', false);
+    	    $pdf->Write(0, 'Fr. ' . ($velo['preis'] - velo::getProvision($velo['preis'])) . '.--', '', false, 'R', true);
 
+    	    $pdf->Write(0, '_ _ _ ', '', false, 'L', true);
 	    } // end foreach $meineVelos
+
+	    // Provisionserlass für Helfys
+	    if (1 == $helfy) {
+	        $provisionserlass = Velo::getProvision($maxPreis);
+	        $pdf->Ln(5);
+	        $pdf->Write(0, 'Provisionserlass: ', '', false, 'L', false);
+	        $pdf->Write(0, '- Fr. ' . $provisionserlass . '.--', '', false, 'R', true);
+	        $pdf->Write(0, '_ _ _ ', '', false, 'L', true);
+	        $auszahlung_betrag += $provisionserlass;
+	    }
 
 
 	    // Unterschrift
 	    $pdf->Ln(5);
-	    $pdf->Write(0, 'Total Fr. ' . $auszahlung_betrag . '.-- erhalten', '', false, 'R', true);
+	    $pdf->SetFont('', 'B', 8);
+	    $pdf->Write(0, 'Total Fr. ' . $auszahlung_betrag . '.--', '', false, 'R', true);
+	    $pdf->Ln(5);
+	    $pdf->SetFont('', '', 8);
+	    $pdf->Write(0, 'erhalten', '', false, 'R', true);
 	    $pdf->Write(0, 'Datum: ' . date('d. m. Y'), '', false, 'R', true);
 	    $pdf->Write(0, 'Unterschrift:', '', false, 'R', true);
 	    $pdf->Ln(9);

@@ -95,8 +95,12 @@ function calcProvision() {
 	var provision_total = $('.provision_total').first().text();
 	if ($('#no_provision').prop('checked')) {
 		auszahlung_betrag = (verkaufssumme - provision_total + parseInt(provision));
+		$('#auszahlungsquittung_helfy').removeClass('hidden');
+		$('#auszahlungsquittung').addClass('hidden');
 	} else {
 		auszahlung_betrag = verkaufssumme - provision_total;
+		$('#auszahlungsquittung_helfy').addClass('hidden');
+		$('#auszahlungsquittung').removeClass('hidden');
 	}
 	$('.auszahlungsbetrag').text(auszahlung_betrag);
 }

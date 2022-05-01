@@ -80,6 +80,7 @@ switch (ENVIRONMENT)
 {
 	case 'development':
 		error_reporting(-1);
+		# display_errors = 1 wäre schön, doch TCPDF ist veraltet.
 		ini_set('display_errors', 0);
 	break;
 

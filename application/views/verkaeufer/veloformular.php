@@ -70,6 +70,31 @@ echo '
 	</div>
     </div>
 
+          <!-- Modal -->
+          <div class="modal fade" id="eBike_modal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header alert alert-warning">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Ist der Akku noch ok?</h4>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Um zu wissen, wie viel Reichweite in einem benutzen Akku noch steckt, ist eine
+                    <a href="https://www.tcs.ch/de/kurse-fahrzeugchecks/fahrzeugkontrollen/e-bike-akku.php" target="_blank">
+                        Kapazitätsmessung
+                    </a>
+                    notwendig. Diese Information kann besonders für einen E-Bike-Kauf oder -Verkauf sehr nützlich sein.
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Schliessen</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
     <div class="row">
 	<div class="form-group">
 		<label for="farbe_input" class="col-sm-2 control-label">Farbe</label>

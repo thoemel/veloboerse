@@ -35,6 +35,13 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('input[name="typ"]').change(function() {
+		// Hinweis auf Akku Kapazitätsprüfung bei E-Bikes
+		if($('input[name="typ"]:checked').val() == 'E-Bike') {
+			$('#eBike_modal').modal('show');
+		}
+	});
+	
 	// Generell Anzeige von Provision und Auszahlung aus Preis berechnen
 	$('#preis_input').keyup(calcProvisionDynamic);
 	

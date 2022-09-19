@@ -35,10 +35,11 @@ $config['text_bestaetigungsmail'] = 'Liebe / lieber <vorname nachname>
 Gratuliere, du hast ein Velo verkauft!
 
 Dein Velo mit der Quittung Nr. <quittungsnummer> wurde für Fr. <preis>.-- verkauft.
-Wenn du zu deiner Adresse eine IBAN registriert hast, kannst du dich zurücklehnen - dein Geld wird in der nächsten Woche auf dein Konto überwiesen. Du kannst das Geld aber auch an der Börse in Bar abholen kommen.
-Falls du keine IBAN hinterlegt hast, musst du vor Börsenschluss dein Geld abholen kommen.
+<mit_oder_ohne_iban>
 Liebe Grüsse
 Deine Pro Velo';
+$config['text_mit_iban'] = 'Du kannst dich zurücklehnen - dein Geld wird in der nächsten Woche auf dein Konto überwiesen (IBAN: <iban>).';
+$config['text_ohne_iban'] = 'Da du keine IBAN hinterlegt hast, musst du vor Börsenschluss dein Geld abholen kommen.';
 
 
 // Für die Zahlungsliste (EZAG).

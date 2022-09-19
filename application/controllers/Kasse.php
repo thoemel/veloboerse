@@ -154,6 +154,12 @@ class Kasse extends MY_Controller {
 			$msg = str_replace('<preis>', $myVelo->preis, $msg);
 			$auszahlung = $myVelo->preis - Velo::getProvision($myVelo->preis);
 			$msg = str_replace('<betrag_auszahlung>', $auszahlung, $msg);
+			if (!empty($verkaeufy->iban)) {
+			    $msg = str_replace('<mit_oder_ohne_iban>', config_item('text_mit_iban'), $msg);
+			    $msg = str_replace('<iban>', $verkaeufy->iban, $msg);
+			} else {
+			    $msg = str_replace('<mit_oder_ohne_iban>', config_item('text_ohne_iban'), $msg);
+			}
 			$this->email->message($msg);
 
 			$success = $this->email->send(FALSE);
